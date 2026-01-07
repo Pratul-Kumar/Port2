@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
 import { Download } from 'lucide-react';
 
-
 const Hero = () => {
   // Animation variants for staggering children
   const containerVariants = {
@@ -32,12 +31,10 @@ const Hero = () => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      style={{
-        background: "linear-gradient(to right, rgba(17, 17, 17, 1), rgba(22, 22, 22, 1), rgba(17, 17, 17, 1))"
-      }}
+      // Background style removed here to allow transparency
       className='min-h-screen relative text-white w-full px-6 lg:px-24 flex flex-col justify-center overflow-hidden'
     >
-      {/* 1. DECORATIVE BACKGROUND ELEMENTS */}
+      {/* 1. DECORATIVE ACCENTS (Kept these for depth, but base is transparent) */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
         <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#fcca46]/5 blur-[120px] rounded-full" />
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
@@ -108,29 +105,28 @@ const Hero = () => {
       </div>
 
       {/* 5. LAYER: ACTIONS */}
-            <motion.div 
-            variants={itemVariants}
-            className='mt-20 flex flex-wrap gap-8 items-center'
-            >
-            <a 
-                href="YOUR_LINK_OR_RESUME_URL_HERE" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-block" // Ensures the link wraps the button correctly
-            >
-                <motion.button 
-                whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(252, 202, 70, 0.2)" }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-3 px-10 py-4 bg-gradient-to-br from-[#fcca46] to-[#d9a82e] text-black text-[11px] font-black uppercase tracking-widest rounded-sm transition-all duration-500 cursor-pointer"
-                >
-                View Resume
-                <Download size={14} strokeWidth={3} /> {/* Download Icon */}
-                </motion.button>
-            </a>
-            </motion.div>
+      <motion.div 
+        variants={itemVariants}
+        className='mt-20 flex flex-wrap gap-8 items-center'
+      >
+        <a 
+          href="https://drive.google.com/file/d/1DV_QzkLzFtG8hw7n7IsqvReEEmEIFZHn/view?usp=sharing" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-block"
+        >
+          <motion.button 
+            whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(252, 202, 70, 0.2)" }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-3 px-10 py-4 bg-gradient-to-br from-[#fcca46] to-[#d9a82e] text-black text-[11px] font-black uppercase tracking-widest rounded-sm transition-all duration-500 cursor-pointer"
+          >
+            View Resume
+            <Download size={14} strokeWidth={3} />
+          </motion.button>
+        </a>
+      </motion.div>
 
       {/* Background Watermark */}
-       {/* Background Subtle Gradient Text (Minimalist Watermark) */}
       <div className="absolute top-20 left-[35%] opacity-[0.03] pointer-events-none select-none">
         <h2 className="text-[10vw] font-black uppercase tracking-tighter">Visual</h2>
       </div>
