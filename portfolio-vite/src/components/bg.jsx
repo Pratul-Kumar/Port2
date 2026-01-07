@@ -26,13 +26,27 @@ export default function NeuralMeshBackground() {
     }
 
     const config = {
-      // Reduced count for a cleaner, minimal look
-      nodeCount: window.innerWidth < 768 ? 30 : 50,
-      maxLinkDist: 180,
+      // Minimal particle count for performance
+      nodeCount: window.innerWidth < 768 ? 20 : 30,
+      maxLinkDist: 150,
       baseRadius: 1.2,
       // Very slow, calming drift
       driftSpeed: 0.1, 
       color: '252, 202, 70', // Gold Accents (#fcca46)
+    }
+
+    let lastTime = performance.now()
+    const targetFPS = 45 // Lower FPS for better performance
+    const frameTime = 1000 / targetFPS
+    let isVisible = true
+
+    // Pause animation when tab is not visible
+    function handleVisibilityChange() {
+      isVisible = !document.hidden
+      if (isVisible && !rafRef.current) {
+        lastTime = performance.now()
+        rafRef.current = window.requestAnimationFrame(step)
+      }
     }
 
     function resize() {
@@ -45,7 +59,7 @@ export default function NeuralMeshBackground() {
       canvas.height = Math.floor(h * state.dpr)
       ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0)
       
-      config.nodeCount = w < 768 ? 30 : 50
+      config.nodeCount = w < 768 ? 20 : 30
       if (state.nodes.length !== config.nodeCount) {
         state.nodes = new Array(config.nodeCount).fill(0).map(() => ({
           x: Math.random() * w,
@@ -67,20 +81,34 @@ export default function NeuralMeshBackground() {
     }
 
     function step() {
+      const now = performance.now()
+      const delta = now - lastTime
+      
+      // Throttle to target FPS
+      if (delta < frameTime) {
+        rafRef.current = window.requestAnimationFrame(step)
+        return
+      }
+      
+      lastTime = now - (delta % frameTime)
+      
       ctx.clearRect(0, 0, state.width, state.height)
       const mx = state.hasMouse ? state.mouseX : state.width * 0.5
       const my = state.hasMouse ? state.mouseY : state.height * 0.5
 
-      state.nodes.forEach((n) => {
+      // Update and draw nodes
+      for (let i = 0; i < state.nodes.length; i++) {
+        const n = state.nodes[i]
         n.x += n.vx
         n.y += n.vy
         
-        // Subtle mouse repulsion (keeps dots away from cursor slightly)
-        if (state.hasMouse) {
+        // Subtle mouse repulsion (desktop only)
+        if (state.hasMouse && window.innerWidth >= 768) {
           const dx = n.x - mx
           const dy = n.y - my
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < 200) {
+          const distSq = dx * dx + dy * dy
+          if (distSq < 40000) { // 200px squared
+            const dist = Math.sqrt(distSq)
             const force = (200 - dist) / 200
             n.vx -= (dx / dist) * force * 0.01 
             n.vy -= (dy / dist) * force * 0.01
@@ -98,21 +126,24 @@ export default function NeuralMeshBackground() {
         // Draw Dot
         ctx.beginPath()
         ctx.arc(n.x, n.y, config.baseRadius, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(${config.color}, 0.5)` // Fixed opacity for simplicity
+        ctx.fillStyle = `rgba(${config.color}, 0.5)`
         ctx.fill()
-      })
+      }
 
-      // Draw Lines
-      for (let i = 0; i < state.nodes.length; i++) {
+      // Draw Lines (optimized)
+      const len = state.nodes.length
+      const maxDistSq = config.maxLinkDist * config.maxLinkDist
+      
+      for (let i = 0; i < len; i++) {
         const a = state.nodes[i]
-        for (let j = i + 1; j < state.nodes.length; j++) {
+        for (let j = i + 1; j < len; j++) {
           const b = state.nodes[j]
           const dx = a.x - b.x
           const dy = a.y - b.y
-          const dist = Math.sqrt(dx * dx + dy * dy)
+          const distSq = dx * dx + dy * dy
 
-          if (dist < config.maxLinkDist) {
-            // Very subtle lines
+          if (distSq < maxDistSq) {
+            const dist = Math.sqrt(distSq)
             const alpha = (1 - dist / config.maxLinkDist) * 0.15
             ctx.beginPath()
             ctx.moveTo(a.x, a.y)
@@ -123,6 +154,7 @@ export default function NeuralMeshBackground() {
           }
         }
       }
+      
       rafRef.current = window.requestAnimationFrame(step)
     }
 
