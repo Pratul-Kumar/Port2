@@ -1,121 +1,125 @@
-import { motion } from 'framer-motion'
-import { Award, GraduationCap, Sparkles } from 'lucide-react'
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Terminal, Layout, Code2, Globe } from 'lucide-react';
+import { Typewriter } from 'react-simple-typewriter';
 
-export default function About() {
+const About = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1, 
+      transition: { duration: 0.6, ease: "easeOut" } 
+    },
+  };
+
+  const float = {
+    y: [0, -10, 0],
+    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+  };
+
   return (
-    <section id="about" className="relative py-12">
-      <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.55, ease: 'easeOut' }}
-            className="space-y-6"
-          >
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Profile</p>
-              <h2 className="mt-2 font-heading text-3xl font-semibold text-slate-100 sm:text-4xl">About</h2>
+    <section id="about" className="relative min-h-screen flex items-center py-20 mt-10 overflow-hidden bg-transparent">
+      {/* Minimalist Watermark */}
+      <div className="absolute top-10 left-10 opacity-[0.03] text-[12vw] font-black text-white pointer-events-none select-none">
+        ABOUT
+      </div>
+
+      <div className="mx-auto w-[90%] px-6 relative z-10">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+        >
+          
+          {/* LEFT: CONTENT */}
+          <div className="relative order-2 lg:order-1">
+            {/* Simple Floating Icons (Strictly Yellow/White) */}
+            <motion.div animate={float} className="absolute -top-12 -left-8 text-[#fcca46]/20 hidden md:block">
+              <Code2 size={40} />
+            </motion.div>
+            <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 5, repeat: Infinity }} className="absolute -bottom-10 right-10 text-white/10 hidden md:block">
+              <Terminal size={40} />
+            </motion.div>
+
+            <motion.h2 variants={itemVariants} className="text-4xl lg:text-6xl font-bold uppercase tracking-tighter mb-8 leading-tight text-white">
+                Data Science <br /> 
+                meets {" "}
+                <span className="text-[#fcca46] italic font-light inline-flex">
+                    <Typewriter
+                    words={['Design.', 'Logic.', 'Systems.', 'UI/UX.']}
+                    loop={0} // 0 means infinite loop
+                    cursor
+                    cursorStyle=''
+                    typeSpeed={70}
+                    deleteSpeed={50}
+                    delaySpeed={2000}
+                    />
+                </span>
+            </motion.h2>
+
+            <motion.p variants={itemVariants} className="text-zinc-400 text-lg leading-relaxed mb-8">
+              Bridging the gap between data science and design, I am an AI/ML enthusiast skilled in 
+              <span className="text-white"> Python, Azure, and Figma</span>. I build intelligent systems with intuitive UI/UX, 
+              from forest fire prediction models to the <span className="text-[#fcca46]"> 'Beat-Diary' </span> platform.
+            </motion.p>
+
+            <motion.div variants={itemVariants} className="border-l-2 border-[#fcca46] pl-6 mb-10">
+              <p className="text-zinc-500 text-sm italic">
+                As Student Council Vice President and GSSOC Mentor, I combine technical logic with creative vision to solve real-world problems.
+              </p>
+            </motion.div>
+
+            {/* Simple Bento Grid (Strictly Yellow/White/Zinc) */}
+            <div className="grid grid-cols-2 gap-4">
+              <motion.div variants={itemVariants} className="p-5 rounded-2xl border border-white/5 bg-white/[0.02]">
+                <Layout size={20} className="text-[#fcca46] mb-3" />
+                <h4 className="text-white text-xs font-bold uppercase tracking-widest">UI/UX Design</h4>
+              </motion.div>
+              <motion.div variants={itemVariants} className="p-5 rounded-2xl border border-white/5 bg-white/[0.02]">
+                <Globe size={20} className="text-[#fcca46] mb-3" />
+                <h4 className="text-white text-xs font-bold uppercase tracking-widest">Open Source</h4>
+              </motion.div>
             </div>
+          </div>
 
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-lg">
-              <div className="flex items-start gap-3">
-                <GraduationCap className="mt-0.5 h-5 w-5 text-ui" />
-                <p className="text-sm leading-relaxed text-slate-300 sm:text-base">
-                  I am a B.Tech AIML undergraduate at Technocrats Institute of Technology. Beyond code, I serve as the Vice President of the Student Council, where I bridge the gap between technical innovation and organizational leadership. I specialize in building secure web architectures and predictive AI models.
-                </p>
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-lg">
-              <div
-                className="pointer-events-none absolute -inset-24 opacity-80"
-                style={{
-                  background:
-                    'radial-gradient(520px circle at 20% 20%, rgba(6,182,212,0.14), transparent 55%), radial-gradient(520px circle at 85% 70%, rgba(16,185,129,0.12), transparent 58%)',
-                }}
-                aria-hidden
-              />
-
-              <div className="relative flex items-start gap-3">
-                <Award className="mt-0.5 h-5 w-5 text-python" />
-                <div>
-                  <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-[11px] font-semibold text-slate-200">
-                    <Sparkles className="h-3.5 w-3.5 text-ui" />
-                    <span>Leadership</span>
-                  </div>
-                  <h3 className="mt-3 font-heading text-lg font-semibold text-slate-100">Vice President, Student Council</h3>
-                  <p className="mt-1 font-mono text-xs text-slate-400">May ’25 – Apr ’26</p>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-300">
-                    Focused on building high-trust collaboration, mentoring peers, and driving student initiatives with a modern, execution-first mindset.
-                  </p>
+          {/* RIGHT: IMAGE */}
+          <motion.div variants={itemVariants} className="order-1 lg:order-2 flex justify-center">
+            <div className="relative">
+              {/* Simple Image Frame */}
+              <div className="relative w-64 h-80 lg:w-80 lg:h-[450px] rounded-3xl overflow-hidden border border-white/10 bg-zinc-900 shadow-2xl">
+                <img 
+                  src="./Profile.jpeg" 
+                  alt="Pratul Kumar" 
+                  className="w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 hover:brightness-100 transition-all duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-6 left-6">
+                  <h3 className="text-xl font-bold text-white tracking-tighter">PRATUL KUMAR</h3>
+                  <p className="text-[10px] font-mono text-[#fcca46] uppercase tracking-widest">Available for Hire</p>
                 </div>
               </div>
+              
+              {/* Geometric Accent (Yellow) */}
+              <div className="absolute -top-4 -right-4 w-20 h-20 border-t-2 border-r-2 border-[#fcca46] rounded-tr-3xl" />
+              <div className="absolute -bottom-4 -left-4 w-20 h-20 border-b-2 border-l-2 border-[#fcca46] rounded-bl-3xl" />
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="relative"
-          >
-            {/* Cyberpunk graphic panel (no external image required) */}
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-lg">
-              <div
-                className="pointer-events-none absolute inset-0 opacity-90"
-                style={{
-                  background:
-                    'radial-gradient(520px circle at 30% 25%, rgba(6,182,212,0.16), transparent 55%), radial-gradient(520px circle at 70% 75%, rgba(16,185,129,0.10), transparent 58%)',
-                }}
-                aria-hidden
-              />
-
-              <div className="relative">
-                <div className="mb-5 flex items-center justify-between">
-                  <div className="text-xs font-semibold uppercase tracking-widest text-slate-400">Signal</div>
-                  <div className="h-2 w-2 rounded-full bg-ui/80 shadow-[0_0_24px_rgba(6,182,212,0.45)]" />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { label: 'ML Systems', value: 'Predict' },
-                    { label: 'Web UI', value: 'Immerse' },
-                    { label: 'Security', value: 'Harden' },
-                    { label: 'Iteration', value: 'Ship' },
-                  ].map((s) => (
-                    <div
-                      key={s.label}
-                      className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-lg"
-                    >
-                      <div className="text-[11px] font-semibold uppercase tracking-widest text-slate-400">
-                        {s.label}
-                      </div>
-                      <div className="mt-2 font-heading text-2xl font-semibold text-slate-100">
-                        {s.value}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-lg">
-                  <div className="text-[11px] font-semibold uppercase tracking-widest text-slate-400">Focus</div>
-                  <div className="mt-2 text-sm text-slate-300">
-                    Predictive analytics • secure web apps • immersive motion
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className="pointer-events-none absolute inset-0 opacity-[0.18]"
-                style={{ backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px)', backgroundSize: '40px 40px' }}
-                aria-hidden
-              />
-            </div>
-          </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
-  )
-}
+  );
+};
+
+export default About;

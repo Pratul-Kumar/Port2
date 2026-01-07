@@ -1,168 +1,145 @@
-import { useEffect, useMemo, useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
-import { ArrowRight, Mail } from 'lucide-react'
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Typewriter } from 'react-simple-typewriter';
+import { Download } from 'lucide-react';
 
-function useTerminalType(text, { typingMs = 24, holdMs = 500 } = {}) {
-  const prefersReducedMotion = useReducedMotion()
-  const [out, setOut] = useState('')
-  const [done, setDone] = useState(false)
 
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      setOut(text)
-      setDone(true)
-      return
-    }
-
-    let i = 0
-    let timer = 0
-
-    const tick = () => {
-      i += 1
-      const next = text.slice(0, i)
-      setOut(next)
-
-      if (i >= text.length) {
-        timer = window.setTimeout(() => setDone(true), holdMs)
-        return
-      }
-
-      timer = window.setTimeout(tick, typingMs)
-    }
-
-    timer = window.setTimeout(tick, typingMs)
-    return () => window.clearTimeout(timer)
-  }, [holdMs, prefersReducedMotion, text, typingMs])
-
-  return { out, done }
-}
-
-export default function Hero() {
-  const bootText = useMemo(
-    () =>
-      '> Initializing Neural Link...\n'
-      + '> Import pandas as pd\n'
-      + '> Import torch\n'
-      + '> Loading MERN_Stack_Module...\n'
-      + '> System Online: Pratul Kumar.',
-    [],
-  )
-  const { out: typedBoot, done: bootDone } = useTerminalType(bootText)
-
-  const container = {
+const Hero = () => {
+  // Animation variants for staggering children
+  const containerVariants = {
     hidden: { opacity: 0 },
-    show: {
+    visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.08, delayChildren: 0.08 },
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
     },
-  }
+  };
 
-  const item = {
-    hidden: { opacity: 0, y: 12 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
-  }
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1, 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    },
+  };
 
   return (
-    <section className="relative overflow-hidden">
-      {/* Fixed ambient glow behind hero text */}
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 flex items-start justify-center"
-        aria-hidden
-      >
-        <div className="ambient-glow glow-animate mt-[-200px] h-[720px] w-[980px] max-w-[140vw] rounded-full blur-3xl" />
+    <motion.section 
+      id='home' 
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      style={{
+        background: "linear-gradient(to right, rgba(17, 17, 17, 1), rgba(22, 22, 22, 1), rgba(17, 17, 17, 1))"
+      }}
+      className='min-h-screen relative text-white w-full px-6 lg:px-24 flex flex-col justify-center overflow-hidden'
+    >
+      {/* 1. DECORATIVE BACKGROUND ELEMENTS */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#fcca46]/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
       </div>
 
-      <div className="mx-auto w-full max-w-6xl px-5 pb-10 pt-6 sm:px-8">
-        <motion.div variants={container} initial="hidden" animate="show">
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2">
-            {/* Left: headline + actions */}
-            <div>
-              <motion.div variants={item}>
-                <h1 className="tracking-tight">
-                  <span
-                    className="glitch glitch-once block font-heading text-4xl font-semibold text-slate-100 sm:text-5xl md:text-6xl"
-                    data-text="Pratul Kumar"
-                  >
-                    Pratul Kumar
-                  </span>
-                </h1>
-              </motion.div>
+      {/* 2. LAYER: TOP IDENTIFIER (The HUD feel) */}
+      <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8 mt-5">
+        <div className="h-2 w-2 rounded-full bg-[#fcca46] animate-pulse" />
+        <span className="text-[10px] font-mono uppercase tracking-[0.5em] text-zinc-500">
+          Pratul_Kumar_v1.0
+        </span>
+      </motion.div>
 
-              <motion.p variants={item} className="mt-4 max-w-xl text-base text-slate-300 sm:text-lg">
-                Architecting Intelligence with{' '}
-                <span className="font-mono text-python">Python</span> &amp;{' '}
-                <span className="font-mono text-ui">Design</span>.
-              </motion.p>
+      {/* 3. LAYER: MAIN TITLE BLOCK */}
+      <div className="space-y-4">
+        <motion.h1 
+          variants={itemVariants}
+          className='text-5xl md:text-8xl lg:text-[14vh] font-black uppercase tracking-tighter leading-[0.85]'
+        >
+            <span className='tracking-widest'>Pratul</span>
+           <br />
+          <span className='text-[#fcca46] tracking-wider italic'>Kumar</span>
+        </motion.h1>
 
-              <motion.div variants={item} className="mt-5">
-                <div className="inline-flex flex-wrap items-center gap-x-5 gap-y-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 font-mono text-xs text-slate-200 backdrop-blur-xl">
-                  <div className="inline-flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-python" />
-                    <span className="text-slate-300">Python:</span>
-                    <span className="text-python">Online</span>
-                  </div>
-                  <div className="inline-flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-ui" />
-                    <span className="text-slate-300">React:</span>
-                    <span className="text-ui">Active</span>
-                  </div>
-                  <div className="inline-flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-data" />
-                    <span className="text-slate-300">AI Models:</span>
-                    <span className="text-data">Ready</span>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div variants={item} className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <a
-                  href="#projects"
-                  data-magnetic
-                  className="btn-fill group inline-flex items-center justify-center gap-2 rounded-xl border border-ui/40 bg-white/0 px-5 py-3 text-sm font-semibold text-slate-100 backdrop-blur-md transition-transform will-change-transform hover:scale-[1.01] hover:border-ui/60"
-                  style={{ boxShadow: '0 18px 60px rgba(6,182,212,0.18)' }}
-                >
-                  <span className="inline-flex items-center gap-2">
-                    Open Case Files
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  </span>
-                </a>
-
-                <a
-                  href="#contact"
-                  data-magnetic
-                  className="btn-fill inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/0 px-5 py-3 text-sm font-semibold text-slate-200 backdrop-blur-md transition-transform will-change-transform hover:scale-[1.01] hover:border-white/20"
-                >
-                  <span className="inline-flex items-center gap-2">
-                    Contact
-                    <Mail className="h-4 w-4" />
-                  </span>
-                </a>
-              </motion.div>
-            </div>
-
-            {/* Right: terminal glass pane */}
-            <motion.div variants={item} className="lg:justify-self-end">
-              <div className="w-full max-w-xl rounded-2xl border border-data/30 bg-black/40 p-5 shadow-2xl backdrop-blur-sm">
-                <div className="mb-3 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-python/80" />
-                    <span className="h-2 w-2 rounded-full bg-ui/70" />
-                    <span className="h-2 w-2 rounded-full bg-data/80" />
-                  </div>
-                  <div className="font-mono text-[11px] font-semibold uppercase tracking-widest text-slate-400">
-                    System Boot
-                  </div>
-                </div>
-
-                <pre className="whitespace-pre-wrap font-mono text-sm leading-relaxed text-data">
-                  {typedBoot}
-                  {!bootDone && <span className="inline-block w-[10px] animate-pulse text-data">▋</span>}
-                </pre>
-              </div>
-            </motion.div>
-          </div>
+        <motion.div 
+          variants={itemVariants}
+          className='text-xl md:text-3xl font-mono text-zinc-500 mt-5 flex items-center gap-3 italic'
+        >
+          <span className="text-[#fcca46]">&gt;&gt;</span>
+          <span>
+            <Typewriter
+              words={['UX Designer', 'Python Developer', 'Data Strategist']}
+              loop={true}
+              cursor
+              cursorStyle='_'
+              typeSpeed={70}
+              deleteSpeed={50}
+              delaySpeed={2000}
+            />
+          </span>
         </motion.div>
       </div>
-    </section>
-  )
-}
+
+      {/* 4. LAYER: ASYMMETRIC DESCRIPTION & STATS */}
+      <div className='mt-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-end'>
+        <motion.div variants={itemVariants} className="lg:col-span-5 border-l-2 border-[#fcca46]/30 pl-8">
+          <p className='text-base lg:text-lg font-light leading-relaxed text-zinc-400'>
+            Bridging the gap between <span className="text-white">Clean Engineering</span> and <span className="text-white">Human-Centric Design</span>. 
+            I build intelligent systems in Python and wrap them in world-class experiences.
+          </p>
+        </motion.div>
+
+        {/* Floating Code Snippet / HUD Detail */}
+        <motion.div variants={itemVariants} className="lg:col-span-7 flex justify-end">
+            <div className="bg-white/[0.02] border border-white/5 p-6 rounded-2xl backdrop-blur-xl hidden md:block">
+                <div className="flex gap-2 mb-4">
+                    <div className="w-2 h-2 rounded-full bg-red-500/50" />
+                    <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
+                    <div className="w-2 h-2 rounded-full bg-green-500/50" />
+                </div>
+                <code className="text-xs font-mono text-zinc-500 block">
+                    <span className="text-[#fcca46]">def</span> <span className="text-white">create_experience</span>(user_need, tech_logic):<br />
+                    &nbsp;&nbsp;return solve_problem(design + code)<br /><br />
+                    <span className="text-zinc-600"># System Status: Optimal</span>
+                </code>
+            </div>
+        </motion.div>
+      </div>
+
+      {/* 5. LAYER: ACTIONS */}
+            <motion.div 
+            variants={itemVariants}
+            className='mt-20 flex flex-wrap gap-8 items-center'
+            >
+            <a 
+                href="YOUR_LINK_OR_RESUME_URL_HERE" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block" // Ensures the link wraps the button correctly
+            >
+                <motion.button 
+                whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(252, 202, 70, 0.2)" }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-3 px-10 py-4 bg-gradient-to-br from-[#fcca46] to-[#d9a82e] text-black text-[11px] font-black uppercase tracking-widest rounded-sm transition-all duration-500 cursor-pointer"
+                >
+                View Resume
+                <Download size={14} strokeWidth={3} /> {/* Download Icon */}
+                </motion.button>
+            </a>
+            </motion.div>
+
+      {/* Background Watermark */}
+       {/* Background Subtle Gradient Text (Minimalist Watermark) */}
+      <div className="absolute top-20 left-[35%] opacity-[0.03] pointer-events-none select-none">
+        <h2 className="text-[10vw] font-black uppercase tracking-tighter">Visual</h2>
+      </div>
+      <div className="absolute top-55 left-[38%] opacity-[0.03] pointer-events-none select-none">
+        <h2 className="text-[10vw] font-black uppercase tracking-tighter">Architech</h2>
+      </div>
+      
+    </motion.section>
+  );
+};
+
+export default Hero;
