@@ -169,25 +169,32 @@ const Hero = () => {
 
           {/* CTA */}
           <motion.div 
-            variants={itemVariants}
-            className='flex flex-wrap gap-8 items-center'
-          >
-            <a 
-              href="https://drive.google.com/file/d/1DV_QzkLzFtG8hw7n7IsqvReEEmEIFZHn/view?usp=sharing" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-block"
-            >
-              <motion.button 
-                whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(252, 202, 70, 0.2)" }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-3 px-8 py-3 lg:px-10 lg:py-4 bg-gradient-to-br from-[#fcca46] to-[#d9a82e] text-black text-[10px] lg:text-[11px] font-black uppercase tracking-widest rounded-sm transition-all duration-500 cursor-pointer"
-              >
-                View Resume
-                <Download size={14} strokeWidth={3} />
-              </motion.button>
-            </a>
-          </motion.div>
+  variants={itemVariants}
+  className='flex flex-wrap gap-8 items-center'
+>
+  <a 
+    href="https://drive.google.com/file/d/1DV_QzkLzFtG8hw7n7IsqvReEEmEIFZHn/view?usp=sharing" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="inline-block"
+  >
+    <motion.button 
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      // Base Button Styles (Dark Background initially)
+      className="group relative overflow-hidden rounded-full bg-zinc-800 px-8 py-3 lg:px-10 lg:py-4 transition-all duration-300 hover:shadow-[0_0_40px_rgba(252,202,70,0.5)] border border-white/5 hover:border-[#fcca46]/50"
+    >
+      {/* SWIPE LAYER (The Yellow Gradient) */}
+      <span className="absolute inset-0 origin-left scale-x-0 bg-gradient-to-r from-[#fcca46] to-[#d9a82e] transition-transform duration-500 ease-out group-hover:scale-x-100" />
+      
+      {/* CONTENT LAYER (Text colors flip on hover) */}
+      <span className="relative z-10 flex items-center gap-3 text-[10px] lg:text-[11px] font-black uppercase tracking-widest text-white transition-colors duration-300 group-hover:text-black">
+        View Resume
+        <Download size={14} strokeWidth={3} />
+      </span>
+    </motion.button>
+  </a>
+</motion.div>
         </div>
 
         {/* 2. TERMINAL (Appears Below Text on Mobile and Right on Desktop) */}
