@@ -106,7 +106,7 @@ const AchievementCard = ({ item }) => {
 
 const Achievements = () => {
   return (
-    <section id="achievements" className="relative py-20 bg-transparent">
+    <section id="achievements" className="relative py-12 bg-transparent">
       <div className="mx-auto max-w-7xl px-6 relative z-10">
         
         {/* Minimalist Title */}

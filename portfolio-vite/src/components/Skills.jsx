@@ -196,7 +196,7 @@ const SkillCard = ({ item }) => {
 
 const Skills = () => {
   return (
-    <section id="skills" className="relative py-24 md:py-32 text-white overflow-hidden selection:bg-[#fcca46] selection:text-black">
+    <section id="skills" className="relative py-16 md:py-24 text-white overflow-hidden selection:bg-[#fcca46] selection:text-black">
       
       {/* REMOVED: Background Div and bg-zinc-950 class. 
         This section is now transparent. 

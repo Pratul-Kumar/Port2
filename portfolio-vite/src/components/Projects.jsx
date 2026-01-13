@@ -113,7 +113,7 @@ const ProjectCard = ({ p, isTech = false }) => {
 
 const Projects = () => {
   return (
-    <section id="projects" className="relative py-20 md:py-32 text-white bg-transparent">
+    <section id="projects" className="relative py-16 md:py-24 text-white bg-transparent">
       <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-12">
         
         {/* --- TECH PROJECTS --- */}

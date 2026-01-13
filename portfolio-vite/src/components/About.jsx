@@ -27,7 +27,7 @@ const About = () => {
   };
 
   return (
-    <section id="about" className="relative min-h-screen flex items-center py-16 md:py-24 overflow-hidden bg-transparent">
+    <section id="about" className="relative min-h-screen flex items-center py-12 md:py-16 overflow-hidden bg-transparent">
       
       {/* 1. MINIMALIST WATERMARK - Responsive Font Size */}
       <div className="absolute top-10 left-5 md:left-10 opacity-[0.02] text-[18vw] md:text-[12vw] font-black text-white pointer-events-none select-none leading-none">
