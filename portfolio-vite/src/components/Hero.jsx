@@ -45,11 +45,11 @@ const Hero = () => {
     },
     { 
       cmd: 'docker-compose up -d --build', 
-      output: 'Building web-service...\n[+] redis-cache   Running\n[+] postgres-db   Healthy\n> Stack deployed successfully 🐳' 
+      output: 'Building web-service...\n[+] redis-cache   Running\n[+] postgres-db   Healthy\n> Stack deployed successfully' 
     },
     { 
       cmd: 'git push origin feature/computer-vision', 
-      output: 'Enumerating objects: 14, done.\nWriting objects: 100% (14/14), 2.14 KiB\nremote: Resolving deltas: 100%\n> Merged to main 🚀' 
+      output: 'Enumerating objects: 14, done.\nWriting objects: 100% (14/14), 2.14 KiB\nremote: Resolving deltas: 100%\n> Merged to main' 
     }
   ];
 
@@ -139,19 +139,22 @@ const Hero = () => {
 
             <motion.div 
               variants={itemVariants}
-              className='text-lg md:text-3xl font-mono text-zinc-500 flex items-center gap-3 italic'
+              className='text-lg md:text-3xl font-mono flex items-center gap-3 italic group'
             >
-              <span className="text-[#fcca46]">&gt;&gt;</span>
-              <span>
-                <Typewriter
-                  words={['UX Designer', 'Python Developer', 'Data Strategist']}
-                  loop={true}
-                  cursor
-                  cursorStyle='_'
-                  typeSpeed={70}
-                  deleteSpeed={50}
-                  delaySpeed={2000}
-                />
+              <span className="text-[#fcca46] group-hover:drop-shadow-[0_0_8px_rgba(252,202,70,0.6)] transition-all duration-300">&gt;&gt;</span>
+              <span className="relative">
+                <span className="absolute -inset-1 bg-gradient-to-r from-[#fcca46]/20 via-transparent to-[#fcca46]/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg pointer-events-none" />
+                <span className="relative text-zinc-300 group-hover:text-[#fcca46]/90 transition-colors duration-300">
+                  <Typewriter
+                    words={['UI/UX Designer', 'Python Developer', 'Data Strategist']}
+                    loop={true}
+                    cursor
+                    cursorStyle='_'
+                    typeSpeed={50}
+                    deleteSpeed={40}
+                    delaySpeed={500}
+                  />
+                </span>
               </span>
             </motion.div>
           </div>
