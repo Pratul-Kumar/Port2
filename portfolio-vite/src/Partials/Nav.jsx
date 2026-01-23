@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-scroll';
+import { useActiveSection } from '../hooks/useActiveSection';
 
 const navLinks = [
   { name: 'Home', to: 'home' },
@@ -10,20 +11,25 @@ const navLinks = [
   { name: 'Projects', to: 'projects' },
   { name: 'Contact', to: 'contact' },
 ];
+const sectionIds = navLinks.map(link => link.to);
 
 const Nav = () => {
   const [hoveredLink, setHoveredLink] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
 
+
   // Detect scroll to adjust glass transparency
-  useEffect(() => {
+  React.useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Use custom hook for active section
+  const activeSection = useActiveSection(sectionIds, "-50% 0px -50% 0px");
 
   return (
     <nav className="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-[9999] w-[95%] max-w-4xl">
@@ -52,19 +58,17 @@ const Nav = () => {
           onMouseLeave={() => setHoveredLink(null)}
         >
           {navLinks.map((link) => (
-            <Link
+            <a
               key={link.to}
-              to={link.to}
-              smooth={true}
-              duration={500}
-              offset={-70}
-              spy={true}
+              href={`#${link.to}`}
+              data-nav={link.to}
+              className={`relative px-6 py-2.5 cursor-pointer transition-all ${activeSection === link.to ? "text-[#fcca46]" : "text-zinc-400"}`}
               onMouseEnter={() => setHoveredLink(link.name)}
-              className="relative px-6 py-2.5 cursor-pointer transition-all"
+              onClick={() => window.location.hash = `#${link.to}`}
             >
               <span className={`
                 relative z-10 text-[10px] font-black uppercase tracking-[0.2em] transition-colors duration-300
-                ${hoveredLink === link.name ? 'text-black' : 'text-zinc-400'}
+                ${hoveredLink === link.name ? 'text-black' : activeSection === link.to ? 'text-[#fcca46]' : 'text-zinc-400'}
               `}>
                 {link.name}
               </span>
@@ -80,7 +84,7 @@ const Nav = () => {
                   />
                 )}
               </AnimatePresence>
-            </Link>
+            </a>
           ))}
         </div>
 

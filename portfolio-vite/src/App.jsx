@@ -3,6 +3,7 @@ import Home from './Home'
 import Nav from './Partials/Nav'
 import NeuralMeshBackground from './components/bg'
 import Loader from './components/Loader'
+import RopeScroll from './components/RopeScroll'
 
 const App = () => {
   return (
@@ -10,6 +11,7 @@ const App = () => {
       <Loader />
       <NeuralMeshBackground />
       <Nav />
+      <RopeScroll />
       <Home />
     </div>
   )
