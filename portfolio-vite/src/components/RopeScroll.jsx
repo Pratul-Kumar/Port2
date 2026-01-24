@@ -36,8 +36,8 @@ const RopeScroll = () => {
 
       /* calm spring */
       rope.current.v +=
-        (rope.current.target - rope.current.current) * 0.018 * dt
-      rope.current.v *= 0.8
+        (rope.current.taret - rope.current.current) * 0.018 * dt
+      rope.current.v *= 0.85
       rope.current.current += rope.current.v
 
       /* character follow */
