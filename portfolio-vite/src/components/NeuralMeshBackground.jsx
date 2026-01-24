@@ -186,7 +186,6 @@ export default function NeuralMeshBackground({ isDarkMode = true }) {
   return (
     <canvas
       ref={canvasRef}
-      // 4. Added bg-[#050505] and removed opacity-50
       className="pointer-events-none fixed inset-0 -z-10 h-full w-full bg-[#050505]"
       aria-hidden="true"
     />
