@@ -31,7 +31,7 @@ const About = () => {
         <div className="flex items-center gap-4 mb-16 lg:mb-24">
           <div className="h-[2px] w-12 bg-gradient-to-r from-yellow-400 to-amber-600" />
           <span className="text-zinc-500 font-mono text-sm uppercase tracking-[0.3em]">
-            // The Architect
+            // About Me
           </span>
         </div>
 
@@ -102,7 +102,7 @@ const About = () => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter mb-8 leading-[0.9] text-white"
+              className="text-5xl md:text-7xl lg:text-7xl font-black uppercase tracking-tighter mb-8 leading-[0.9] text-white"
             >
               Data Science <br /> 
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-700 via-zinc-500 to-zinc-700 italic font-serif font-light">
@@ -135,7 +135,7 @@ const About = () => {
               </p>
 
               <p className="text-zinc-500 text-sm font-mono leading-relaxed">
-                // BACKGROUND <br/>
+                More About Me <br/>
                 As Student Council Vice President and GSSOC Mentor, I combine technical logic with creative vision to solve real-world problems.
               </p>
             </motion.div>
