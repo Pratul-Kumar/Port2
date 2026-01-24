@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Link } from "react-scroll";
 import { useActiveSection } from "../hooks/useActiveSection";
@@ -20,9 +20,11 @@ const Nav = () => {
   const activeSection = useActiveSection(sectionIds);
   const reduceMotion = useReducedMotion();
 
+  const isDesktop = useMemo(() => window.innerWidth >= 768, []);
+
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -30,18 +32,24 @@ const Nav = () => {
     <nav className="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-[9999] w-[95%] max-w-4xl">
       {/* ================= NAV BAR ================= */}
       <motion.div
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        initial={false}
+        animate={{ opacity: 1 }}
         className={`
           flex items-center justify-between rounded-full px-4 py-3
           border border-white/10 backdrop-blur-xl
           shadow-[0_8px_32px_rgba(0,0,0,0.8)]
-          transition-colors duration-300
+          transition-colors duration-200
           ${isScrolled || isOpen ? "bg-black/70" : "bg-white/5"}
         `}
       >
         {/* Logo */}
-        <Link to="home" smooth offset={-80} className="pl-2 cursor-pointer">
+        <Link
+          to="home"
+          smooth={!isDesktop}
+          duration={isDesktop ? 0 : 300}
+          offset={-80}
+          className="pl-2 cursor-pointer"
+        >
           <span className="text-lg font-black uppercase tracking-tight text-white">
             P<span className="text-[#fcca46]">.</span>
           </span>
@@ -56,9 +64,9 @@ const Nav = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                smooth
+                smooth={!isDesktop}
+                duration={isDesktop ? 0 : 300}
                 offset={-80}
-                duration={500}
                 className="relative px-6 py-2.5 cursor-pointer"
               >
                 <span
@@ -74,11 +82,12 @@ const Nav = () => {
                 {isActive && (
                   <motion.span
                     layoutId="nav-pill"
+                    initial={false}
                     className="absolute inset-0 rounded-full bg-[#fcca46]"
                     transition={
                       reduceMotion
                         ? { duration: 0 }
-                        : { type: "spring", stiffness: 350, damping: 28 }
+                        : { type: "spring", stiffness: 300, damping: 30 }
                     }
                   />
                 )}
@@ -114,9 +123,10 @@ const Nav = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 10 }}
-            exit={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 8 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2 }}
             className="
               md:hidden mt-2 rounded-2xl bg-black/85 backdrop-blur-xl
               border border-white/10 shadow-2xl
@@ -131,8 +141,8 @@ const Nav = () => {
                   key={link.to}
                   to={link.to}
                   smooth
+                  duration={300}
                   offset={-80}
-                  duration={500}
                   onClick={() => setIsOpen(false)}
                   className={`
                     w-full text-center py-3 text-sm font-bold uppercase tracking-[0.2em]
