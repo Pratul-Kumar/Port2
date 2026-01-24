@@ -4,7 +4,7 @@ function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value))
 }
 
-export default function NeuralMeshBackground({ isDarkMode }) {
+export default function NeuralMeshBackground({ isDarkMode = true }) {
   const canvasRef = useRef(null)
   const rafRef = useRef(0)
 
@@ -12,7 +12,7 @@ export default function NeuralMeshBackground({ isDarkMode }) {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const ctx = canvas.getContext('2d', { alpha: true })
+    const ctx = canvas.getContext('2d', { alpha: false }) // False for performance since we have a solid bg
     if (!ctx) return
 
     const state = {
@@ -26,15 +26,14 @@ export default function NeuralMeshBackground({ isDarkMode }) {
     }
 
     // THEME CONFIGURATION
-    // Dark Mode: White/Indigo tint | Light Mode: Zinc/Indigo tint
-    // Adjusted colors to match your new Indigo/Violet theme
+    // Darker, subtler Indigo for the mesh lines
     const themeColor = isDarkMode ? '129, 140, 248' : '79, 70, 229'; 
 
     const config = {
-      nodeCount: window.innerWidth < 768 ? 50 : 90,
-      maxLinkDist: 120,
-      baseRadius: 1.5,
-      driftSpeed: 0.2,
+      nodeCount: window.innerWidth < 768 ? 40 : 80, // Slightly fewer nodes for a cleaner dark look
+      maxLinkDist: 140,
+      baseRadius: 1.2,
+      driftSpeed: 0.15, // Slower drift for a "heavier" atmosphere
       color: themeColor,
     }
 
@@ -61,7 +60,7 @@ export default function NeuralMeshBackground({ isDarkMode }) {
       canvas.height = Math.floor(h * state.dpr)
       ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0)
       
-      config.nodeCount = w < 768 ? 50 : 90
+      config.nodeCount = w < 768 ? 40 : 80
       
       // Re-initialize nodes on resize
       state.nodes = new Array(config.nodeCount).fill(0).map(() => ({
@@ -93,7 +92,10 @@ export default function NeuralMeshBackground({ isDarkMode }) {
       
       lastTime = now - (delta % frameTime)
       
-      ctx.clearRect(0, 0, state.width, state.height)
+      // 1. Manually fill the background with the dark color
+      ctx.fillStyle = '#050505'; 
+      ctx.fillRect(0, 0, state.width, state.height);
+
       const mx = state.hasMouse ? state.mouseX : state.width * 0.5
       const my = state.hasMouse ? state.mouseY : state.height * 0.5
 
@@ -129,7 +131,8 @@ export default function NeuralMeshBackground({ isDarkMode }) {
         // Draw Dot
         ctx.beginPath()
         ctx.arc(n.x, n.y, config.baseRadius, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(${config.color}, ${isDarkMode ? 0.5 : 0.8})`
+        // 2. Reduced Opacity here (0.3) because we removed CSS opacity
+        ctx.fillStyle = `rgba(${config.color}, ${isDarkMode ? 0.3 : 0.5})`
         ctx.fill()
       }
 
@@ -147,8 +150,8 @@ export default function NeuralMeshBackground({ isDarkMode }) {
 
           if (distSq < maxDistSq) {
             const dist = Math.sqrt(distSq)
-            // Reduced max opacity slightly so it doesn't distract from text
-            const maxAlpha = isDarkMode ? 0.2 : 0.15
+            // 3. Lowered Line Opacity (0.12) for subtler mesh
+            const maxAlpha = isDarkMode ? 0.12 : 0.15
             const alpha = (1 - dist / config.maxLinkDist) * maxAlpha
             
             ctx.beginPath()
@@ -183,7 +186,8 @@ export default function NeuralMeshBackground({ isDarkMode }) {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-50"
+      // 4. Added bg-[#050505] and removed opacity-50
+      className="pointer-events-none fixed inset-0 -z-10 h-full w-full bg-[#050505]"
       aria-hidden="true"
     />
   )
