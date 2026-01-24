@@ -183,8 +183,7 @@ export default function NeuralMeshBackground({ isDarkMode }) {
   return (
     <canvas
       ref={canvasRef}
-      // UPDATE: Changed to -z-10 to ensure it stays behind glass cards
-      // UPDATE: Reduced opacity to 50 so text is more readable
+   
       className="pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-50"
       aria-hidden="true"
     />
