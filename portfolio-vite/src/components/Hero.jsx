@@ -1,18 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Typewriter } from 'react-simple-typewriter';
-import { Download } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Download, ArrowUpRight, Sparkles, Globe, Clock } from 'lucide-react';
 
 const Hero = () => {
-  // Animation variants
+  // --- ADDED: Live Clock Logic ---
+  const [time, setTime] = useState(new Date().toLocaleTimeString());
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const titleLetter = {
+    hidden: { y: "100%", opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1, 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
+      transition: { staggerChildren: 0.1, delayChildren: 1.5 },
     },
   };
 
@@ -21,83 +32,12 @@ const Hero = () => {
     visible: { 
       y: 0, 
       opacity: 1, 
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+      transition: { duration: 0.8, ease: "easeOut" } 
     },
   };
 
-  // Dynamic Terminal State
-  const [terminalLines, setTerminalLines] = useState([]);
-  const [currentText, setCurrentText] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  
-  // Ref for Auto-scroll
-  const terminalBodyRef = useRef(null);
-
-  const terminalData = [
-    { 
-      cmd: 'import torch; from transformers import pipeline', 
-      output: '✓ CUDA available: True\n> Pipeline "sentiment-analysis" loaded\n> Device: NVIDIA Tesla T4' 
-    },
-    { 
-      cmd: 'const { data, error } = useSWR("/api/user", fetcher);', 
-      output: '> Hook registered\n> Data: { name: "Pratul", role: "Admin" }\n> Revalidating on focus...' 
-    },
-    { 
-      cmd: 'docker-compose up -d --build', 
-      output: 'Building web-service...\n[+] redis-cache   Running\n[+] postgres-db   Healthy\n> Stack deployed successfully' 
-    },
-    { 
-      cmd: 'git push origin feature/computer-vision', 
-      output: 'Enumerating objects: 14, done.\nWriting objects: 100% (14/14), 2.14 KiB\nremote: Resolving deltas: 100%\n> Merged to main' 
-    }
-  ];
-
-  // Auto-scroll Effect
-  useEffect(() => {
-    if (terminalBodyRef.current) {
-      terminalBodyRef.current.scrollTop = terminalBodyRef.current.scrollHeight;
-    }
-  }, [terminalLines, currentText]); 
-
-  // Terminal Typing Effect
-  useEffect(() => {
-    let timeoutId;
-    
-    const typeLine = async () => {
-      if (isTyping) return;
-      
-      setIsTyping(true);
-      const data = terminalData[currentIndex];
-      
-      // Type command
-      for (let i = 0; i <= data.cmd.length; i++) {
-        setCurrentText(data.cmd.slice(0, i));
-        await new Promise(resolve => setTimeout(resolve, 40));
-      }
-      
-      // Show output
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setTerminalLines(prev => {
-        const newLines = [...prev, { cmd: data.cmd, output: data.output }];
-        return newLines.slice(-50); 
-      });
-      
-      setCurrentText('');
-      setIsTyping(false);
-      
-      timeoutId = setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % terminalData.length);
-      }, 1500);
-    };
-
-    if (!isTyping && currentText === '') {
-      typeLine();
-    }
-
-    return () => clearTimeout(timeoutId);
-  }, [currentIndex, isTyping, currentText, terminalData]);
+  const name = "Pratul".split("");
+  const surname = "Kumar".split("");
 
   return (
     <motion.section 
@@ -105,164 +45,168 @@ const Hero = () => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className='min-h-screen relative text-white w-full px-6 lg:px-24 flex flex-col justify-center overflow-hidden py-12 lg:py-0'
+      className='min-h-screen relative text-[#1A1A1A] w-full px-6 lg:px-30 flex flex-col justify-center overflow-hidden py-20 bg-[#E8E6D9]'
     >
-      {/* Decorative Accents */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
-        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#fcca46]/5 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+      {/* 1. LAYERED BACKGROUND GRADIENTS */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div 
+          animate={{ scale: [1, 1.1, 1], x: [0, 20, 0] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[-10%] right-[-10%] w-[80vw] h-[80vw] opacity-60 blur-[120px] rounded-full"
+          style={{ background: 'radial-gradient(circle, #EF9144 0%, transparent 70%)' }}
+        />
+        <div 
+          className="absolute top-[20%] left-[-10%] w-[60vw] h-[60vw] opacity-40 blur-[100px] rounded-full"
+          style={{ background: 'radial-gradient(circle, #D4CDB3 0%, transparent 70%)' }}
+        />
       </div>
 
-      {/* TOP IDENTIFIER */}
-      <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8 lg:mt-5 mt-0">
-        <div className="h-2 w-2 rounded-full bg-[#fcca46] animate-pulse" />
-        <span className="text-[10px] font-mono uppercase tracking-[0.5em] text-zinc-500">
-          Pratul_Kumar_v1.0
-        </span>
-      </motion.div>
+      {/* 2. TEXTURE & WATERMARK OVERLAYS */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full opacity-[0.06] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+        <motion.h2 
+          animate={{ x: [0, -30, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="text-[25vw] font-black absolute bottom-5 -right-10 leading-none uppercase tracking-tighter opacity-[0.03] rotate-[-10deg]"
+        >
+          Creative
+        </motion.h2>
 
-      {/* MAIN LAYOUT */}
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center'>
-        
-        {/* 1. TEXT CONTENT (Appears First on Mobile and Left on Desktop) */}
-        <div className="space-y-6 lg:space-y-8">
-          {/* Title Block */}
+        <div className="absolute top-[10%] right-[10%] opacity-[0.05] text-[#EF9144] rotate-[15deg]">
+          <svg width="400" height="400" viewBox="0 0 100 100" fill="none">
+             <path d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48L50 0Z" fill="currentColor" />
+          </svg>
+        </div>
+        <div className="absolute bottom-[10%] left-[-5%] opacity-[0.03] text-[#EF9144] -rotate-12">
+          <svg width="500" height="500" viewBox="0 0 100 100" fill="none">
+             <path d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48L50 0Z" fill="currentColor" />
+          </svg>
+        </div>
+      </div>
+
+      <div className='grid grid-cols-1 lg:grid-cols-12 gap-12 lg:mt-1 mt-20 items-start relative z-10'>
+        {/* LEFT COLUMN */}
+        <div className="lg:col-span-7 flex flex-col gap-10">
           <div className="space-y-4">
-            <motion.h1 
-              variants={itemVariants}
-              className='text-5xl md:text-8xl lg:text-[14vh] font-black uppercase tracking-tighter leading-[0.85]'
-            >
-              <span className='tracking-widest'>Pratul</span>
-              <br />
-              <span className='text-[#fcca46] tracking-wider italic'>Kumar</span>
-            </motion.h1>
-
-            <motion.div 
-              variants={itemVariants}
-              className='text-lg md:text-3xl font-mono flex items-center gap-3 italic group'
-            >
-              <span className="text-[#fcca46] group-hover:drop-shadow-[0_0_8px_rgba(252,202,70,0.6)] transition-all duration-300">&gt;&gt;</span>
-              <span className="relative">
-                <span className="absolute -inset-1 bg-gradient-to-r from-[#fcca46]/20 via-transparent to-[#fcca46]/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg pointer-events-none" />
-                <span className="relative text-zinc-300 group-hover:text-[#fcca46]/90 transition-colors duration-300">
-                  <Typewriter
-                    words={['UI/UX Designer', 'Python Developer', 'Data Strategist']}
-                    loop={true}
-                    cursor
-                    cursorStyle='_'
-                    typeSpeed={40}
-                    deleteSpeed={40}
-                    delaySpeed={800}
-                  />
-                </span>
+            <motion.div variants={itemVariants} className="flex items-center gap-3">
+              <span className="h-[2px] w-12 bg-[#EF9144]" />
+              <span className="text-xs font-black uppercase tracking-[0.5em] text-[#1A1A1A]/40">
+                Architectural Archive
               </span>
             </motion.div>
+
+            <h1 className='text-7xl md:text-8xl lg:text-[15vh] font-black uppercase leading-[0.85] tracking-tighter flex flex-col'>
+              <span className="flex overflow-hidden">
+                {name.map((l, i) => (
+                  <motion.span key={i} variants={titleLetter}>{l}</motion.span>
+                ))}
+              </span>
+              <span className="text-[#EF9144] italic font-serif font-light flex overflow-hidden">
+                {surname.map((l, i) => (
+                  <motion.span key={i} variants={titleLetter} transition={{ delay: 1.8 + (i * 0.05) }}>{l}</motion.span>
+                ))}
+              </span>
+            </h1>
           </div>
 
-          {/* Description */}
-          <motion.div variants={itemVariants} className="max-w-lg">
-            <p className='text-sm md:text-base lg:text-lg font-light leading-relaxed text-zinc-400'>
-              Bridging the gap between <span className="text-white">Clean Engineering</span> and <span className="text-white">Human-Centric Design</span>. 
-              I build intelligent systems in Python and wrap them in world-class experiences.
-            </p>
-          </motion.div>
-
-          {/* CTA */}
           <motion.div 
-  variants={itemVariants}
-  className='flex flex-wrap gap-8 items-center'
->
-  <a 
-    href="https://drive.google.com/file/d/1DV_QzkLzFtG8hw7n7IsqvReEEmEIFZHn/view?usp=sharing" 
-    target="_blank" 
-    rel="noopener noreferrer"
-    className="inline-block"
-  >
-    <motion.button 
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      // Base Button Styles (Dark Background initially)
-      className="group relative overflow-hidden rounded-full bg-zinc-800 px-8 py-3 lg:px-10 lg:py-4 transition-all duration-300 hover:shadow-[0_0_40px_rgba(252,202,70,0.5)] border border-white/5 hover:border-[#fcca46]/50"
-    >
-      {/* SWIPE LAYER (The Yellow Gradient) */}
-      <span className="absolute inset-0 origin-left scale-x-0 bg-gradient-to-r from-[#fcca46] to-[#d9a82e] transition-transform duration-500 ease-out group-hover:scale-x-100" />
-      
-      {/* CONTENT LAYER (Text colors flip on hover) */}
-      <span className="relative z-10 flex items-center gap-3 text-[10px] lg:text-[11px] font-black uppercase tracking-widest text-white transition-colors duration-300 group-hover:text-black">
-        View Resume
-        <Download size={14} strokeWidth={3} />
-      </span>
-    </motion.button>
-  </a>
-</motion.div>
+            variants={itemVariants} 
+            className="bg-white/40 backdrop-blur-md border border-[#1A1A1A]/5 p-8 md:p-12 rounded-[3rem] max-w-2xl shadow-2xl shadow-black/[0.02]"
+          >
+            <div className="flex flex-col md:flex-row gap-10 items-start">
+              <div className="relative shrink-0">
+                <span className="text-9xl font-serif leading-none italic opacity-10 select-none">A</span>
+                <Sparkles className="absolute top-0 right-0 text-[#EF9144] opacity-40 animate-pulse" size={40} />
+              </div>
+              <div className="space-y-6">
+                <h3 className="text-2xl font-black uppercase tracking-tight">
+                  Design Intelligence
+                </h3>
+                <p className='text-lg leading-relaxed text-[#1A1A1A]/80 font-medium'>
+                  I am a <span className="text-[#1A1A1A] font-bold border-b-2 border-[#EF9144]/40">Multi-Disciplinary Designer</span> specialized in building aesthetic storytelling and high-performance technical architecture. 
+                </p>
+                <div className="h-[1px] w-full bg-[#1A1A1A]/10" />
+                <p className="text-sm uppercase font-black tracking-widest text-[#1A1A1A]/40">
+                  Ref: Logic & Visual Systems
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
-        {/* 2. TERMINAL (Appears Below Text on Mobile and Right on Desktop) */}
-        <motion.div variants={itemVariants} className="w-full max-w-md mx-auto lg:mx-0 lg:ml-auto">
-          <motion.div
-            className="bg-white/[0.05] border border-white/10 backdrop-blur-xl rounded-2xl p-0 overflow-hidden shadow-2xl hover:shadow-[#fcca46]/20 transition-all duration-500 h-[300px] lg:h-[50vh] flex flex-col"
-            initial={{ opacity: 0, scale: 0.9, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            whileHover={{ y: -8, scale: 1.02 }}
-          >
-            {/* Terminal Header */}
-            <div className="flex-shrink-0 flex items-center justify-between p-3 lg:p-4 bg-white/10 backdrop-blur-sm border-b border-white/20">
-              <div className="flex items-center gap-2">
-                <div className="w-2.5 h-2.5 lg:w-3 lg:h-3 bg-red-500/70 rounded-full animate-pulse" />
-                <div className="w-2.5 h-2.5 lg:w-3 lg:h-3 bg-yellow-500/70 rounded-full" />
-                <div className="w-2.5 h-2.5 lg:w-3 lg:h-3 bg-emerald-500/70 rounded-full" />
-              </div>
-              <div className="text-[10px] lg:text-xs font-mono text-zinc-400 flex items-center gap-1">
-                <span>~/neural-bento</span>
-                <span className="ml-2 px-2 py-0.5 bg-[#fcca46]/20 rounded-full text-[#fcca46] text-[10px] font-mono">main</span>
-              </div>
-            </div>
-
-            {/* Terminal Body */}
-            <div 
-              ref={terminalBodyRef}
-              className="flex-1 overflow-y-auto p-4 lg:p-6 font-mono text-xs lg:text-sm space-y-3 lg:space-y-4 bg-gradient-to-b from-transparent/30 to-white/5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+        {/* RIGHT COLUMN */}
+        <div className="lg:col-span-5 flex flex-col gap-10 lg:mt-32">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row lg:flex-col gap-5">
+            <motion.a 
+              href="https://drive.google.com/file/d/1lMNHlZ779wLyh--X8XSCdCtsZXen9a8T/view?usp=sharing"
+              whileHover={{ scale: 1.05, x: -10 }}
+              className="bg-[#1A1A1A] text-[#E8E6D9] border border-[#1A1A1A]/10 flex items-center justify-between px-10 py-8 rounded-full font-black uppercase tracking-widest text-xs group"
             >
-              <AnimatePresence>
-                {terminalLines.map((line, i) => (
-                  <motion.div
-                    key={`${line.cmd}-${i}`}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-1 leading-relaxed"
-                  >
-                    <div className="text-[#fcca46] break-all">$ {line.cmd}</div>
-                    <div className="pl-4 text-emerald-400/90 whitespace-pre-wrap">
-                      {line.output}
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-              
-              {/* Typing Line */}
-              <div className="flex items-start pt-2 lg:pt-4 border-t border-white/10 min-h-[1.5rem]">
-                <span className="text-[#fcca46] mt-1 mr-2 flex-shrink-0">$</span>
-                <span className="text-zinc-200 flex-1 min-w-0 font-mono break-all">{currentText}</span>
-                <motion.span
-                  className="w-1.5 h-3 lg:w-2 lg:h-4 bg-zinc-200 ml-1 flex-shrink-0 mt-1"
-                  animate={{ opacity: [1, 0, 1] }}
-                  transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
-                />
-              </div>
-            </div>
+              Download CV
+              <Download size={18} className="group-hover:translate-y-1 transition-transform" />
+            </motion.a>
           </motion.div>
-        </motion.div>
 
+          <motion.div variants={itemVariants} className="space-y-6 p-6 border-2 border-[#1A1A1A]/5 rounded-3xl">
+            <div className="flex justify-between items-center">
+              <h3 className="text-[10px] font-black uppercase tracking-widest text-[#EF9144]">Core_Competencies</h3>
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            </div>
+            <p className="text-[11px] leading-relaxed text-[#1A1A1A]/60 font-black uppercase tracking-[0.2em]">
+              Visual Design • UI/UX Architecture • Generative Logic • Python Intelligence • Systems Thinking
+            </p>
+            <p className="text-base text-[#1A1A1A]/70 leading-relaxed italic border-t border-[#1A1A1A]/5 pt-4">
+              "Building digital solutions where <span className="text-[#1A1A1A] font-bold not-italic decoration-[#EF9144] underline-offset-4">mathematical precision</span> meets breathtaking visuals."
+            </p>
+          </motion.div>
+        </div>
       </div>
 
-      {/* Background Watermarks */}
-      <div className="absolute top-20 left-[35%] opacity-[0.03] pointer-events-none select-none">
-        <h2 className="text-[10vw] font-black uppercase tracking-tighter">Visual</h2>
-      </div>
-      <div className="absolute top-55 left-[38%] opacity-[0.03] pointer-events-none select-none">
-        <h2 className="text-[10vw] font-black uppercase tracking-tighter">Architech</h2>
-      </div>
+      {/* --- ADDED CONTENT: EDITORIAL FOOTER BAR --- */}
+      <motion.div 
+        variants={itemVariants}
+        className="absolute bottom-10 left-0 w-full px-6 lg:px-24 flex flex-col md:flex-row justify-between items-center gap-8 z-20"
+      >
+        {/* Live Status & Clock */}
+        <div className="flex items-center gap-8 font-mono text-[10px] font-black uppercase tracking-widest opacity-40">
+          <div className="flex items-center gap-2">
+            <Globe size={12} className="animate-spin-slow" />
+            <span>Based in India</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Clock size={12} />
+            <span>{time}</span>
+          </div>
+        </div>
+
+        {/* Project availability badge */}
+        <div className="hidden md:flex items-center gap-4 px-5 py-2 border border-[#1A1A1A]/10 rounded-full bg-white/20 backdrop-blur-sm">
+          <span className="w-2 h-2 rounded-full bg-[#EF9144]" />
+          <span className="text-[9px] font-black uppercase tracking-[0.2em]">Available for projects</span>
+        </div>
+
+        {/* Micro-Marquee */}
+        <div className="overflow-hidden w-40 hidden lg:block border-b border-[#1A1A1A]/20">
+          <motion.div 
+            animate={{ x: [0, -100] }}
+            transition={{ repeat: Infinity, duration: 5, ease: "linear" }}
+            className="whitespace-nowrap text-[9px] font-black uppercase tracking-[0.4em] opacity-30"
+          >
+            Scroll to explore Archive • Pratul Kumar 2026 • 
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* FLOATING SVG ACCENTS */}
+      <motion.div 
+        animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[12%] left-[5%] opacity-30 pointer-events-none"
+      >
+        <svg width="80" height="80" viewBox="0 0 100 100" fill="#EF9144">
+          <path d="M50 0L61 35H98L68 57L79 91L50 70L21 91L32 57L2 35H39L50 0Z" />
+        </svg>
+      </motion.div>
     </motion.section>
   );
 };

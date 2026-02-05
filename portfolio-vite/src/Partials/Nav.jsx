@@ -1,100 +1,83 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-scroll";
-import { Linkedin } from "lucide-react";
+import { Linkedin, Github, Instagram, ArrowUpRight, Mail } from "lucide-react";
 import { useActiveSection } from "../hooks/useActiveSection";
 
 const navLinks = [
   { name: "Home", to: "home" },
   { name: "About", to: "about" },
   { name: "Skills", to: "skills" },
-  { name: "Achievements", to: "achievements" },
   { name: "Projects", to: "projects" },
   { name: "Contact", to: "contact" },
 ];
 
-const sectionIds = navLinks.map((l) => l.to);
+const socialLinks = [
+  { icon: <Linkedin size={20} />, url: "https://www.linkedin.com/in/pratul21/", label: "LinkedIn" },
+  { icon: <Github size={20} />, url: "https://github.com/Pratul-Kumar", label: "Github" },
+  { icon: <Instagram size={20} />, url: "https://instagram.com/pratul._.pandey/", label: "Instagram" },
+  { icon: <Mail size={20} />, url: "mailto:pratulkumar21@gmail.com", label: "Email" },
+];
 
 const Nav = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const activeSection = useActiveSection(sectionIds);
-  const reduceMotion = useReducedMotion();
-
-  const isDesktop = useMemo(() => window.innerWidth >= 768, []);
+  const activeSection = useActiveSection(navLinks.map((l) => l.to));
 
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 20);
+    const onScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "unset";
+  }, [isOpen]);
+
   return (
-    <nav className="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-[9999] w-[95%] max-w-5xl">
-      {/* ================= NAV BAR ================= */}
-      <motion.div
-        initial={false}
-        animate={{ opacity: 1 }}
-        className={`
-          flex items-center justify-between gap-6
-          rounded-full px-6 py-3.5
-          border border-white/10 backdrop-blur-xl
-          shadow-[0_10px_40px_rgba(0,0,0,0.85)]
-          transition-all duration-300
-          ${isScrolled || isOpen ? "bg-black/80" : "bg-white/5"}
-        `}
-      >
-        {/* LOGO */}
-        <Link
-          to="home"
-          smooth={!isDesktop}
-          duration={isDesktop ? 0 : 300}
-          offset={-80}
-          className="cursor-pointer select-none"
-        >
-          <span className="text-lg font-black uppercase tracking-tight text-white">
-            P<span className="text-[#fcca46]">.</span>
-          </span>
+    <nav className="fixed top-0 left-0 w-full z-[9999] px-4 py-6 md:px-12 transition-all duration-500">
+      <div className={`
+        mx-auto max-w-7xl flex items-center justify-between
+        px-6 md:px-10 py-4 rounded-2xl transition-all duration-500 border-2
+        ${isScrolled 
+          ? "bg-[#1A1A1A] border-[#1A1A1A] shadow-[20px_20px_60px_rgba(0,0,0,0.15)]" 
+          : "bg-[#E8E6D9] border-[#1A1A1A] shadow-[8px_8px_0px_0px_#1A1A1A]"}
+      `}>
+        
+        <Link to="home" smooth={true} spy={true} duration={1000} offset={-100} className="cursor-pointer group">
+          <div className="flex items-center gap-2">
+            <span className={`text-xl md:text-2xl font-serif italic font-medium tracking-tighter transition-colors duration-500
+              ${isScrolled ? "text-[#E8E6D9]" : "text-[#1A1A1A]"}`}>
+              Portfolio<span className="text-[#EF9144] font-sans not-italic">.</span>
+            </span>
+          </div>
         </Link>
 
-        {/* ================= DESKTOP NAV ================= */}
-        <div className="hidden md:flex flex-1 justify-center gap-6">
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => {
             const isActive = activeSection === link.to;
-
             return (
               <Link
                 key={link.to}
                 to={link.to}
-                smooth={!isDesktop}
-                duration={isDesktop ? 0 : 300}
+                spy={true}
+                smooth={true}
                 offset={-80}
-                className="relative px-4 py-2 cursor-pointer"
+                duration={1000}
+                className="relative cursor-pointer group py-1"
               >
-                <span
-                  className={`
-                    text-[11px] font-semibold uppercase tracking-[0.18em]
-                    transition-colors duration-200
-                    ${
-                      isActive
-                        ? "text-[#fcca46]"
-                        : "text-zinc-300 hover:text-white"
-                    }
-                  `}
-                >
+                <span className={`
+                  text-[11px] uppercase tracking-[0.3em] font-black transition-colors duration-300
+                  ${isActive ? "text-[#EF9144]" : (isScrolled ? "text-zinc-400 hover:text-white" : "text-zinc-500 hover:text-[#1A1A1A]")}
+                `}>
                   {link.name}
                 </span>
-
-                {/* Active underline */}
                 {isActive && (
-                  <motion.span
-                    layoutId="nav-underline"
-                    className="absolute -bottom-1 left-1/2 h-[2px] w-6 -translate-x-1/2 bg-[#fcca46]"
-                    transition={
-                      reduceMotion
-                        ? { duration: 0 }
-                        : { type: "spring", stiffness: 300, damping: 24 }
-                    }
+                  <motion.div
+                    layoutId="navLine"
+                    className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#EF9144]"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
               </Link>
@@ -102,108 +85,92 @@ const Nav = () => {
           })}
         </div>
 
-        {/* ================= DESKTOP CTA ================= */}
-        <motion.a
-          href="https://www.linkedin.com/in/pratul21/"
-          target="_blank"
-          rel="noreferrer"
-          whileHover={{ y: -1 }}
-          whileTap={{ scale: 0.96 }}
-          className="
-            hidden md:inline-flex items-center gap-2
-            px-5 py-2 rounded-full
-            bg-[#fcca46]
-            text-black text-[11px] font-semibold uppercase tracking-widest
-            hover:brightness-110
-            transition-all
-          "
-        >
-          <Linkedin size={14} />
-          Connect
-        </motion.a>
+        <div className="flex items-center gap-4 md:gap-8">
+          <motion.a
+            href="https://www.linkedin.com/in/pratul21/"
+            target="_blank"
+            whileHover={{ y: -2 }}
+            className={`hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] font-black transition-colors duration-500
+              ${isScrolled ? "text-[#E8E6D9]" : "text-[#1A1A1A]"}`}
+          >
+            Connect <ArrowUpRight size={14} className="text-[#EF9144]" />
+          </motion.a>
 
-        {/* ================= MOBILE BUTTON ================= */}
-        <button
-          aria-label="Toggle menu"
-          onClick={() => setIsOpen((v) => !v)}
-          className="md:hidden p-3 text-white"
-        >
-          <div className="w-6 h-5 flex flex-col justify-between">
-            <motion.span
-              animate={isOpen ? { rotate: 45, y: 9 } : { rotate: 0, y: 0 }}
-              className="h-0.5 bg-white rounded"
-            />
-            <motion.span
-              animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="h-0.5 bg-[#fcca46] rounded"
-            />
-            <motion.span
-              animate={isOpen ? { rotate: -45, y: -9 } : { rotate: 0, y: 0 }}
-              className="h-0.5 bg-white rounded"
-            />
-          </div>
-        </button>
-      </motion.div>
+          {/* FIXED: Added 'hidden' to the toggle to ensure it only shows on mobile */}
+          <button onClick={() => setIsOpen(!isOpen)} className="hidden max-md:flex flex-col gap-1.5 p-2 z-[10000]">
+            <motion.span animate={isOpen ? { rotate: 45, y: 8, backgroundColor: "#E8E6D9" } : { rotate: 0, y: 0, backgroundColor: isScrolled ? "#FFF" : "#000" }} className="w-7 h-[2px]" />
+            <motion.span animate={isOpen ? { opacity: 0 } : { opacity: 1 }} className="w-5 h-[2px] bg-[#EF9144] self-end" />
+            <motion.span animate={isOpen ? { rotate: -45, y: -8, backgroundColor: "#E8E6D9" } : { rotate: 0, y: 0, backgroundColor: isScrolled ? "#FFF" : "#000" }} className="w-7 h-[2px]" />
+          </button>
+        </div>
+      </div>
 
-      {/* ================= MOBILE MENU ================= */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 8 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.25 }}
-            className="
-              md:hidden mt-2 rounded-2xl
-              bg-black/90 backdrop-blur-xl
-              border border-white/10 shadow-2xl
-              flex flex-col items-center py-5 gap-4
-            "
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 30, stiffness: 200 }}
+            className="fixed inset-0 bg-[#1A1A1A] z-[9998] flex flex-col p-8 pt-32 justify-between"
           >
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.to;
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.02] text-[40vw] font-black text-white pointer-events-none select-none">
+              MENU
+            </div>
 
-              return (
-                <Link
+            <div className="flex flex-col gap-6 relative z-10">
+              <p className="text-[#EF9144] font-mono text-[10px] uppercase tracking-[0.5em] mb-2">Navigation_Index</p>
+              {navLinks.map((link, i) => (
+                <motion.div
                   key={link.to}
-                  to={link.to}
-                  smooth
-                  duration={300}
-                  offset={-80}
-                  onClick={() => setIsOpen(false)}
-                  className={`
-                    w-full text-center py-3
-                    text-sm font-semibold uppercase tracking-[0.25em]
-                    transition-colors
-                    ${
-                      isActive
-                        ? "text-[#fcca46]"
-                        : "text-zinc-300 hover:text-white"
-                    }
-                  `}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 + 0.2 }}
                 >
-                  {link.name}
-                </Link>
-              );
-            })}
+                  <Link
+                    to={link.to}
+                    spy={true}
+                    smooth={true}
+                    offset={-70}
+                    duration={1000}
+                    onClick={() => setIsOpen(false)}
+                    className="text-5xl font-serif italic text-[#E8E6D9] hover:text-[#EF9144] transition-all block group"
+                  >
+                    <span className="text-lg font-sans not-italic mr-4 opacity-20 group-hover:opacity-100 transition-opacity">0{i+1}</span>
+                    {link.name}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
 
-            {/* MOBILE CTA */}
-            <motion.a
-              href="https://www.linkedin.com/in/pratul21/"
-              target="_blank"
-              rel="noreferrer"
-              whileHover={{ y: -1 }}
-              whileTap={{ scale: 0.95 }}
-              className="
-                mt-3 inline-flex items-center gap-3
-                px-6 py-3 rounded-full
-                bg-[#fcca46]
-                text-black text-xs font-semibold uppercase tracking-widest
-              "
-            >
-              <Linkedin size={16} />
-              LinkedIn
-            </motion.a>
+            <div className="relative z-10 border-t border-white/10 pt-8 pb-4">
+              <p className="text-white/30 font-black text-[9px] uppercase tracking-[0.4em] mb-6">Connect_Systems</p>
+              <div className="grid grid-cols-2 gap-4">
+                {socialLinks.map((social, i) => (
+                  <motion.a
+                    key={i}
+                    href={social.url}
+                    target="_blank"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 + (i * 0.1) }}
+                    className="group flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-[#EF9144] hover:border-[#EF9144] transition-all duration-300"
+                  >
+                    <div className="text-[#E8E6D9] group-hover:text-[#1A1A1A] transition-colors">
+                      {social.icon}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-[#E8E6D9] group-hover:text-[#1A1A1A]">
+                        {social.label}
+                      </span>
+                      <span className="text-[8px] font-mono text-white/20 group-hover:text-[#1A1A1A]/40 uppercase">
+                        External_Link
+                      </span>
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

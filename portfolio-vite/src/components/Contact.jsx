@@ -6,213 +6,176 @@ import { Typewriter } from 'react-simple-typewriter';
 const Contact = () => {
   const currentYear = new Date().getFullYear();
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1, 
-      transition: { duration: 0.6, ease: "easeOut" } 
-    },
-  };
-
   return (
-    <footer id="contact" className="relative pt-24 pb-12 overflow-hidden border-t border-white/5 bg-gradient-to-b from-[#0a0a0a] to-black">
+    <footer id="contact" className="relative pt-24 pb-12 overflow-hidden bg-[#E8E6D9] text-[#1A1A1A]">
       
-      {/* ANIMATED GRADIENT BACKGROUND */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#fcca46]/5 rounded-full blur-3xl -z-10" />
+      {/* 1. LAYERED BACKGROUND GRADIENTS (Matching site theme) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Soft orange warmth from the bottom-left */}
+        <div 
+          className="absolute bottom-[-10%] left-[-10%] w-[70vw] h-[70vw] opacity-40 blur-[120px] rounded-full"
+          style={{ background: 'radial-gradient(circle, #EF9144 0%, transparent 70%)' }}
+        />
+        {/* Ambient tan glow from the top-right */}
+        <div 
+          className="absolute top-[-5%] right-[-5%] w-[60vw] h-[60vw] opacity-30 blur-[100px] rounded-full"
+          style={{ background: 'radial-gradient(circle, #D4CDB3 0%, transparent 70%)' }}
+        />
       </div>
 
-      {/* MARQUEE BANNER */}
-      <div className="absolute top-0 w-full overflow-hidden whitespace-nowrap border-b border-white/5 bg-gradient-to-r from-black/40 via-black/20 to-black/40 backdrop-blur-md z-10 py-3">
+      {/* 2. TEXTURE & WATERMARK OVERLAYS */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
+        {/* Paper Grain Texture */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-[0.06] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+        
+        {/* Background Accent Watermark */}
+        <div className="absolute right-[-2%] bottom-[5%] opacity-[0.06] text-[20vw] font-black pointer-events-none select-none tracking-tighter uppercase leading-none italic">
+          Connect
+        </div>
+
+        {/* --- FOUR-POINT LINE STARS WATERMARKS --- */}
+        <div className="absolute top-[20%] left-[5%] opacity-[0.05] text-[#EF9144]">
+          <svg width="200" height="200" viewBox="0 0 100 100" fill="none">
+             <path d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48L50 0Z" fill="currentColor" />
+          </svg>
+        </div>
+
+        <div className="absolute bottom-[10%] right-[15%] opacity-[0.03] text-[#EF9144] rotate-[45deg]">
+          <svg width="300" height="300" viewBox="0 0 100 100" fill="none">
+             <path d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48L50 0Z" fill="currentColor" />
+          </svg>
+        </div>
+      </div>
+
+      {/* EDITORIAL MARQUEE BANNER */}
+      <div className="absolute top-0 w-full overflow-hidden whitespace-nowrap border-b-2 border-[#1A1A1A] bg-[#1A1A1A] py-3 z-20">
         <motion.div 
           animate={{ x: [0, -1000] }} 
-          transition={{ repeat: Infinity, duration: 50, ease: "linear" }}
+          transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
           className="inline-block"
         >
-          {[...Array(8)].map((_, i) => (
-            <span key={i} className="mx-10 text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-500/70 whitespace-nowrap">
-              ◆ Open_For_Opportunities ◆ Design_Engineer ◆ Building_Systems ◆ 
+          {[...Array(12)].map((_, i) => (
+            <span key={i} className="mx-12 text-[10px] font-black uppercase tracking-[0.4em] text-[#E8E6D9] whitespace-nowrap">
+              ◆ Open For Opportunities ◆ Design Architect ◆ Building Logic ◆ 
             </span>
           ))}
         </motion.div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10 pt-8">
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20"
-        >
+      <div className="mx-auto max-w-8xl lg:px-35 px-6 lg:px-12 relative z-10 pt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20">
           
-          {/* LEFT COLUMN: HERO TEXT */}
-          <motion.div variants={itemVariants} className="space-y-8 flex flex-col justify-center">
+          {/* LEFT COLUMN: EDITORIAL HEADLINE */}
+          <div className="lg:col-span-7 space-y-10 flex flex-col justify-center">
             <div className="space-y-6">
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                className="inline-flex items-center gap-3 px-3 py-1.5 rounded-full border border-[#fcca46]/30 bg-[#fcca46]/10 backdrop-blur-sm"
-              >
-                <div className="w-2 h-2 rounded-full bg-[#fcca46] animate-pulse" />
-                <span className="text-[9px] font-mono uppercase tracking-[0.15em] text-[#fcca46] font-semibold">Ready To Connect</span>
-              </motion.div>
+              <div className="flex items-center gap-4">
+                 <span className="h-[2px] w-12 bg-[#EF9144]" />
+                 <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-50 text-[#1A1A1A]">Section_04</span>
+              </div>
               
-              {/* HERO HEADLINE */}
               <div>
-                <h2 className="text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter text-white leading-[0.9] mb-3">
+                <h2 className="text-7xl md:text-9xl lg:text-[14vh] font-black uppercase tracking-tighter leading-[0.8] mb-4 text-[#1A1A1A]">
                   Let's
                 </h2>
-                <p className="text-5xl md:text-9xl lg:text-10xl font-black uppercase tracking-tighter leading-[0.9]">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fcca46] via-yellow-400 to-[#fcca46] italic font-light lowercase">
+                <p className="text-5xl md:text-9xl lg:text-[12vh] font-black uppercase tracking-tighter leading-[0.8]">
+                  <span className="text-[#EF9144] italic font-serif font-light lowercase">
                     <Typewriter
-                      words={['connect', 'build', 'collaborate', 'create']}
-                      loop={0}
-                      cursor
-                      cursorStyle='_'
-                      typeSpeed={70}
-                      deleteSpeed={40}
-                      delaySpeed={2000}
+                      words={['connect.', 'build.', 'collaborate.', 'create.']}
+                      loop={0} cursor cursorStyle='_' typeSpeed={70} deleteSpeed={40} delaySpeed={2000}
                     />
                   </span>
                 </p>
               </div>
             </div>
             
-            <motion.p 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="max-w-xl text-zinc-400 text-sm md:text-base font-light leading-relaxed border-l-2 border-[#fcca46]/50 pl-6 py-2"
-            >
-              Merging technical precision with creative innovation. Based in Bhopal, India • Building solutions for a global audience.
-            </motion.p>
-          </motion.div>
+            <div className="max-w-xl border-l-4 border-[#EF9144] pl-8">
+              <p className="text-xl md:text-2xl font-medium leading-relaxed opacity-80 text-[#1A1A1A]">
+                Merging <span className="font-black underline decoration-2 underline-offset-4 decoration-[#EF9144]">technical precision</span> with creative innovation. Based in India • Designing for the global interface.
+              </p>
+            </div>
+          </div>
 
-          {/* RIGHT COLUMN: CONTACT BENTO GRID */}
-          <div className="flex flex-col justify-center gap-5">
+          {/* RIGHT COLUMN: BRUTALIST CONTACT CARDS */}
+          <div className="lg:col-span-5 flex flex-col justify-center gap-6">
             
             {/* MAIN EMAIL CARD */}
             <motion.div 
-              variants={itemVariants} 
-              whileHover={{ y: -4, borderColor: "rgba(252, 202, 70, 0.5)" }}
-              className="p-8 rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02] hover:bg-white/[0.08] transition-all duration-300 group relative overflow-hidden backdrop-blur-sm"
+              whileHover={{ x: -4, y: -4 }}
+              className="p-10 bg-white/40 backdrop-blur-md border-2 border-[#1A1A1A] shadow-[8px_8px_0px_0px_#1A1A1A] hover:shadow-[12px_12px_0px_0px_#EF9144] transition-all group relative overflow-hidden"
             >
-                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-15 transition-opacity duration-500">
-                    <Mail size={140} className="text-white rotate-12" />
+                <div className="absolute -bottom-10 -right-10 opacity-[0.03] group-hover:opacity-10 transition-opacity">
+                    <Mail size={160} strokeWidth={3} />
                 </div>
-                <div className="relative z-10 space-y-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-1 h-4 bg-gradient-to-b from-[#fcca46] to-transparent rounded-full" />
-                      <h3 className="text-zinc-500 font-mono text-xs uppercase tracking-[0.2em] font-semibold">Get In Touch</h3>
-                    </div>
-                    <a href="mailto:pratulkumar21@gmail.com" className="block text-xl md:text-2xl lg:text-3xl font-black text-zinc-100 hover:text-[#fcca46] transition-colors duration-300 break-all leading-tight">
+                <div className="relative z-10 space-y-4">
+                    <h3 className="text-[#EF9144] font-black text-xs uppercase tracking-widest">Inquiries</h3>
+                    <a href="mailto:pratulkumar21@gmail.com" className="block text-2xl md:text-3xl hover:underline decoration-4 underline-offset-8 break-all leading-none text-[#1A1A1A]">
                         pratulkumar21@gmail.com
                     </a>
                 </div>
             </motion.div>
 
             {/* INFO GRID */}
-            <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4">
-                <motion.div 
-                  whileHover={{ y: -2, borderColor: "rgba(252, 202, 70, 0.3)" }}
-                  className="p-6 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] transition-all duration-300 flex flex-col justify-between h-36 backdrop-blur-sm"
-                >
-                    <div className="w-6 h-6 rounded-lg bg-[#fcca46]/10 flex items-center justify-center">
-                      <Phone className="text-[#fcca46]" size={16} />
+            <div className="grid grid-cols-2 gap-6">
+                <div className="p-8 bg-white/40 backdrop-blur-md border-2 border-[#1A1A1A] shadow-[8px_8px_0px_0px_#1A1A1A] flex flex-col justify-between h-40">
+                    <div className="bg-[#EF9144] w-fit p-2 border-2 border-[#1A1A1A] rounded-lg shadow-[3px_3px_0px_0px_#1A1A1A]">
+                      <Phone size={18} strokeWidth={3} />
                     </div>
                     <div>
-                        <div className="text-[8px] font-mono uppercase text-zinc-500 mb-1.5 tracking-wider">Phone</div>
-                        <a href="tel:+919534177010" className="text-base md:text-lg font-bold text-zinc-100 hover:text-[#fcca46] transition-colors">
+                        <div className="text-[9px] font-black uppercase text-[#1A1A1A]/40 mb-1 tracking-widest">Phone</div>
+                        <a href="tel:+919534177010" className="text-base font-black hover:text-[#EF9144] text-[#1A1A1A]">
                           +91 9534177010
                         </a>
                     </div>
-                </motion.div>
+                </div>
 
-                <motion.div 
-                  whileHover={{ y: -2, borderColor: "rgba(252, 202, 70, 0.3)" }}
-                  className="p-6 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] transition-all duration-300 flex flex-col justify-between h-36 backdrop-blur-sm"
-                >
-                    <div className="w-6 h-6 rounded-lg bg-[#fcca46]/10 flex items-center justify-center">
-                      <MapPin className="text-[#fcca46]" size={16} />
+                <div className="p-8 bg-white/40 backdrop-blur-md border-2 border-[#1A1A1A] shadow-[8px_8px_0px_0px_#1A1A1A] flex flex-col justify-between h-40">
+                    <div className="bg-[#1A1A1A] text-white w-fit p-2 border-2 border-[#1A1A1A] rounded-lg shadow-[3px_3px_0px_0px_#EF9144]">
+                      <MapPin size={18} strokeWidth={3} />
                     </div>
                     <div>
-                        <div className="text-[8px] font-mono uppercase text-zinc-500 mb-1.5 tracking-wider">Location</div>
-                        <div className="text-base md:text-lg font-bold text-zinc-100">Bhopal, India</div>
+                        <div className="text-[9px] font-black uppercase text-[#1A1A1A]/40 mb-1 tracking-widest">Location</div>
+                        <div className="text-base font-black text-[#1A1A1A]">Bhopal, India</div>
                     </div>
-                </motion.div>
-            </motion.div>
+                </div>
+            </div>
 
-            {/* SOCIAL LINKS */}
-            <motion.div variants={itemVariants} className="grid grid-cols-4 gap-3">
+            {/* SOCIAL BAR */}
+            <div className="grid grid-cols-4 gap-4">
                 {[
-                  { icon: <Github size={18}/>, url: 'https://github.com/Pratul-Kumar', label: 'GitHub' },
-                  { icon: <Linkedin size={18}/>, url: 'https://www.linkedin.com/in/pratul21/', label: 'LinkedIn' },
-                  { icon: <Instagram size={18}/>, url: 'https://www.instagram.com/pratul._.pandey/', label: 'Instagram' },
-                  { icon: <Palette size={18}/>, url: '#', label: 'Portfolio' },
+                  { icon: <Github size={20} strokeWidth={3}/>, url: 'https://github.com/Pratul-Kumar' },
+                  { icon: <Linkedin size={20} strokeWidth={3}/>, url: 'https://linkedin.com/in/pratul21/' },
+                  { icon: <Instagram size={20} strokeWidth={3}/>, url: 'https://instagram.com/pratul._.pandey/' },
                 ].map((item, i) => (
-                    <motion.a 
-                      key={i} 
-                      href={item.url} 
-                      target="_blank" 
-                      rel="noreferrer"
-                      whileHover={{ y: -4, scale: 1.05 }}
-                      className="h-14 rounded-lg border border-white/10 bg-white/[0.03] flex items-center justify-center text-zinc-400 hover:text-[#fcca46] hover:bg-[#fcca46]/10 hover:border-[#fcca46]/40 transition-all duration-300 backdrop-blur-sm group"
-                      title={item.label}
-                    >
-                        <motion.div
-                          whileHover={{ rotate: 12 }}
-                          className="group-hover:drop-shadow-[0_0_8px_rgba(252,202,70,0.6)]"
-                        >
-                          {item.icon}
-                        </motion.div>
-                    </motion.a>
+                  <motion.a 
+                    key={i} 
+                    href={item.url} 
+                    target="_blank" 
+                    whileHover={{ scale: 1.1, backgroundColor: '#EF9144' }}
+                    className="h-14 bg-white/40 backdrop-blur-md border-2 border-[#1A1A1A] flex items-center justify-center transition-all shadow-[4px_4px_0px_0px_#1A1A1A] hover:shadow-none text-[#1A1A1A]"
+                  >
+                    {item.icon}
+                  </motion.a>
                 ))}
-            </motion.div>
+            </div>
 
           </div>
-        </motion.div>
+        </div>
 
-        {/* FOOTER DIVIDER & BOTTOM BAR */}
-        <motion.div 
-          initial={{ opacity: 0, scaleX: 0 }}
-          whileInView={{ opacity: 1, scaleX: 1 }}
-          transition={{ delay: 1, duration: 0.8 }}
-          className="mt-20 pt-8 border-t border-white/5 origin-left"
-        >
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-              <p className="text-[9px] font-mono text-zinc-600 uppercase tracking-[0.2em] font-semibold">
-                © {currentYear} Pratul Kumar • Designed & Built with Code
+        {/* FOOTER BOTTOM BAR */}
+        <div className="mt-24 pt-10 border-t-2 border-[#1A1A1A]/10">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 text-[#1A1A1A]">
+                © {currentYear} Pratul Kumar • Designed & Built as a Visual Architect
               </p>
 
-              <motion.button 
+              <button 
                 onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
-                whileHover={{ x: 4 }}
-                className="flex items-center gap-2 text-[9px] font-mono uppercase tracking-[0.15em] text-zinc-500 hover:text-[#fcca46] transition-colors duration-300 font-semibold"
+                className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest hover:text-[#EF9144] transition-colors group text-[#1A1A1A]"
               >
-                Back_To_Top <ArrowUpRight size={12} className="transition-transform group-hover:translate-x-1" />
-              </motion.button>
+                Back To Top <div className="bg-[#1A1A1A] text-white p-2 rounded-full group-hover:bg-[#EF9144] transition-colors"><ArrowUpRight size={12} /></div>
+              </button>
           </div>
-        </motion.div>
-      </div>
-      
-      {/* BACKGROUND ACCENTS */}
-      <div className="absolute left-[-5%] bottom-[-5%] opacity-[0.015] text-[15vw] font-black text-white pointer-events-none select-none tracking-tighter uppercase italic leading-none">
-        Connect
-      </div>
-      <div className="absolute right-[-5%] top-1/2 opacity-[0.02] text-[12vw] font-black text-[#fcca46] pointer-events-none select-none tracking-tighter uppercase italic">
-        Ready
+        </div>
       </div>
     </footer>
   );

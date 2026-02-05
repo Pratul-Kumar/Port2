@@ -1,165 +1,155 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Layout, Globe, Cpu, Sparkles, Zap } from 'lucide-react';
+import { Layout, Globe, Sparkles, ArrowUpRight } from 'lucide-react';
 import { Typewriter } from 'react-simple-typewriter';
 
 const About = () => {
   const containerRef = useRef(null);
 
-  // Parallax for Watermark
+  // Subtle Parallax for the Background Watermark
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
 
-  const yWatermark = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
+  const yWatermark = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
   return (
-    <section ref={containerRef} id="about" className="relative min-h-screen flex items-center py-20 md:py-32 overflow-hidden bg-transparent">
+    <section ref={containerRef} id="about" className="relative min-h-screen flex items-center py-24 md:py-32 overflow-hidden bg-[#E8E6D9] text-[#1A1A1A]">
       
-      {/* Parallax Watermark */}
-      <motion.div 
-        style={{ y: yWatermark }}
-        className="absolute top-20 right-0 lg:right-20 opacity-[0.03] text-[15rem] lg:text-[20rem] font-black text-white pointer-events-none select-none leading-none z-0 hidden md:block"
-      >
-        ABOUT
-      </motion.div>
+      {/* 1. LAYERED BACKGROUND GRADIENTS (Matching Hero Section) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Ambient tan glow from the right middle */}
+        <div 
+          className="absolute top-[10%] right-[-5%] w-[70vw] h-[70vw] opacity-40 blur-[120px] rounded-full"
+          style={{ background: 'radial-gradient(circle, #D4CDB3 0%, transparent 70%)' }}
+        />
+        {/* Soft orange warmth from the bottom-left */}
+        <div 
+          className="absolute bottom-[-10%] left-[-10%] w-[60vw] h-[60vw] opacity-30 blur-[100px] rounded-full"
+          style={{ background: 'radial-gradient(circle, #F1A058 0%, transparent 70%)' }}
+        />
+      </div>
+
+      {/* 2. TEXTURE & WATERMARK OVERLAYS */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
+        {/* Paper Grain Texture Overlay */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-[0.06] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+        
+        {/* Large Editorial Watermark */}
+        <motion.div 
+          style={{ y: yWatermark }}
+          className="absolute top-[30%] left-[20%] opacity-[0.06] text-[15rem] lg:text-[20rem] font-black text-[#1A1A1A] leading-none uppercase tracking-tighter rotate-[20deg] hidden md:block"
+        >
+          Architect
+        </motion.div>
+
+        {/* Decorative Background Star Watermark */}
+        <div className="absolute bottom-[10%] left-[5%] opacity-[0.02] -rotate-12">
+          <svg width="400" height="400" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 0L61 35H98L68 57L79 91L50 70L21 91L32 57L2 35H39L50 0Z" />
+          </svg>
+        </div>
+      </div>
 
       <div className="container mx-auto px-6 relative z-10">
         
-        {/* Section Tag */}
-        <div className="flex items-center gap-4 mb-16 lg:mb-24">
-          <div className="h-[2px] w-12 bg-gradient-to-r from-yellow-400 to-amber-600" />
-          <span className="text-zinc-500 font-mono text-sm uppercase tracking-[0.3em]">
-            // About Me
+        {/* Section Header */}
+        <div className="flex items-center gap-6 mb-20 lg:mb-28">
+          <span className="text-[#EF9144] font-black text-2xl font-serif italic">01.</span>
+          <div className="h-[2px] w-16 bg-[#EF9144]" />
+          <span className="text-[#1A1A1A]/60 font-bold text-xs uppercase tracking-[0.4em]">
+            The Persona
           </span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20 items-center">
           
-          {/* --- LEFT COLUMN: IMAGE --- */}
+          {/* --- LEFT COLUMN: EDITORIAL IMAGE FRAME --- */}
           <motion.div 
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="order-1 lg:order-1 flex justify-center lg:justify-start"
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-5 relative"
           >
-            <div className="relative group w-full max-w-md">
-              
-              {/* Spinning Tech Rings (Yellow/Amber) */}
-              <div className="absolute inset-0 -z-10 scale-125">
-                <div className="absolute inset-0 border border-dashed border-zinc-800 rounded-full animate-[spin_60s_linear_infinite]" />
-                <div className="absolute inset-4 border border-zinc-800 rounded-full animate-[spin_40s_linear_infinite_reverse]" />
-                {/* Theme Color Ring */}
-                <div className="absolute inset-0 border-r border-[#fcca46]/40 rounded-full animate-[spin_10s_linear_infinite]" />
-              </div>
+            {/* The Large Background "A" Accent */}
+            <span className="absolute -top-20 -left-10 text-[20rem] font-serif italic opacity-[0.05] text-[#1A1A1A] leading-none pointer-events-none select-none">
+              A
+            </span>
 
-              {/* Image Frame */}
-              <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-zinc-900 shadow-2xl group-hover:border-[#fcca46]/30 transition-colors duration-500">
+            <div className="relative group">
+              {/* Sharp Brutalist Frame with Sunset Shadow */}
+              <div className="relative z-10 w-full aspect-[4/5] overflow-hidden border-2 border-[#1A1A1A] bg-[#D9D7CA] shadow-[20px_20px_0px_0px_#EF9144] transition-shadow duration-500 group-hover:shadow-[25px_25px_0px_0px_#1A1A1A]">
                 <img 
                   src="./Profile.jpeg" 
                   alt="Pratul Kumar" 
-                  className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700 ease-out scale-105 group-hover:scale-100"
+                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-in-out scale-105 group-hover:scale-100"
                 />
                 
-                {/* Gradient Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90" />
-                <div className="absolute inset-0 bg-yellow-500/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                {/* Identity Card Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <div className="backdrop-blur-md bg-black/40 border border-white/10 p-4 rounded-xl">
-                    <h3 className="text-2xl font-bold text-white tracking-tight uppercase">Pratul Kumar</h3>
-                    <div className="flex items-center justify-between mt-2">
-                      <div className="flex items-center gap-2">
-                        <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#fcca46] opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#fcca46]"></span>
-                        </span>
-                        <p className="text-[10px] font-mono text-[#fcca46] uppercase tracking-widest">Active_Now</p>
-                      </div>
-                      <Cpu size={16} className="text-zinc-500" />
-                    </div>
-                  </div>
+                {/* Editorial Label Overlay */}
+                <div className="absolute top-6 right-6 bg-[#1A1A1A] text-[#E8E6D9] px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest rotate-12 group-hover:rotate-0 transition-transform">
+                  Verified_2026
                 </div>
               </div>
 
-              {/* Decorative Corners (Yellow) */}
-              <div className="absolute -top-2 -right-2 w-8 h-8 border-t border-r border-[#fcca46] opacity-0 group-hover:opacity-100 transition-all duration-500" />
-              <div className="absolute -bottom-2 -left-2 w-8 h-8 border-b border-l border-[#fcca46] opacity-0 group-hover:opacity-100 transition-all duration-500" />
+              {/* Pulsing Accent Star */}
+              <div className="absolute -bottom-10 -right-10 w-24 h-24 text-[#EF9144] opacity-20 hidden lg:block animate-pulse">
+                <svg viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M50 0L61 35H98L68 57L79 91L50 70L21 91L32 57L2 35H39L50 0Z" />
+                </svg>
+              </div>
             </div>
           </motion.div>
 
           {/* --- RIGHT COLUMN: CONTENT --- */}
-          <div className="relative order-2 lg:order-2">
+          <div className="lg:col-span-7 space-y-10">
             
-            {/* Floating Icons */}
-            <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity }} className="absolute -top-10 right-10 text-[#fcca46]/10 hidden lg:block">
-               <Zap size={40} />
-            </motion.div>
-
             <motion.h2 
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-5xl md:text-7xl lg:text-7xl font-black uppercase tracking-tighter mb-8 leading-[0.9] text-white"
+              className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.85]"
             >
               Data Science <br /> 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-700 via-zinc-500 to-zinc-700 italic font-serif font-light">
-                Meets
-              </span> <br />
-              {/* Typewriter in Yellow */}
-              <span className="text-[#fcca46]">
+              <span className="text-[#EF9144] italic font-serif font-light lowercase">meets</span> <br />
+              <span className="relative inline-block">
                 <Typewriter
-                  words={['Design.', 'Logic.', 'Systems.', 'UI/UX.']}
-                  loop={0}
-                  cursor
-                  cursorStyle='_'
-                  typeSpeed={70}
-                  deleteSpeed={50}
-                  delaySpeed={2000}
+                  words={['Design.', 'Logic.', 'UI/UX.']}
+                  loop={0} cursor cursorStyle='' typeSpeed={70} deleteSpeed={50} delaySpeed={2000}
                 />
               </span>
             </motion.h2>
 
             <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="relative pl-8 border-l-2 border-zinc-800 space-y-6"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="space-y-8"
             >
-              <p className="text-zinc-400 text-lg font-light leading-relaxed">
-                Bridging the gap between data science and design, I am an AI/ML enthusiast skilled in 
-                <span className="text-white font-medium"> Python, Azure, and Figma</span>. I build intelligent systems with intuitive UI/UX, 
-                from forest fire prediction models to the <span className="text-[#fcca46] font-medium"> 'Beat-Diary' </span> platform.
-              </p>
+              <div className="max-w-2xl border-l-4 border-[#EF9144] pl-8">
+                <p className="text-xl md:text-2xl leading-relaxed font-medium text-[#1A1A1A]/80">
+                  I specialize in converting raw data into <span className="text-[#1A1A1A] font-black underline decoration-4 decoration-[#EF9144] underline-offset-4">visual intelligence</span>. 
+                  My work lives at the intersection of Python engineering and human-centered Figma prototyping.
+                </p>
+              </div>
 
-              <p className="text-zinc-500 text-sm font-mono leading-relaxed">
-                More About Me <br/>
-                As Student Council Vice President and GSSOC Mentor, I combine technical logic with creative vision to solve real-world problems.
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <TechCard 
+                  icon={Layout} 
+                  title="Interface Design" 
+                  desc="Figma / Framer / Motion" 
+                />
+                <TechCard 
+                  icon={Globe} 
+                  title="Leadership" 
+                  desc="Student VP / GSSOC Mentor" 
+                />
+              </div>
+
+              <p className="text-sm font-bold uppercase tracking-widest text-[#1A1A1A]/40 flex items-center gap-4">
+                <ArrowUpRight size={20} className="text-[#EF9144]" />
+                Crafting the future of intelligent interfaces
               </p>
             </motion.div>
-
-            {/* Tech Stack / Bento Grid (Yellow Theme) */}
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <TechCard 
-                icon={Layout} 
-                title="UI/UX Design" 
-                desc="Figma / Framer" 
-                themeColor="text-[#fcca46]"
-                hoverBorder="group-hover:border-[#fcca46]/20"
-                hoverBg="group-hover:bg-[#fcca46]/10"
-              />
-              <TechCard 
-                icon={Globe} 
-                title="Open Source" 
-                desc="GSSOC Mentor" 
-                themeColor="text-amber-400"
-                hoverBorder="group-hover:border-amber-400/20"
-                hoverBg="group-hover:bg-amber-400/10"
-              />
-            </div>
-
           </div>
 
         </div>
@@ -168,23 +158,20 @@ const About = () => {
   );
 };
 
-// --- Sub-component for Bento Cards ---
-const TechCard = ({ icon: Icon, title, desc, themeColor, hoverBorder, hoverBg }) => (
+// --- Refined Editorial Tech Cards ---
+const TechCard = ({ icon: Icon, title, desc }) => (
   <motion.div 
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    whileHover={{ y: -5 }}
-    className={`p-6 rounded-xl border border-white/5 bg-zinc-900/50 backdrop-blur-sm transition-all duration-300 group ${hoverBorder}`}
+    whileHover={{ y: -5, x: 5 }}
+    className="p-8 bg-white/40 backdrop-blur-md border-2 border-[#1A1A1A] shadow-[6px_6px_0px_0px_#1A1A1A] group transition-all hover:bg-white/60"
   >
-    <div className="flex items-start justify-between mb-4">
-      <div className={`p-3 rounded-lg bg-zinc-950 border border-zinc-800 ${themeColor} ${hoverBg} transition-colors`}>
-        <Icon size={24} />
+    <div className="flex items-center justify-between mb-6">
+      <div className="bg-[#EF9144] text-[#1A1A1A] p-3 rounded-lg border-2 border-[#1A1A1A] shadow-[3px_3px_0px_0px_#1A1A1A]">
+        <Icon size={24} strokeWidth={3} />
       </div>
-      <Sparkles size={16} className="text-zinc-700 group-hover:text-white transition-colors" />
+      <Sparkles size={18} className="text-[#1A1A1A] opacity-20 group-hover:opacity-100 transition-opacity" />
     </div>
-    <h4 className="text-white font-bold uppercase tracking-wider mb-1">{title}</h4>
-    <p className="text-zinc-500 text-xs font-mono">{desc}</p>
+    <h4 className="text-lg font-black uppercase tracking-tight mb-1">{title}</h4>
+    <p className="text-[11px] font-bold uppercase tracking-widest text-[#1A1A1A]/50">{desc}</p>
   </motion.div>
 );
 

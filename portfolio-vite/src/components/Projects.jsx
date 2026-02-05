@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ExternalLink, Github, Layout, Terminal, Box } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ExternalLink, Github, Terminal, Sparkles, Box } from 'lucide-react';
 
 const uiProjects = [
   {
@@ -42,68 +42,66 @@ const techProjects = [
 ];
 
 const ProjectCard = ({ p, isTech = false }) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const smoothX = useSpring(mouseX, { stiffness: 300, damping: 30 });
-  const smoothY = useSpring(mouseY, { stiffness: 300, damping: 30 });
-
-  const handleMouseMove = (e) => {
-    const { left, top } = e.currentTarget.getBoundingClientRect();
-    mouseX.set(e.clientX - left);
-    mouseY.set(e.clientY - top);
-  };
-
-  const background = useTransform(
-    [smoothX, smoothY],
-    ([x, y]) => `radial-gradient(300px circle at ${x}px ${y}px, rgba(252, 202, 70, 0.1), transparent 80%)`
-  );
-
   return (
     <motion.div
-      onMouseMove={handleMouseMove}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className={`group relative rounded-[2rem] border border-white/5 bg-zinc-900/10 backdrop-blur-2xl overflow-hidden transition-all duration-500 hover:border-[#fcca46]/20 ${
-        isTech ? "p-8 min-h-[320px] flex flex-col justify-between" : "aspect-[4/5] sm:aspect-square lg:aspect-[4/5]"
+      whileHover={{ x: -6, y: -6 }}
+      className={`group relative bg-white/50 border-2 border-[#1A1A1A] transition-all duration-500 ${
+        isTech 
+          ? "p-10 shadow-[10px_10px_0px_0px_#1A1A1A] hover:shadow-[15px_15px_0px_0px_#EF9144]" 
+          : "aspect-[4/5] overflow-hidden shadow-[10px_10px_0px_0px_#EF9144] hover:shadow-[14px_14px_0px_0px_#1A1A1A]"
       }`}
     >
-      <motion.div className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" style={{ background }} />
-
       {isTech ? (
-        <>
-          <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-            <Box size={80} className="text-[#fcca46]" />
-          </div>
-          <div className="relative z-20">
-            <div className="flex items-center gap-2 text-[#fcca46] font-mono text-[10px] uppercase tracking-widest mb-4">
-              <div className="h-1.5 w-1.5 rounded-full bg-[#fcca46] animate-pulse" />
-              {p.stack}
+        <div className="h-full flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-8">
+              <div className="bg-[#EF9144] p-3 border-2 border-[#1A1A1A] rounded-xl shadow-[4px_4px_0px_0px_#1A1A1A]">
+                <Terminal size={22} strokeWidth={3} className="text-[#1A1A1A]" />
+              </div>
+              <Sparkles size={20} className="opacity-10 group-hover:opacity-100 transition-opacity text-[#EF9144]" />
             </div>
-            <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-[#fcca46] transition-colors">{p.title}</h3>
-            <p className="text-zinc-400 text-sm leading-relaxed max-w-sm">{p.desc}</p>
+            <span className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-[#EF9144] mb-3 block">
+              {p.stack}
+            </span>
+            <h3 className="text-3xl font-black uppercase tracking-tighter mb-4 leading-[0.9] text-[#1A1A1A]">
+              {p.title}
+            </h3>
+            <p className="text-[#1A1A1A]/70 text-sm leading-relaxed font-medium">
+              {p.desc}
+            </p>
           </div>
-          <div className="relative z-20 mt-8">
-            <a href={p.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-colors">
-              <Github size={14} /> View Source
+          
+          <div className="mt-8 pt-6 border-t-2 border-[#1A1A1A]/5 flex items-center justify-between">
+            <a href={p.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-[15px] font-black uppercase tracking-widest hover:text-[#EF9144] transition-colors">
+              <Github size={14} strokeWidth={3} /> Repository Link
             </a>
+            <Box size={24} className="opacity-5" />
           </div>
-        </>
+        </div>
       ) : (
         <>
-          <img src={p.image} className="absolute inset-0 w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt={p.title} />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
-          <div className="absolute bottom-8 left-8 right-8 z-20">
-            <p className="text-[#fcca46] font-mono text-[10px] uppercase tracking-widest mb-2">{p.category}</p>
-            <h3 className="text-xl md:text-2xl font-bold uppercase tracking-tight mb-4 text-white">{p.title}</h3>
-            <div className="flex flex-wrap gap-2">
+          <img src={p.image} className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-110" alt={p.title} />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-transparent to-transparent opacity-70" />
+          
+          <div className="absolute inset-0 p-8 flex flex-col justify-end transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+            <p className="text-[#EF9144] font-serif italic text-sm mb-1">{p.category}</p>
+            <h3 className="text-2xl font-black uppercase tracking-tighter text-white mb-5 leading-none">
+              {p.title}
+            </h3>
+            <div className="flex flex-wrap gap-2 opacity-0 group-hover:opacity-100 transition-opacity delay-100">
               {p.tags.map(tag => (
-                <span key={tag} className="text-[8px] px-2.5 py-1 rounded-md border border-white/10 bg-black/60 backdrop-blur-md uppercase tracking-widest text-zinc-300">{tag}</span>
+                <span key={tag} className="text-[9px] font-black px-3 py-1 bg-white border border-[#1A1A1A] uppercase tracking-widest shadow-[2px_2px_0px_0px_#1A1A1A] text-[#1A1A1A]">
+                  {tag}
+                </span>
               ))}
             </div>
           </div>
-          <a href={p.link} className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center z-30 opacity-0 group-hover:opacity-100 transition-all hover:bg-[#fcca46] hover:text-black">
-            <ExternalLink size={16} />
+          
+          <a href={p.link} className="absolute top-6 right-6 w-14 h-14 bg-[#EF9144] border-2 border-[#1A1A1A] rounded-full flex items-center justify-center transform -translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 shadow-[4px_4px_0px_0px_#1A1A1A] text-[#1A1A1A]">
+            <ExternalLink size={20} strokeWidth={3} />
           </a>
         </>
       )}
@@ -113,42 +111,77 @@ const ProjectCard = ({ p, isTech = false }) => {
 
 const Projects = () => {
   return (
-    <section id="projects" className="relative py-16 md:py-24 text-white bg-transparent">
-      <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-12">
+    <section id="projects" className="relative py-24 md:py-32 bg-[#E8E6D9] text-[#1A1A1A] overflow-hidden">
+      
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div 
+          className="absolute top-[10%] left-[-10%] w-[70vw] h-[70vw] opacity-30 blur-[120px] rounded-full"
+          style={{ background: 'radial-gradient(circle, #EF9144 0%, transparent 70%)' }}
+        />
+        <div 
+          className="absolute bottom-[5%] right-[-5%] w-[60vw] h-[60vw] opacity-40 blur-[100px] rounded-full"
+          style={{ background: 'radial-gradient(circle, #D4CDB3 0%, transparent 70%)' }}
+        />
+      </div>
+
+      {/* 2. TEXTURE & EDITORIAL WATERMARK OVERLAYS */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full opacity-[0.06] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
         
-        {/* --- TECH PROJECTS --- */}
-        <div className="mb-24 md:mb-32">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <Terminal size={16} className="text-[#fcca46]" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-zinc-500">Source_Control</span>
-              </div>
-              <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">
-                Logic <span className="text-zinc-800 italic font-light">Execution.</span>
-              </h2>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {techProjects.map((p, i) => <ProjectCard key={i} p={p} isTech />)}
-          </div>
+        {/* Massive Background Text Watermarks - Opacity Increased */}
+        <div className="absolute top-[10%] right-[-10%] opacity-[0.08] text-[25vw] font-black leading-none uppercase tracking-tighter -rotate-12">
+          Work
+        </div>
+        <div className="absolute bottom-[5%] left-[-5%] opacity-[0.08] text-[22vw] font-black leading-none uppercase tracking-tighter rotate-6">
+          Archive
         </div>
 
-        {/* --- UI PROJECTS --- */}
-        <div>
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <Layout size={16} className="text-[#fcca46]" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-zinc-500">Design_System</span>
-              </div>
-              <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">
-                Design <span className="text-zinc-800 italic font-light">Archives.</span>
-              </h2>
-            </div>
+        {/* --- FOUR-POINT LINE STARS BACKGROUND --- */}
+        <div className="absolute top-[15%] left-[10%] opacity-[0.08] text-[#EF9144]">
+          <svg width="240" height="240" viewBox="0 0 100 100" fill="none">
+             <path d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48L50 0Z" fill="currentColor" />
+          </svg>
+        </div>
+
+        <div className="absolute bottom-[20%] right-[10%] opacity-[0.05] text-[#EF9144] rotate-[25deg]">
+          <svg width="400" height="400" viewBox="0 0 100 100" fill="none">
+             <path d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48L50 0Z" fill="currentColor" />
+          </svg>
+        </div>
+
+        <div className="absolute top-[45%] right-[25%] opacity-[0.03] text-[#EF9144] -rotate-12">
+          <svg width="180" height="180" viewBox="0 0 100 100" fill="none">
+             <path d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48L50 0Z" fill="currentColor" />
+          </svg>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-8xl px-6 lg:px-35 relative z-10">
+        
+        <div className="flex flex-col mb-24">
+           <div className="flex items-center gap-4 mb-6">
+              <span className="h-[2px] w-16 bg-[#EF9144]" />
+              <span className="text-[10px] font-black uppercase tracking-[0.5em] opacity-50">Project_Index_2026</span>
+           </div>
+           <h2 className="text-7xl md:text-9xl font-black uppercase tracking-tighter leading-[0.8] text-[#1A1A1A]">
+            Visual <br /> 
+            <span className="text-[#EF9144] font-serif italic font-light lowercase">Architecture.</span>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 mb-40">
+          {techProjects.map((p, i) => <ProjectCard key={i} p={p} isTech />)}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-16">
+          <div className="lg:mt-32">
+            <ProjectCard p={uiProjects[0]} />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {uiProjects.map((p, i) => <ProjectCard key={i} p={p} />)}
+          <div className="lg:mt-10">
+            <ProjectCard p={uiProjects[1]} />
+          </div>
+          <div className="lg:mt-48">
+            <ProjectCard p={uiProjects[2]} />
           </div>
         </div>
 

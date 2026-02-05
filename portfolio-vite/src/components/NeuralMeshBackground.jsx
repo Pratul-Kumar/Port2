@@ -1,193 +1,82 @@
-import { useEffect, useRef } from 'react'
+import React from 'react';
 
-function clamp(value, min, max) {
-  return Math.min(max, Math.max(min, value))
-}
-
-export default function NeuralMeshBackground({ isDarkMode = true }) {
-  const canvasRef = useRef(null)
-  const rafRef = useRef(0)
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext('2d', { alpha: false }) // False for performance since we have a solid bg
-    if (!ctx) return
-
-    const state = {
-      dpr: Math.max(1, Math.min(2, window.devicePixelRatio || 1)),
-      width: 0,
-      height: 0,
-      mouseX: 0,
-      mouseY: 0,
-      hasMouse: false,
-      nodes: [],
-    }
-
-    // THEME CONFIGURATION
-    // Darker, subtler Indigo for the mesh lines
-    const themeColor = isDarkMode ? '129, 140, 248' : '79, 70, 229'; 
-
-    const config = {
-      nodeCount: window.innerWidth < 768 ? 40 : 80, // Slightly fewer nodes for a cleaner dark look
-      maxLinkDist: 140,
-      baseRadius: 1.2,
-      driftSpeed: 0.15, // Slower drift for a "heavier" atmosphere
-      color: themeColor,
-    }
-
-    let lastTime = performance.now()
-    const targetFPS = 60
-    const frameTime = 1000 / targetFPS
-    let isVisible = true
-
-    function handleVisibilityChange() {
-      isVisible = !document.hidden
-      if (isVisible && !rafRef.current) {
-        lastTime = performance.now()
-        rafRef.current = window.requestAnimationFrame(step)
-      }
-    }
-
-    function resize() {
-      const { innerWidth: w, innerHeight: h } = window
-      state.width = w
-      state.height = h
-      canvas.style.width = `${w}px`
-      canvas.style.height = `${h}px`
-      canvas.width = Math.floor(w * state.dpr)
-      canvas.height = Math.floor(h * state.dpr)
-      ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0)
-      
-      config.nodeCount = w < 768 ? 40 : 80
-      
-      // Re-initialize nodes on resize
-      state.nodes = new Array(config.nodeCount).fill(0).map(() => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * config.driftSpeed,
-        vy: (Math.random() - 0.5) * config.driftSpeed,
-      }))
-    }
-
-    function onPointerMove(e) {
-      state.hasMouse = true
-      state.mouseX = e.clientX
-      state.mouseY = e.clientY
-    }
-
-    function onPointerLeave() {
-      state.hasMouse = false
-    }
-
-    function step() {
-      const now = performance.now()
-      const delta = now - lastTime
-      
-      if (delta < frameTime) {
-        rafRef.current = window.requestAnimationFrame(step)
-        return
-      }
-      
-      lastTime = now - (delta % frameTime)
-      
-      // 1. Manually fill the background with the dark color
-      ctx.fillStyle = '#050505'; 
-      ctx.fillRect(0, 0, state.width, state.height);
-
-      const mx = state.hasMouse ? state.mouseX : state.width * 0.5
-      const my = state.hasMouse ? state.mouseY : state.height * 0.5
-
-      // Update and draw nodes
-      for (let i = 0; i < state.nodes.length; i++) {
-        const n = state.nodes[i]
-        n.x += n.vx
-        n.y += n.vy
-        
-        // Mouse interaction (Repulsion)
-        if (state.hasMouse && window.innerWidth >= 768) {
-          const dx = n.x - mx
-          const dy = n.y - my
-          const distSq = dx * dx + dy * dy
-          if (distSq < 25000) { 
-            const dist = Math.sqrt(distSq)
-            const force = (160 - dist) / 160
-            n.vx += (dx / dist) * force * 0.05 
-            n.vy += (dy / dist) * force * 0.05
-          }
-        }
-
-        // Wrap around screen
-        if (n.x < 0) n.x = state.width
-        if (n.x > state.width) n.x = 0
-        if (n.y < 0) n.y = state.height
-        if (n.y > state.height) n.y = 0
-
-        // Soft speed limit
-        n.vx = clamp(n.vx, -0.5, 0.5)
-        n.vy = clamp(n.vy, -0.5, 0.5)
-        
-        // Draw Dot
-        ctx.beginPath()
-        ctx.arc(n.x, n.y, config.baseRadius, 0, Math.PI * 2)
-        // 2. Reduced Opacity here (0.3) because we removed CSS opacity
-        ctx.fillStyle = `rgba(${config.color}, ${isDarkMode ? 0.3 : 0.5})`
-        ctx.fill()
-      }
-
-      // Draw Connections
-      const len = state.nodes.length
-      const maxDistSq = config.maxLinkDist * config.maxLinkDist
-      
-      for (let i = 0; i < len; i++) {
-        const a = state.nodes[i]
-        for (let j = i + 1; j < len; j++) {
-          const b = state.nodes[j]
-          const dx = a.x - b.x
-          const dy = a.y - b.y
-          const distSq = dx * dx + dy * dy
-
-          if (distSq < maxDistSq) {
-            const dist = Math.sqrt(distSq)
-            // 3. Lowered Line Opacity (0.12) for subtler mesh
-            const maxAlpha = isDarkMode ? 0.12 : 0.15
-            const alpha = (1 - dist / config.maxLinkDist) * maxAlpha
-            
-            ctx.beginPath()
-            ctx.moveTo(a.x, a.y)
-            ctx.lineTo(b.x, b.y)
-            ctx.strokeStyle = `rgba(${config.color}, ${alpha})`
-            ctx.lineWidth = 1
-            ctx.stroke()
-          }
-        }
-      }
-      
-      rafRef.current = window.requestAnimationFrame(step)
-    }
-
-    resize()
-    window.addEventListener('resize', resize)
-    window.addEventListener('pointermove', onPointerMove, { passive: true })
-    window.addEventListener('pointerleave', onPointerLeave)
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    rafRef.current = window.requestAnimationFrame(step)
-
-    return () => {
-      window.removeEventListener('resize', resize)
-      window.removeEventListener('pointermove', onPointerMove)
-      window.removeEventListener('pointerleave', onPointerLeave)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      if (rafRef.current) window.cancelAnimationFrame(rafRef.current)
-    }
-  }, [isDarkMode])
-
+export default function EnhancedEditorialBackground() {
   return (
-    <canvas
-      ref={canvasRef}
-      className="pointer-events-none fixed inset-0 -z-10 h-full w-full bg-[#050505]"
-      aria-hidden="true"
-    />
-  )
+    <div className="fixed inset-0 -z-10 h-full w-full overflow-hidden bg-[#E8E6D9]">
+      {/* 1. Authentic Reference Gradient Base */}
+      {/* This uses the specific warm orange and beige tones from the image */}
+      <div 
+        className="absolute inset-0 opacity-60"
+        style={{
+          background: `
+            radial-gradient(circle at 100% 100%, #EF9144 0%, transparent 40%),
+            radial-gradient(circle at 0% 50%, #D4CDB3 0%, transparent 50%),
+            radial-gradient(circle at 50% 100%, #F1A058 0%, transparent 50%)
+          `
+        }}
+      />
+
+      {/* 2. Paper Texture Overlay (Grain) */}
+      <div 
+        className="absolute inset-0 opacity-[0.06] pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* 3. Retro "Blob" Illustrations (Left and Right) */}
+      {/* Left Bottom Arch */}
+      <div className="absolute -bottom-20 -left-20 w-[50vw] h-[50vw] rounded-full bg-[#D9D3BD] mix-blend-multiply blur-3xl opacity-40" />
+      
+      {/* Right Top Arch */}
+      <div className="absolute -top-10 -right-10 w-[30vw] h-[40vw] rounded-[100px] bg-[#EF9144] opacity-20 rotate-[30deg] blur-3xl" />
+
+      {/* 4. Retro Star/Sparkle Illustrations (Same as Image) */}
+      
+      {/* Bottom Left Star */}
+      <div className="absolute bottom-[15%] left-[8%] w-16 h-16 opacity-40">
+        <div 
+          className="w-full h-full bg-white" 
+          style={{ clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)' }}
+        />
+      </div>
+
+      {/* Top Right Small Star */}
+      <div className="absolute top-[10%] right-[15%] w-12 h-12 opacity-30 animate-pulse">
+        <div 
+          className="w-full h-full bg-[#EF9144]" 
+          style={{ clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)' }}
+        />
+      </div>
+
+      {/* Center Background "4-Point" Sparkle */}
+      <div className="absolute top-[40%] right-[30%] w-24 h-24 opacity-10">
+        <div 
+          className="w-full h-full bg-white" 
+          style={{ clipPath: 'polygon(50% 0%, 55% 45%, 100% 50%, 55% 55%, 50% 100%, 45% 55%, 0% 50%, 45% 45%)' }}
+        />
+      </div>
+
+      {/* 5. Typography Watermarks (Styled like the 'A' and 'Portfolio' text) */}
+      <div className="absolute top-10 left-10 select-none pointer-events-none">
+        <h2 className="text-[12vw] font-serif italic text-[#1A1A1A] opacity-[0.03] leading-none">
+          Creative
+        </h2>
+      </div>
+
+      <div className="absolute bottom-5 right-10 select-none pointer-events-none">
+        <h2 className="text-[10vw] font-black uppercase text-[#1A1A1A] opacity-[0.03] tracking-tighter">
+          Architect
+        </h2>
+      </div>
+
+      {/* 6. Subtle Horizontal Lines (From the Image Textures) */}
+      <div 
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 40px, #1A1A1A 40px, #1A1A1A 41px)`
+        }}
+      />
+    </div>
+  );
 }

@@ -1,131 +1,103 @@
-import React, { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-
-const loadingText = [
-  "Initializing Neural Networks...",
-  "Loading Modules...",
-  "Verifying System Integrity...",
-  "Syncing Data...",
-  "Access Granted."
-]
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Loader() {
-  const [loading, setLoading] = useState(true)
-  const [textIndex, setTextIndex] = useState(0)
-  const [progress, setProgress] = useState(0)
-
-  // --- Scroll Lock Effect ---
-  useEffect(() => {
-    if (loading) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
-  }, [loading])
+  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const textInterval = setInterval(() => {
-      setTextIndex((prev) => (prev < loadingText.length - 1 ? prev + 1 : prev))
-    }, 900)
+    // Scroll lock
+    document.body.style.overflow = loading ? 'hidden' : 'unset';
 
-    const progressInterval = setInterval(() => {
+    // Precision Timer: 5 Seconds total
+    const duration = 1000; 
+    const intervalTime = 10;
+    const increment = 100 / (duration / intervalTime);
+
+    const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
-          clearInterval(progressInterval)
-          return 100
+          clearInterval(timer);
+          setTimeout(() => setLoading(false), 200);
+          return 100;
         }
-        return prev + Math.floor(Math.random() * 8) + 2
-      })
-    }, 180)
-
-    const handleLoad = () => {
-      setTimeout(() => setLoading(false), 3200)
-    }
-
-    if (document.readyState === 'complete') {
-      handleLoad()
-    } else {
-      window.addEventListener('load', handleLoad)
-    }
+        return prev + increment;
+      });
+    }, intervalTime);
 
     return () => {
-      clearInterval(textInterval)
-      clearInterval(progressInterval)
-      window.removeEventListener('load', handleLoad)
-    }
-  }, [])
-
-  // Generate multi-color matrix code lines
-  const matrixColors = ["#ffffff", "#fcca46", "#f8973c"];
-  const matrixLines = Array.from({ length: 18 }, (_, i) =>
-    Array.from({ length: 32 }, () => {
-      const char = Math.random() > 0.8 ? String.fromCharCode(65 + Math.floor(Math.random() * 26)) : Math.floor(Math.random() * 10);
-      const color = matrixColors[Math.floor(Math.random() * matrixColors.length)];
-      return `<span style='color:${color}'>${char}</span>`;
-    }).join(' ')
-  )
+      clearInterval(timer);
+      document.body.style.overflow = 'unset';
+    };
+  }, [loading]);
 
   return (
     <AnimatePresence>
       {loading && (
         <motion.div
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)", transition: { duration: 0.8 } }}
-          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center backdrop-blur-lg bg-black/50 text-[#fcca46] font-mono"
+          exit={{ 
+            y: "-100%", 
+            transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } 
+          }}
+          className="fixed inset-0 z-[99999] flex items-center justify-center bg-[#E8E6D9] font-mono overflow-hidden"
         >
-          {/* Matrix background */}
-          <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden">
-            <div className="w-full h-full flex flex-col justify-center items-center opacity-30">
-              {matrixLines.map((line, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.05, duration: 0.7 }}
-                  className="text-xs md:text-sm tracking-widest whitespace-nowrap"
-                  style={{ fontFamily: 'monospace' }}
-                  dangerouslySetInnerHTML={{ __html: line }}
-                />
-              ))}
-            </div>
-          </div>
-          {/* Loader content */}
-          <div className="relative z-10 w-80 max-w-full flex flex-col items-center space-y-6">
-            {/* Animated technical logo */}
+          {/* Subtle Paper Texture Overlay */}
+          <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+
+          <div className="relative w-full max-w-xs px-6 flex flex-col items-center">
             
-            {/* Changing Text */}
-            <div className="h-6 overflow-hidden w-full text-center">
-              <motion.p 
-                key={textIndex}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
-                className="text-xs font-mono text-[#fcca46] uppercase tracking-widest text-center drop-shadow"
-              >
-                &gt; {loadingText[textIndex]}
-              </motion.p>
-            </div>
-            {/* Gradient Progress Bar */}
-            <div className="w-full flex flex-col items-center">
-              <div className="w-full h-4 bg-[#222] rounded-full overflow-hidden relative border border-[#fcca46]/30">
-                <motion.div 
-                  className="absolute top-0 left-0 h-full"
-                  style={{ background: "linear-gradient(90deg, #ff3b14 0%, #fcca46 100%)", boxShadow: "0 0 15px #fcca46" }}
-                  initial={{ width: "0%" }}
-                  animate={{ width: `${Math.min(progress, 100)}%` }}
-                  transition={{ type: "spring", stiffness: 60 }}
-                />
-                <div className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-mono text-[#fcca46]">
-                  {Math.min(progress, 100)}%
-                </div>
+            {/* Minimalist Identity Tag */}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-8 text-center"
+            >
+              <h1 className="text-xl font-black uppercase tracking-[0.3em] text-[#1A1A1A]">
+                Pratul Kumar
+              </h1>
+              <div className="flex items-center justify-center gap-2 mt-2">
+                <span className="h-[1px] w-4 bg-[#EF9144]" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#EF9144]">
+                  Portfolio 2026
+                </span>
+                <span className="h-[1px] w-4 bg-[#EF9144]" />
               </div>
+            </motion.div>
+
+            {/* Percentage Display */}
+            <div className="mb-2 text-[4rem] font-serif italic text-[#1A1A1A] leading-none">
+              {Math.round(progress)}%
             </div>
+
+            {/* Precision Progress Line */}
+            <div className="w-full h-[2px] bg-[#1A1A1A]/10 relative overflow-hidden">
+              <motion.div 
+                className="absolute inset-y-0 left-0 bg-[#EF9144]"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+
+            {/* Technical Subtext */}
+            <div className="mt-6 flex flex-col items-center space-y-1">
+               <p className="text-[9px] font-black uppercase tracking-[0.4em] text-[#1A1A1A]/30">
+                 UI/UX DESIGNER
+               </p>
+               <motion.div 
+                animate={{ opacity: [0.2, 1, 0.2] }}
+                transition={{ duration: 1.6, repeat: Infinity }}
+                className="w-1 h-1 bg-[#EF9144] rounded-full"
+               />
+            </div>
+
           </div>
+
+          {/* Minimal Corner Decoration */}
+          <div className="absolute top-10 left-10 p-2 border-l border-t border-[#1A1A1A]/20 h-10 w-10" />
+          <div className="absolute bottom-10 right-10 p-2 border-r border-b border-[#1A1A1A]/20 h-10 w-10" />
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  );
 }
