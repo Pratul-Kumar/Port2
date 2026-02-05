@@ -12,6 +12,14 @@ const achievementsData = [
     tags: ["Leadership", "Management"],
   },
   {
+    role: "Co-Founder and CMO",
+    organization: "Zintrix Technologies",
+    period: "Present",
+    icon: <Megaphone size={24} strokeWidth={3} />,
+    description: "WE BUILD TO GROW - At Zintrix, we don't just build websites; we build tools that grow your business. We combine expert software development with smart marketing strategies to make sure your brand stands out and sells",
+    tags: ["Website Building", "Growth", "Marketing"],
+  },
+  {
     role: "Open Source Mentor",
     organization: "GSSOC 2025",
     period: "2025",
@@ -22,7 +30,7 @@ const achievementsData = [
   {
     role: "Co-Founder",
     organization: "Raina News",
-    period: "Present",
+    period: "2020-2026",
     icon: <Megaphone size={24} strokeWidth={3} />,
     description: "Founded and scaled a digital media news channel on social media, amassing a massive community of over 120K+ followers.",
     tags: ["Media", "Growth"],
@@ -105,6 +113,9 @@ const Achievements = () => {
         {/* Editorial Text Watermarks */}
         <div className="absolute top-[10%] left-[3%] opacity-[0.08] text-[22vw] font-black text-[#1A1A1A] leading-none uppercase tracking-tighter -rotate-6">
           Honors
+        </div> 
+        <div className="absolute bottom-[20%] right-[-1%] opacity-[0.08] text-[10vw] font-black text-[#1A1A1A] leading-none uppercase tracking-tighter -rotate-6">
+          Appreciation
         </div>
        
 

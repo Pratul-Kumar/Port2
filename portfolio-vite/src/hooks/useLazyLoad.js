@@ -13,8 +13,8 @@ export const useLazyLoad = () => {
         }
       },
       {
-        threshold: 0.1,
-        rootMargin: '50px',
+        threshold: 0,
+        rootMargin: '200px',
       }
     )
 

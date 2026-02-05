@@ -18,8 +18,11 @@ const RopeScroll = () => {
     resize()
     window.addEventListener('resize', resize)
 
-    const maxScroll =
-      document.documentElement.scrollHeight - window.innerHeight
+    let maxScroll = document.documentElement.scrollHeight - window.innerHeight
+
+    const computeMaxScroll = () => {
+      maxScroll = document.documentElement.scrollHeight - window.innerHeight
+    }
 
     const onScroll = () => {
       const p = maxScroll > 0 ? window.scrollY / maxScroll : 0
@@ -27,6 +30,11 @@ const RopeScroll = () => {
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', () => {
+      resize()
+      computeMaxScroll()
+      onScroll()
+    })
 
     let last = performance.now()
 
@@ -36,7 +44,7 @@ const RopeScroll = () => {
 
       /* calm spring */
       rope.current.v +=
-        (rope.current.taret - rope.current.current) * 0.018 * dt
+        (rope.current.target - rope.current.current) * 0.018 * dt
       rope.current.v *= 0.85
       rope.current.current += rope.current.v
 
