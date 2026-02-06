@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-scroll";
+// Using Lenis-powered programmatic scroll instead of react-scroll
+import { scrollToId } from "../utils/scrollTo";
 import { Linkedin, Github, Instagram, ArrowUpRight, Mail } from "lucide-react";
 import { useActiveSection } from "../hooks/useActiveSection";
 
@@ -45,26 +46,22 @@ const Nav = () => {
           : "bg-[#E8E6D9] border-[#1A1A1A] shadow-[8px_8px_0px_0px_#1A1A1A]"}
       `}>
         
-        <Link to="home" smooth={true} spy={true} duration={1000} offset={-100} className="cursor-pointer group">
+        <button onClick={() => scrollToId('home', { offset: -100, duration: 1.0 })} className="cursor-pointer group">
           <div className="flex items-center gap-2">
             <span className={`text-xl md:text-2xl font-serif italic font-medium tracking-tighter transition-colors duration-500
               ${isScrolled ? "text-[#E8E6D9]" : "text-[#1A1A1A]"}`}>
               Portfolio<span className="text-[#EF9144] font-sans not-italic">.</span>
             </span>
           </div>
-        </Link>
+        </button>
 
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => {
             const isActive = activeSection === link.to;
             return (
-              <Link
+              <button
                 key={link.to}
-                to={link.to}
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={1000}
+                onClick={() => scrollToId(link.to, { offset: -80, duration: 1.0 })}
                 className="relative cursor-pointer group py-1"
               >
                 <span className={`
@@ -80,7 +77,7 @@ const Nav = () => {
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-              </Link>
+              </button>
             );
           })}
         </div>
@@ -127,18 +124,13 @@ const Nav = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 + 0.2 }}
                 >
-                  <Link
-                    to={link.to}
-                    spy={true}
-                    smooth={true}
-                    offset={-70}
-                    duration={1000}
-                    onClick={() => setIsOpen(false)}
-                    className="text-5xl font-serif italic text-[#E8E6D9] hover:text-[#EF9144] transition-all block group"
+                  <button
+                    onClick={() => { scrollToId(link.to, { offset: -70, duration: 1.0 }); setIsOpen(false); }}
+                    className="text-5xl font-serif italic text-[#E8E6D9] hover:text-[#EF9144] transition-all block group text-left"
                   >
                     <span className="text-lg font-sans not-italic mr-4 opacity-20 group-hover:opacity-100 transition-opacity">0{i+1}</span>
                     {link.name}
-                  </Link>
+                  </button>
                 </motion.div>
               ))}
             </div>

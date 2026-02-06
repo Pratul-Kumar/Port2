@@ -38,6 +38,25 @@ const techProjects = [
     stack: "Python • XGBoost • Flask",
     desc: "Integrates CatBoost and XGBoost algorithms to accurately predict house prices and recommend properties based on user input.",
     github: "https://github.com/Pratul-Kumar/HousePredication",
+  },
+   {
+    title: "Krishi",
+    stack: "Python • ML • TensorFlow • NumPy • Under Developing",
+    desc: "Krishi Drishti is an integrated platform that leverages deep learning to detect diseases in wheat and rice crops from images, and provides real-time market price information for major crops. The system is designed for farmers, agronomists, and researchers to enable rapid disease diagnosis and informed market decisions.",
+    github: "https://github.com/Pratul-Kumar/krishi",
+  },
+  {
+  title: "Beat Diary (MP Police Project)",
+  stack: "React, Tailwind, Node.js, Express, MongoDB, JWT, Cloudinary, Python",
+  desc: "A secure web platform to digitize daily police beat reporting for Madhya Pradesh Police, replacing manual registers with centralized, real-time data access.",
+  github: "Private / Confidential"
+},
+
+  {
+    title: "Voice Assistant",
+    stack: "Python •NumPy • SpeechRecognition • pytesseract • pillow • wikipedia-api",
+    desc: "Alpha is a professional, robust, and responsive voice assistant for Windows, written in Python. It uses speech recognition and text-to-speech to interact with users, execute commands, fetch information, and automate tasks.",
+    github: "https://github.com/Pratul-Kumar/krishi",
   }
 ];
 
@@ -132,7 +151,7 @@ const Projects = () => {
         <div className="absolute top-[10%] right-[-10%] opacity-[0.08] text-[25vw] font-black leading-none uppercase tracking-tighter -rotate-12">
           Work
         </div>
-        <div className="absolute bottom-[5%] left-[-5%] opacity-[0.08] text-[22vw] font-black leading-none uppercase tracking-tighter rotate-6">
+        <div className="absolute bottom-[25%] left-[5%] opacity-[0.08] text-[22vw] font-black leading-none uppercase tracking-tighter rotate-6">
           Archive
         </div>
 

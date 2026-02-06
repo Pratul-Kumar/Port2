@@ -11,6 +11,7 @@ const LazyImage = ({ src, alt, className = '', placeholder = 'data:image/svg+xml
       alt={alt}
       className={`${className} transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-50'}`}
       loading="lazy"
+      decoding="async"
     />
   )
 }
