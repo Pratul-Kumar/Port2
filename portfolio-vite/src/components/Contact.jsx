@@ -108,7 +108,7 @@ const Contact = () => {
                 </div>
                 <div className="relative z-10 space-y-4">
                     <h3 className="text-[#EF9144] font-black text-xs uppercase tracking-widest">Inquiries</h3>
-                    <a href="mailto:pratulkumar21@gmail.com" className="block text-2xl md:text-3xl hover:underline decoration-4 underline-offset-8 break-all leading-none text-[#1A1A1A]">
+                    <a href="mailto:pratulkumar21@gmail.com" className="block text-xl md:text-3xl hover:underline decoration-4 underline-offset-8 break-all leading-none text-[#1A1A1A]">
                         pratulkumar21@gmail.com
                     </a>
                 </div>
@@ -121,9 +121,9 @@ const Contact = () => {
                       <Phone size={18} strokeWidth={3} />
                     </div>
                     <div>
-                        <div className="text-[9px] font-black uppercase text-[#1A1A1A]/40 mb-1 tracking-widest">Phone</div>
-                        <a href="tel:+919534177010" className="text-base font-black hover:text-[#EF9144] text-[#1A1A1A]">
-                          +91 9534177010
+                        <div className="text-[9px] mt-1 font-black uppercase text-[#1A1A1A]/40 mb-1 tracking-widest">Phone</div>
+                        <a href="tel:+919534177010" className="lg:text-base text-sm font-black hover:text-[#EF9144] text-[#1A1A1A]">
+                          9534177010
                         </a>
                     </div>
                 </div>
