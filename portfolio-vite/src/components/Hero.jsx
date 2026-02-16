@@ -23,7 +23,7 @@ const Hero = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 1.5 },
+      transition: { staggerChildren: 0.12, delayChildren: 0.8 },
     },
   };
 
@@ -45,7 +45,7 @@ const Hero = () => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className='min-h-screen relative text-[#1A1A1A] w-full px-6 lg:px-30 flex flex-col justify-center overflow-hidden py-20 bg-[#E8E6D9]'
+      className='min-h-screen relative text-[#1A1A1A] w-full px-6 lg:px-24 flex flex-col justify-center overflow-hidden py-20 bg-[#E8E6D9]'
     >
       {/* 1. LAYERED BACKGROUND GRADIENTS */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -84,14 +84,15 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className='grid grid-cols-1 lg:grid-cols-12 gap-12 lg:mt-1 mt-20 items-start relative z-10'>
+      <div className='grid grid-cols-1 lg:grid-cols-12 gap-12 lg:mt-1 mt-10 items-start relative z-10'>
         {/* LEFT COLUMN */}
-        <div className="lg:col-span-7 flex flex-col gap-10">
+        <div className="lg:col-span-7 flex flex-col mt-10 gap-10">
           <div className="space-y-4">
             <motion.div variants={itemVariants} className="flex items-center gap-3">
               <span className="h-[2px] w-12 bg-[#EF9144]" />
               <span className="text-xs font-black uppercase tracking-[0.5em] text-[#1A1A1A]/40">
-                Architectural Archive
+                Architecting Intelligent Systems.
+
               </span>
             </motion.div>
 
@@ -120,14 +121,14 @@ const Hero = () => {
               </div>
               <div className="space-y-6">
                 <h3 className="text-2xl font-black uppercase tracking-tight">
-                  Design Intelligence
+                  AI ENGINEERING & DESIGN 
                 </h3>
                 <p className='text-lg leading-relaxed text-[#1A1A1A]/80 font-medium'>
-                  I am a <span className="text-[#1A1A1A] font-bold border-b-2 border-[#EF9144]/40">Multi-Disciplinary Designer</span> specialized in building aesthetic storytelling and high-performance technical architecture. 
+                  I am a <span className="text-[#1A1A1A] font-bold border-b-2 border-[#EF9144]/40">Multi-Disciplinary Engineer & Designer.</span> I write Python, build and deploy AI/ML models, and craft beautiful, user-centered interfaces.
                 </p>
                 <div className="h-[1px] w-full bg-[#1A1A1A]/10" />
                 <p className="text-sm uppercase font-black tracking-widest text-[#1A1A1A]/40">
-                  Ref: Logic & Visual Systems
+                  Ref: Code Model Design & Visual Systems
                 </p>
               </div>
             </div>
@@ -156,8 +157,59 @@ const Hero = () => {
               Visual Design • UI/UX Architecture • Generative Logic • Python Intelligence • Systems Thinking
             </p>
             <p className="text-base text-[#1A1A1A]/70 leading-relaxed italic border-t border-[#1A1A1A]/5 pt-4">
-              "Building digital solutions where <span className="text-[#1A1A1A] font-bold not-italic decoration-[#EF9144] underline-offset-4">mathematical precision</span> meets breathtaking visuals."
+              "Building intelligent systems where <span className="text-[#1A1A1A] font-bold not-italic decoration-[#EF9144] underline-offset-4">algorithmic precision</span> meets beautiful, human-centered design."
             </p>
+          </motion.div>
+
+          <motion.div
+            className="competency-card flex flex-col sm:flex-row items-center justify-between gap-4 px-7 py-4 border-2 border-[#1A1A1A]/5 rounded-3xl bg-white/30 backdrop-blur-sm"
+            variants={itemVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+          >
+            <div className="flex items-center gap-3">
+              <span style={{ fontSize: '1.4rem' }}>🎨</span>
+              <div>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.65rem',
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase',
+                    color: 'var(--orange)',
+                    marginBottom: '3px',
+                  }}
+                >
+                  UI/UX Design
+                </p>
+                <p style={{ fontSize: '0.8rem', color: '#555' }}>
+                  Figma · Wireframing · Prototyping · User Research
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <span style={{ fontSize: '1.4rem' }}>🤖</span>
+              <div>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.65rem',
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase',
+                    color: 'var(--orange)',
+                    marginBottom: '3px',
+                  }}
+                >
+                  AI / ML
+                </p>
+                <p style={{ fontSize: '0.8rem', color: '#555' }}>
+                  TensorFlow · PyTorch · LLMs · GenAI
+                </p>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>

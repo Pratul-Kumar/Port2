@@ -48,8 +48,13 @@ const techProjects = [
   {
   title: "Beat Diary (MP Police Project)",
   stack: "React, Tailwind, Node.js, Express, MongoDB, JWT, Cloudinary, Python",
-  desc: "A secure web platform to digitize daily police beat reporting for Madhya Pradesh Police, replacing manual registers with centralized, real-time data access.",
-  github: "Private / Confidential"
+  desc: (
+  <>
+    A secure web platform to digitize daily police beat reporting for Madhya Pradesh Police, replacing manual registers with centralized, real-time data access. 
+    <strong>( Can't Shared Due to Confidentiality Agreements)</strong>
+  </>
+  ),
+    github: "Private / Confidential"
 },
 
   {
@@ -57,7 +62,14 @@ const techProjects = [
     stack: "Python •NumPy • SpeechRecognition • pytesseract • pillow • wikipedia-api",
     desc: "Alpha is a professional, robust, and responsive voice assistant for Windows, written in Python. It uses speech recognition and text-to-speech to interact with users, execute commands, fetch information, and automate tasks.",
     github: "https://github.com/Pratul-Kumar/krishi",
-  }
+  },
+  {
+  title: "Real-Time Eye Monitoring System",
+  stack: "Python • OpenCV • MediaPipe • NumPy",
+  desc: "A deterministic real-time drowsiness detection system that tracks facial landmarks and computes Eye Aspect Ratio (EAR) and PERCLOS without using neural networks or datasets. Built with a state-machine driven architecture for edge deployment.",
+  github: "https://github.com/Pratul-Kumar/eyedetector.git"
+}
+
 ];
 
 const ProjectCard = ({ p, isTech = false }) => {
