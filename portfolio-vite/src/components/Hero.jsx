@@ -139,11 +139,11 @@ const Hero = () => {
         <div className="lg:col-span-5 flex flex-col gap-10 lg:mt-32">
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row lg:flex-col gap-5">
             <motion.a 
-              href="https://drive.google.com/file/d/1lMNHlZ779wLyh--X8XSCdCtsZXen9a8T/view?usp=sharing"
+              href="https://drive.google.com/file/d/1oUg-r3-DarzzctcS_ZM5FzvfoK-ua2HT/view?usp=sharing"
               whileHover={{ scale: 1.05, x: -10 }}
               className="bg-[#1A1A1A] text-[#E8E6D9] border border-[#1A1A1A]/10 flex items-center justify-between px-10 py-8 rounded-full font-black uppercase tracking-widest text-xs group"
             >
-              Download CV
+              Download Resume
               <Download size={18} className="group-hover:translate-y-1 transition-transform" />
             </motion.a>
           </motion.div>
