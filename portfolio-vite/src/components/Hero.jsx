@@ -232,10 +232,31 @@ const Hero = () => {
         </div>
 
         {/* Project availability badge */}
-        <div className="hidden md:flex items-center gap-4 px-5 py-2 border border-[#1A1A1A]/10 rounded-full bg-white/20 backdrop-blur-sm">
-          <span className="w-2 h-2 rounded-full bg-[#EF9144]" />
-          <span className="text-[9px] font-black uppercase tracking-[0.2em]">Available for projects</span>
-        </div>
+        <motion.a
+          href="https://www.linkedin.com/in/pratul21"
+          target="_blank"
+          rel="noopener noreferrer"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="hidden md:flex items-center gap-4 px-5 py-2 border border-[#1A1A1A]/10 rounded-full bg-white/20 backdrop-blur-sm cursor-pointer transition-all"
+        >
+          <motion.span
+              className="w-2 h-2 rounded-full"
+              animate={{
+                backgroundColor: ["#EF9144", "#c52222", "#3B82F6", "#681bed", "#EF9144"],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+
+          <span className="text-[9px] font-black uppercase tracking-[0.2em]">
+            Let's Connect and Build Something Amazing Together!
+          </span>
+        </motion.a>
+
 
         {/* Micro-Marquee */}
         <div className="overflow-hidden w-40 hidden lg:block border-b border-[#1A1A1A]/20">
