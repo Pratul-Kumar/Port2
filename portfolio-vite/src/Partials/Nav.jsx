@@ -94,8 +94,8 @@ const Nav = () => {
             Connect <ArrowUpRight size={14} className="text-[#EF9144]" />
           </motion.a>
 
-          {/* FIXED: Added 'hidden' to the toggle to ensure it only shows on mobile */}
-          <button onClick={() => setIsOpen(!isOpen)} className="hidden max-md:flex flex-col gap-1.5 p-2 z-[10000]">
+          {/* Mobile hamburger: shows on small screens, hides on md+ */}
+          <button onClick={() => setIsOpen(!isOpen)} className="flex md:hidden flex-col gap-1.5 p-2 z-[10000] min-h-[44px]">
             <motion.span animate={isOpen ? { rotate: 45, y: 8, backgroundColor: "#E8E6D9" } : { rotate: 0, y: 0, backgroundColor: isScrolled ? "#FFF" : "#000" }} className="w-7 h-[2px]" />
             <motion.span animate={isOpen ? { opacity: 0 } : { opacity: 1 }} className="w-5 h-[2px] bg-[#EF9144] self-end" />
             <motion.span animate={isOpen ? { rotate: -45, y: -8, backgroundColor: "#E8E6D9" } : { rotate: 0, y: 0, backgroundColor: isScrolled ? "#FFF" : "#000" }} className="w-7 h-[2px]" />

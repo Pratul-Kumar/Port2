@@ -25,6 +25,24 @@ export const useLenis = () => {
       requestAnimationFrame(raf)
     }
 
+    // Prevent browser from restoring scroll on refresh
+    try {
+      if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual'
+      }
+    } catch {}
+
+    // Ensure starting at top on initial mount
+    try {
+      if (typeof window !== 'undefined') {
+        if (lenis && typeof lenis.scrollTo === 'function') {
+          lenis.scrollTo(0, { duration: 0 })
+        } else {
+          window.scrollTo(0, 0)
+        }
+      }
+    } catch {}
+
     requestAnimationFrame(raf)
 
     return () => {
