@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import Home from './Home'
 import Nav from './Partials/Nav'
 import Loader from './components/Loader'
@@ -9,16 +9,19 @@ import CommandPalette from './components/CommandPalette'
 
 const App = () => {
   useLenis()
+  const [loaded, setLoaded] = useState(false)
+  const handleLoaderFinish = useCallback(() => setLoaded(true), [])
 
   return (
     <div>
-      <Loader />
+      <Loader onFinish={handleLoaderFinish} />
       {/* <NeuralMeshBackground /> */}
-      <Nav />
       <CommandPalette />
       <Home />
       <CommandHint />
       <ScrollToTop />
+      {/* Nav only mounts after loader finishes */}
+      {loaded && <Nav />}
     </div>
   )
 }

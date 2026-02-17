@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Loader() {
+export default function Loader({ onFinish }) {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     // Scroll lock
-    document.body.style.overflow = loading ? 'hidden' : 'unset';
+    document.body.style.overflow = loading ? 'hidden' : '';
 
-    // Precision Timer: 5 Seconds total
+    // Precision Timer
     const duration = 1000; 
     const intervalTime = 10;
     const increment = 100 / (duration / intervalTime);
@@ -18,7 +18,10 @@ export default function Loader() {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer);
-          setTimeout(() => setLoading(false), 200);
+          setTimeout(() => {
+            setLoading(false);
+            if (onFinish) onFinish();
+          }, 200);
           return 100;
         }
         return prev + increment;
@@ -27,9 +30,9 @@ export default function Loader() {
 
     return () => {
       clearInterval(timer);
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     };
-  }, [loading]);
+  }, [loading, onFinish]);
 
   return (
     <AnimatePresence>

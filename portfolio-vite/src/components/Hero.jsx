@@ -84,7 +84,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className='grid grid-cols-1 lg:grid-cols-12 gap-12 lg:mt-1 mt-10 items-start relative z-10'>
+      <div className='grid grid-cols-1 lg:grid-cols-12 gap-12 lg:mt-1 mt-10 items-start relative'>
         {/* LEFT COLUMN */}
         <div className="lg:col-span-7 flex flex-col mt-10 gap-10">
           <div className="space-y-4">
@@ -217,7 +217,7 @@ const Hero = () => {
       {/* --- ADDED CONTENT: EDITORIAL FOOTER BAR --- */}
       <motion.div 
         variants={itemVariants}
-        className="absolute bottom-10 left-0 w-full px-6 lg:px-24 flex flex-col md:flex-row justify-between items-center gap-8 z-20"
+        className="absolute bottom-10 left-0 w-full px-6 lg:px-24 flex flex-col md:flex-row justify-between items-center gap-8"
       >
         {/* Live Status & Clock */}
         <div className="flex items-center gap-8 font-mono text-[10px] font-black uppercase tracking-widest opacity-40">

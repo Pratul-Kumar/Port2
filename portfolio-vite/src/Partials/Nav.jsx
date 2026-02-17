@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-// Using Lenis-powered programmatic scroll instead of react-scroll
 import { scrollToId } from "../utils/scrollTo";
 import { Linkedin, Github, Instagram, ArrowUpRight, Mail } from "lucide-react";
 import { useActiveSection } from "../hooks/useActiveSection";
@@ -21,10 +20,13 @@ const socialLinks = [
   { icon: <Mail size={20} />, url: "mailto:pratulkumar21@gmail.com", label: "Email" },
 ];
 
+const touchStyle = { touchAction: "manipulation", WebkitTapHighlightColor: "transparent" };
+
 const Nav = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const activeSection = useActiveSection(navLinks.map((l) => l.to));
+  const pendingScrollRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 50);
@@ -32,22 +34,72 @@ const Nav = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  /* Simple scroll lock — just overflow hidden + prevent touchmove */
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "unset";
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      const prevent = (e) => e.preventDefault();
+      document.addEventListener("touchmove", prevent, { passive: false });
+      return () => {
+        document.removeEventListener("touchmove", prevent);
+        document.body.style.overflow = "";
+      };
+    } else {
+      document.body.style.overflow = "";
+
+      /* If a scroll target was queued while the menu was closing, execute it now */
+      if (pendingScrollRef.current) {
+        const targetId = pendingScrollRef.current;
+        pendingScrollRef.current = null;
+        /* Give Lenis a beat to recalc after body unlock */
+        setTimeout(() => {
+          const el = document.getElementById(targetId);
+          if (!el) return;
+          /* Bypass Lenis entirely — use native scroll for guaranteed reliability */
+          const top = Math.max(0, el.getBoundingClientRect().top + window.scrollY - 80);
+          window.scrollTo({ top, behavior: "smooth" });
+        }, 50);
+      }
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
+
+  const handleLinkClick = useCallback((e, to) => {
+    e.preventDefault();
+
+    if (isOpen) {
+      /* Store the target — the useEffect above will scroll after menu closes */
+      pendingScrollRef.current = to;
+      setIsOpen(false);
+    } else {
+      scrollToId(to, { offset: -80, duration: 1.0 });
+    }
   }, [isOpen]);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-[9999] px-4 py-6 md:px-12 transition-all duration-500">
+    /* 
+      KEY FIX: No portal, no pointer-events-none.
+      The nav is a normal fixed element with a very high z-index.
+      style={{ isolation: "isolate" }} guarantees its own stacking context.
+    */
+    <nav
+      className="fixed top-0 left-0 w-full z-[99999] px-4 py-6 md:px-12 transition-all duration-500"
+      style={{ isolation: "isolate" }}
+    >
       <div className={`
         mx-auto max-w-7xl flex items-center justify-between
         px-6 md:px-10 py-4 rounded-2xl transition-all duration-500 border-2
-        ${isScrolled 
-          ? "bg-[#1A1A1A] border-[#1A1A1A] shadow-[20px_20px_60px_rgba(0,0,0,0.15)]" 
+        ${isScrolled
+          ? "bg-[#1A1A1A] border-[#1A1A1A] shadow-[20px_20px_60px_rgba(0,0,0,0.15)]"
           : "bg-[#E8E6D9] border-[#1A1A1A] shadow-[8px_8px_0px_0px_#1A1A1A]"}
       `}>
-        
-        <button onClick={() => scrollToId('home', { offset: -100, duration: 1.0 })} className="cursor-pointer group">
+
+        <button
+          type="button"
+          onClick={(e) => handleLinkClick(e, 'home')}
+          className="cursor-pointer group"
+          style={touchStyle}
+        >
           <div className="flex items-center gap-2">
             <span className={`text-xl md:text-2xl font-serif italic font-medium tracking-tighter transition-colors duration-500
               ${isScrolled ? "text-[#E8E6D9]" : "text-[#1A1A1A]"}`}>
@@ -61,9 +113,11 @@ const Nav = () => {
             const isActive = activeSection === link.to;
             return (
               <button
+                type="button"
                 key={link.to}
-                onClick={() => scrollToId(link.to, { offset: -80, duration: 1.0 })}
+                onClick={(e) => handleLinkClick(e, link.to)}
                 className="relative cursor-pointer group py-1"
+                style={touchStyle}
               >
                 <span className={`
                   text-[11px] uppercase tracking-[0.3em] font-black transition-colors duration-300
@@ -94,11 +148,17 @@ const Nav = () => {
             Connect <ArrowUpRight size={14} className="text-[#EF9144]" />
           </motion.a>
 
-          {/* Mobile hamburger: shows on small screens, hides on md+ */}
-          <button onClick={() => setIsOpen(!isOpen)} className="flex md:hidden flex-col gap-1.5 p-2 z-[10000] min-h-[44px]">
-            <motion.span animate={isOpen ? { rotate: 45, y: 8, backgroundColor: "#E8E6D9" } : { rotate: 0, y: 0, backgroundColor: isScrolled ? "#FFF" : "#000" }} className="w-7 h-[2px]" />
-            <motion.span animate={isOpen ? { opacity: 0 } : { opacity: 1 }} className="w-5 h-[2px] bg-[#EF9144] self-end" />
-            <motion.span animate={isOpen ? { rotate: -45, y: -8, backgroundColor: "#E8E6D9" } : { rotate: 0, y: 0, backgroundColor: isScrolled ? "#FFF" : "#000" }} className="w-7 h-[2px]" />
+          {/* Mobile hamburger */}
+          <button
+            type="button"
+            onClick={() => setIsOpen(prev => !prev)}
+            className="flex md:hidden flex-col gap-1.5 p-3 min-w-[48px] min-h-[48px] items-center justify-center cursor-pointer"
+            aria-label="Toggle menu"
+            style={touchStyle}
+          >
+            <motion.span animate={isOpen ? { rotate: 45, y: 8, backgroundColor: "#E8E6D9" } : { rotate: 0, y: 0, backgroundColor: isScrolled ? "#FFF" : "#000" }} className="block w-7 h-[2px]" />
+            <motion.span animate={isOpen ? { opacity: 0 } : { opacity: 1 }} className="block w-5 h-[2px] bg-[#EF9144] self-end" />
+            <motion.span animate={isOpen ? { rotate: -45, y: -8, backgroundColor: "#E8E6D9" } : { rotate: 0, y: 0, backgroundColor: isScrolled ? "#FFF" : "#000" }} className="block w-7 h-[2px]" />
           </button>
         </div>
       </div>
@@ -110,13 +170,14 @@ const Nav = () => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 200 }}
-            className="fixed inset-0 bg-[#1A1A1A] z-[9998] flex flex-col p-8 pt-32 justify-between"
+            className="fixed inset-0 bg-[#1A1A1A] z-[99998] flex flex-col p-8 pt-32 justify-between"
+            style={{ touchAction: "none" }}
           >
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.02] text-[40vw] font-black text-white pointer-events-none select-none">
               MENU
             </div>
 
-            <div className="flex flex-col gap-6 relative z-10">
+            <div className="flex flex-col gap-6 relative z-10 w-full">
               <p className="text-[#EF9144] font-mono text-[10px] uppercase tracking-[0.5em] mb-2">Navigation_Index</p>
               {navLinks.map((link, i) => (
                 <motion.div
@@ -124,10 +185,13 @@ const Nav = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 + 0.2 }}
+                  className="w-full"
                 >
                   <button
-                    onClick={() => { scrollToId(link.to, { offset: -70, duration: 1.0 }); setIsOpen(false); }}
-                    className="text-5xl font-serif italic text-[#E8E6D9] hover:text-[#EF9144] transition-all block group text-left"
+                    type="button"
+                    onClick={(e) => handleLinkClick(e, link.to)}
+                    className="text-5xl font-serif italic text-[#E8E6D9] hover:text-[#EF9144] transition-all block group text-left w-full py-2"
+                    style={touchStyle}
                   >
                     <span className="text-lg font-sans not-italic mr-4 opacity-20 group-hover:opacity-100 transition-opacity">0{i+1}</span>
                     {link.name}
@@ -148,6 +212,7 @@ const Nav = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 + (i * 0.1) }}
                     className="group flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-[#EF9144] hover:border-[#EF9144] transition-all duration-300"
+                    style={touchStyle}
                   >
                     <div className="text-[#E8E6D9] group-hover:text-[#1A1A1A] transition-colors">
                       {social.icon}

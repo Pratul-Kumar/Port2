@@ -13,7 +13,9 @@ const LazySectionWrapper = ({ children, className = '' }) => {
           : 'opacity-0 translate-y-10'
       } ${className}`}
     >
-      {isVisible && children}
+      {/* Always render children so their id attributes exist in the DOM
+          for programmatic scrolling (nav links). The visual reveal is CSS-only. */}
+      {children}
     </div>
   )
 }
