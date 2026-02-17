@@ -1,6 +1,15 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Star, Crown, Megaphone, Sparkles } from 'lucide-react';
+import React from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring
+} from "framer-motion";
+import { Star, Crown, Megaphone, Sparkles } from "lucide-react";
+
+/* =========================
+   DATA
+========================= */
 
 const achievementsData = [
   {
@@ -8,162 +17,190 @@ const achievementsData = [
     organization: "Student Council",
     period: "2025 - 2026",
     icon: <Crown size={24} strokeWidth={3} />,
-    description: "Leading student initiatives and managing complex campus events while bridging the gap between administration and the student body.",
-    tags: ["Leadership", "Management"],
+    description:
+      "Leading student initiatives and managing large-scale campus operations while bridging administration and students.",
+    tags: ["Leadership", "Management"]
   },
   {
-    role: "Co-Founder and CMO",
+    role: "Co-Founder & CMO",
     organization: "Zintrix Technologies",
     period: "Present",
     icon: <Megaphone size={24} strokeWidth={3} />,
-    description: "WE BUILD TO GROW - At Zintrix, we don't just build websites; we build tools that grow your business. We combine expert software development with smart marketing strategies to make sure your brand stands out and sells",
-    tags: ["Website Building", "Growth", "Marketing"],
+    description:
+      "Building scalable digital systems and growth-focused marketing infrastructures.",
+    tags: ["Growth", "Strategy", "Tech"]
   },
   {
     role: "Open Source Mentor",
     organization: "GSSOC 2025",
     period: "2025",
     icon: <Star size={24} strokeWidth={3} />,
-    description: "Selected as an industry mentor to guide global contributors in open-source development and conduct high-level code reviews.",
-    tags: ["Mentorship", "Open Source"],
+    description:
+      "Mentoring global contributors and conducting high-level engineering reviews.",
+    tags: ["Open Source", "Mentorship"]
   },
   {
     role: "Co-Founder",
     organization: "Raina News",
     period: "2020-2026",
     icon: <Megaphone size={24} strokeWidth={3} />,
-    description: "Founded and scaled a digital media news channel on social media, amassing a massive community of over 120K+ followers.",
-    tags: ["Media", "Growth"],
+    description:
+      "Scaled a digital news platform to 120K+ followers across social platforms.",
+    tags: ["Media", "Community"]
   }
 ];
 
-const AchievementCard = ({ item }) => {
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.6, ease: "easeOut" } 
-    }
-  };
+/* =========================
+   CARD
+========================= */
 
+const AchievementCard = ({ item }) => {
   return (
     <motion.div
-      variants={itemVariants}
-      whileHover={{ x: -6, y: -6 }}
-      className="group relative p-10 bg-white/40 backdrop-blur-md border-2 border-[#1A1A1A] flex flex-col min-h-[380px] shadow-[10px_10px_0px_0px_#1A1A1A] hover:shadow-[15px_15px_0px_0px_#EF9144] transition-all duration-300"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -8 }}
+      whileTap={{ scale: 0.97 }}
+      transition={{ duration: 0.6 }}
+      className="group relative flex flex-col h-full cursor-pointer"
     >
-      <div className="relative z-10 flex flex-col h-full">
-        <div className="flex justify-between items-start mb-12">
+      {/* Offset Shadow */}
+      {/* <div className="absolute  translate-x-2 translate-y-2 rounded-2xl bg-[#000000] hover:bg-[#ff7f2d] transition-transform group-hover:translate-x-3 group-hover:translate-y-3" /> */}
+
+      {/* Main Card */}
+      <div className="relative p-10  rounded-2xl border-2 border-[#1A1A1A] bg-white/50 shadow-[4px_4px_0px_0px_#1A1A1A] hover:shadow-[4px_4px_0px_0px_#ff7f2d]/80 backdrop-blur-sm flex flex-col h-full">
+
+        {/* Header */}
+        <div className="flex justify-between items-start mb-10">
           <div className="p-4 bg-[#EF9144] border-2 border-[#1A1A1A] rounded-xl shadow-[4px_4px_0px_0px_#1A1A1A] text-[#1A1A1A]">
             {item.icon}
           </div>
-          <span className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-widest bg-[#E8E6D9]/50 px-4 py-2 border border-[#1A1A1A]/10 rounded-full">
+
+          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#1A1A1A]/50">
             {item.period}
           </span>
         </div>
 
+        {/* Title */}
         <div className="mb-6">
-          <h3 className="text-3xl font-black text-[#1A1A1A] uppercase tracking-tighter leading-none group-hover:text-[#EF9144] transition-colors">
+          <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter leading-none text-[#1A1A1A] group-hover:text-[#EF9144] transition-colors">
             {item.role}
           </h3>
-          <p className="text-[10px] font-black text-[#EF9144] uppercase tracking-[0.2em] mt-3 font-mono">
+
+          <p className="text-[10px] font-black text-[#EF9144] uppercase tracking-[0.3em] mt-3 font-mono">
             {item.organization}
           </p>
         </div>
 
-        <p className="text-[#1A1A1A]/70 text-sm leading-relaxed mb-10 flex-grow font-medium">
+        {/* Description */}
+        <p className="text-sm text-zinc-600 leading-relaxed mb-10 flex-grow">
           {item.description}
         </p>
 
-        <div className="flex flex-wrap gap-2 pt-6 border-t-2 border-[#1A1A1A]/5">
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2 pt-6 border-t-2 border-[#E8E6D9]">
           {item.tags.map((tag, i) => (
-            <span key={i} className="text-[9px] px-3 py-1 bg-[#E8E6D9]/80 border border-[#1A1A1A] font-black uppercase tracking-widest text-[#1A1A1A]">
+            <span
+              key={i}
+              className="text-[9px] px-3 py-1 border border-[#1A1A1A]
+                         font-black uppercase tracking-widest
+                         bg-[#E8E6D9]/70 text-[#1A1A1A]"
+            >
               {tag}
             </span>
           ))}
         </div>
+
+        <Sparkles
+          className="absolute bottom-6 right-6 text-[#EF9144] opacity-5 group-hover:opacity-20 transition-opacity"
+          size={36}
+        />
       </div>
-      
-      <Sparkles className="absolute bottom-6 right-6 text-[#EF9144] opacity-5 group-hover:opacity-20 transition-opacity" size={40} />
     </motion.div>
   );
 };
 
+/* =========================
+   SECTION
+========================= */
+
 const Achievements = () => {
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const smoothY = useSpring(y, { stiffness: 50, damping: 20 });
+
   return (
-    <section id="achievements" className="relative py-24 md:py-32 bg-[#E8E6D9] overflow-hidden">
-      
-      {/* 1. LAYERED BACKGROUND GRADIENTS */}
+    <section
+      id="achievements"
+      className="relative py-32 bg-[#E8E6D9] overflow-hidden"
+    >
+      {/* ===== ORANGE ATMOSPHERIC BACKDROP ===== */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div 
-          className="absolute bottom-[-10%] left-[-5%] w-[70vw] h-[70vw] opacity-50 blur-[120px] rounded-full"
-          style={{ background: 'radial-gradient(circle, #EF9144 0%, transparent 70%)' }}
+        <div
+          className="absolute top-[-20%] left-[-10%] w-[80vw] h-[80vw] 
+                     opacity-40 blur-[140px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(239,145,68,0.6) 0%, rgba(239,145,68,0.25) 40%, transparent 70%)"
+          }}
         />
-        <div 
-          className="absolute top-[5%] right-[-10%] w-[60vw] h-[60vw] opacity-30 blur-[100px] rounded-full"
-          style={{ background: 'radial-gradient(circle, #D4CDB3 0%, transparent 70%)' }}
+        <div
+          className="absolute bottom-[-15%] right-[-10%] w-[70vw] h-[70vw] 
+                     opacity-30 blur-[120px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(239,145,68,0.5) 0%, rgba(239,145,68,0.15) 50%, transparent 75%)"
+          }}
         />
       </div>
 
-      {/* 2. TEXTURE & WATERMARK OVERLAYS */}
-      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-[0.06] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
-        
-        {/* Editorial Text Watermarks */}
-        <div className="absolute top-[10%] left-[3%] opacity-[0.08] text-[22vw] font-black text-[#1A1A1A] leading-none uppercase tracking-tighter -rotate-6">
+      {/* ===== PARALLAX WATERMARK ===== */}
+      <motion.div
+        style={{ y: smoothY }}
+        className="absolute inset-0 pointer-events-none select-none"
+      >
+        <div className="absolute top-[15%] left-[3%] opacity-[0.05] text-[22vw] font-black uppercase tracking-tighter -rotate-6 text-[#1A1A1A]">
           Honors
-        </div> 
-        <div className="absolute bottom-[20%] right-[-1%] opacity-[0.08] text-[10vw] font-black text-[#1A1A1A] leading-none uppercase tracking-tighter -rotate-6">
-          Appreciation
-        </div>
-       
-
-        {/* --- FOUR-POINT LINE STARS WATERMARKS --- */}
-        <div className="absolute top-[20%] right-[15%] opacity-[0.06] text-[#EF9144] rotate-[15deg]">
-          <svg width="280" height="280" viewBox="0 0 100 100" fill="none">
-             <path d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48L50 0Z" fill="currentColor" />
-          </svg>
         </div>
 
-        <div className="absolute bottom-[15%] left-[10%] opacity-[0.04] text-[#EF9144] -rotate-12">
-          <svg width="350" height="350" viewBox="0 0 100 100" fill="none">
-             <path d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48L50 0Z" fill="currentColor" />
-          </svg>
+        <div className="absolute bottom-[10%] right-[5%] opacity-[0.05] text-[14vw] font-black uppercase tracking-tighter rotate-12 text-[#1A1A1A]">
+          Recognition
         </div>
+      </motion.div>
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.02] text-[#EF9144]">
-          <svg width="500" height="500" viewBox="0 0 100 100" fill="none">
-             <path d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48L50 0Z" fill="currentColor" />
-          </svg>
-        </div>
-      </div>
+      <div className="relative max-w-8xl mx-auto lg:px-35 px-6 z-10">
 
-      <div className="mx-auto max-w-8xl lg:px-35 px-6 relative z-10">
-        
-        <div className="mb-24">
+        {/* HEADER */}
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="mb-24"
+        >
           <div className="flex items-center gap-4 mb-6">
             <span className="h-[2px] w-12 bg-[#EF9144]" />
-            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#1A1A1A]/60">Achievement_Ref_2026</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#1A1A1A]/60">
+              My Achievements
+            </span>
           </div>
-          <h2 className="text-6xl md:text-8xl lg:text-[12vh] font-black text-[#1A1A1A] uppercase tracking-tighter leading-none">
-            Honors & <br /> <span className="text-[#EF9144] font-serif italic font-light lowercase">Recognitions.</span>
-          </h2>
-        </div>
 
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{
-            visible: { transition: { staggerChildren: 0.15 } }
-          }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-        >
+          <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none text-[#1A1A1A]">
+            Honors & <br />
+            <span className="text-[#EF9144] font-serif italic font-light lowercase">
+              Recognitions.
+            </span>
+          </h2>
+        </motion.div>
+
+        {/* CARDS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {achievementsData.map((item, idx) => (
             <AchievementCard key={idx} item={item} />
           ))}
-        </motion.div>
+        </div>
+
       </div>
     </section>
   );

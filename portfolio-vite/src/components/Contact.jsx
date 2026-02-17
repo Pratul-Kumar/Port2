@@ -70,7 +70,7 @@ const Contact = () => {
             <div className="space-y-6">
               <div className="flex items-center gap-4">
                  <span className="h-[2px] w-12 bg-[#EF9144]" />
-                 <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-50 text-[#1A1A1A]">Section_04</span>
+                 <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-50 text-[#1A1A1A]">Thanks For Visitng, Now</span>
               </div>
               
               <div>

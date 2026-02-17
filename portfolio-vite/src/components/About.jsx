@@ -59,7 +59,7 @@ const About = () => {
           <span className="text-[#EF9144] font-black text-2xl font-serif italic">01.</span>
           <div className="h-[2px] w-16 bg-[#EF9144]" />
           <span className="text-[#1A1A1A]/60 font-bold text-xs uppercase tracking-[0.4em]">
-            The Persona
+            About Me
           </span>
         </div>
 
