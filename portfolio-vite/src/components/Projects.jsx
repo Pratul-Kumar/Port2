@@ -51,7 +51,7 @@ const techProjects = [
   desc: (
   <>
     A secure web platform to digitize daily police beat reporting for Madhya Pradesh Police, replacing manual registers with centralized, real-time data access. 
-    <strong>( Can't Shared Due to Confidentiality Agreements)</strong>
+    <strong>( Can't Share Due to Confidentiality Agreements)</strong>
   </>
   ),
     github: "Private / Confidential"
@@ -68,7 +68,14 @@ const techProjects = [
   stack: "Python • OpenCV • MediaPipe • NumPy",
   desc: "A deterministic real-time drowsiness detection system that tracks facial landmarks and computes Eye Aspect Ratio (EAR) and PERCLOS without using neural networks or datasets. Built with a state-machine driven architecture for edge deployment.",
   github: "https://github.com/Pratul-Kumar/eyedetector.git"
+},
+  {
+  title: "Lane-Based Car Dodging Game",
+  stack: "Python • Pygame",
+  desc: "A real-time 2D lane-based car game built using a deterministic game loop architecture. Implements discrete lane switching, procedural vehicle spawning, rectangle-based collision detection, and progressive difficulty scaling using frame-timed state management.",
+  github: "https://github.com/Pratul-Kumar/CarRunner.git"
 }
+
 
 ];
 
