@@ -9,7 +9,7 @@ const items = [
   { label: 'Go to Projects', action: () => scrollToId('projects', { offset: -80, duration: 1.0 }) },
   { label: 'Go to Achievements', action: () => scrollToId('achievements', { offset: -80, duration: 1.0 }) },
   { label: 'Go to Contact', action: () => scrollToId('contact', { offset: -80, duration: 1.0 }) },
-  { label: 'Open Resume', action: () => window.open('https://drive.google.com/file/d/1oUg-r3-DarzzctcS_ZM5FzvfoK-ua2HT/view?usp=sharing', '_blank') },
+  { label: 'Open Resume', action: () => window.open('https://drive.google.com/file/d/1lpONqi9hVFXy_SDI6cD7DMeZU16G4U8n/view?usp=sharing', '_blank') },
 ]
 
 const CommandPalette = () => {
