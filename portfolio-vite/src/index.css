@@ -10,13 +10,26 @@ html {
   scrollbar-width: none;
 }
 
-body{
-background: linear-gradient(
-  to right,
-  rgba(17, 17, 17, 1),
-  rgba(22, 22, 22, 1),
-  rgba(17, 17, 17, 1)
-);
+body {
+  background: #030712;
+  color: #f1f5f9;
+}
+
+:root {
+  --color-bg: #030712;
+  --color-text-main: #fff;
+  --color-text-secondary: #f1f5f9;
+  --color-text-accent: #94a3b8;
+  --gradient-blue: rgba(59, 130, 246, 0.8);
+  --gradient-cyan: rgba(6, 182, 212, 0.8);
+  --gradient-purple: rgba(168, 85, 247, 0.8);
+  --gradient-pink: rgba(236, 72, 153, 0.8);
+  --gradient-orange: rgba(249, 115, 22, 0.8);
+  --gradient-red: rgba(239, 68, 68, 0.8);
+  --gradient-yellow: rgba(234, 179, 8, 0.8);
+  --gradient-green: rgba(34, 197, 94, 0.8);
+  --gradient-emerald: rgba(16, 185, 129, 0.8);
+  --gradient-teal: rgba(20, 184, 166, 0.8);
 }
 
 @keyframes scan {
