@@ -32,12 +32,12 @@ const Nav = () => {
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
-    
+
     // Check initial body class on mount (for page reloads)
     if (document.body.classList.contains('terminal-mode')) {
-        setIsTerminalMode(true);
+      setIsTerminalMode(true);
     }
-    
+
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -48,15 +48,15 @@ const Nav = () => {
   }, []);
 
   const toggleTerminalMode = () => {
-     setIsTerminalMode(prev => {
-        const next = !prev;
-        if (next) {
-            document.body.classList.add('terminal-mode');
-        } else {
-            document.body.classList.remove('terminal-mode');
-        }
-        return next;
-     });
+    setIsTerminalMode(prev => {
+      const next = !prev;
+      if (next) {
+        document.body.classList.add('terminal-mode');
+      } else {
+        document.body.classList.remove('terminal-mode');
+      }
+      return next;
+    });
   };
 
   useEffect(() => {
@@ -151,16 +151,16 @@ const Nav = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          
+
           {/* Training vs Inference Mode Toggle */}
-          <button
+          {/* <button
              onClick={toggleTerminalMode}
              className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono uppercase tracking-widest font-bold transition-all border ${isTerminalMode ? 'bg-[#10B981] text-black border-[#10B981] shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-gray-100/80 text-gray-500 border-gray-200 hover:text-black hover:border-gray-300'}`}
              title={isTerminalMode ? "Switch to Inference Mode (Design UI)" : "Switch to Training Mode (IDE Terminal)"}
           >
              {isTerminalMode ? <Terminal size={14} /> : <Layout size={14} />}
              <span>{isTerminalMode ? 'Training' : 'Inference'}</span>
-          </button>
+          </button> */}
 
           <motion.a
             href="mailto:pratulkumar21@gmail.com"
