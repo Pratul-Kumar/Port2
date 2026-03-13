@@ -57,17 +57,19 @@ const CommandHint = () => {
           onClick={openPalette}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          className="fixed right-24 bottom-20 z-[99999] hidden md:flex items-center gap-3 px-4 py-3 rounded-2xl border-2 border-[#1A1A1A] bg-[#E8E6D9]/95 shadow-[6px_6px_0px_0px_#1A1A1A]"
+          className="fixed right-6 md:right-12 bottom-8 z-[90000] hidden md:flex items-center gap-3 px-5 py-3 rounded-full border border-gray-200 bg-white/90 backdrop-blur-md shadow-xl"
           aria-label="Open command palette"
         >
-          <Command size={16} className="text-[#EF9144]" />
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#1A1A1A]">
-            Press Ctrl + K
+          <div className="flex items-center justify-center w-6 h-6 rounded-md bg-gray-100 border border-gray-200">
+             <Command size={12} className="text-[#FF6B00]" />
+          </div>
+          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-500">
+            System Override <span className="bg-gray-100 px-1.5 py-0.5 rounded text-gray-400 ml-1">Ctrl+K</span>
           </span>
           <span
             onClick={dismiss}
             aria-label="Dismiss"
-            className="ml-2 inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#1A1A1A] text-[#E8E6D9]"
+            className="ml-2 inline-flex items-center justify-center w-5 h-5 rounded-full text-gray-300 hover:text-gray-600 hover:bg-gray-100 transition-colors"
           >
             ×
           </span>

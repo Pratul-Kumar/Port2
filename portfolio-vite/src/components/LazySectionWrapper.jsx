@@ -1,23 +1,26 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import { useLazyLoad } from '../hooks/useLazyLoad'
 
 const LazySectionWrapper = ({ children, className = '' }) => {
   const [ref, isVisible] = useLazyLoad()
 
   return (
-    <div
+    <motion.div
       ref={ref}
-      className={`transition-all duration-700 ${
-        isVisible
-          ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-10'
-      } ${className}`}
+      initial={{ opacity: 0, y: 30, scale: 0.98 }}
+      animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ 
+        duration: 0.8, 
+        ease: [1, 0, 0, 1], // Custom cubic-bezier for snappy feel
+        scale: { type: "spring", stiffness: 100, damping: 20 }
+      }}
+      className={`relative ${className}`}
     >
-      {/* Always render children so their id attributes exist in the DOM
-          for programmatic scrolling (nav links). The visual reveal is CSS-only. */}
       {children}
-    </div>
+    </motion.div>
   )
 }
 
 export default LazySectionWrapper
+

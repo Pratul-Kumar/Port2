@@ -1,181 +1,146 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Mail, MapPin, Phone, Github, Linkedin, Instagram, ArrowUpRight, Palette } from 'lucide-react';
-import { Typewriter } from 'react-simple-typewriter';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, ArrowUpRight } from 'lucide-react';
 
 const Contact = () => {
   const currentYear = new Date().getFullYear();
 
+  const traits = [
+    "Available for new opportunities",
+    "Designing art & interfaces",
+    "Building logic & systems"
+  ];
+  
+  const [traitIndex, setTraitIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTraitIndex((prev) => (prev + 1) % traits.length);
+    }, 2500);
+    return () => clearInterval(timer);
+  }, [traits.length]);
+
   return (
-    <footer id="contact" className="relative pt-24 pb-12 overflow-hidden bg-[#E8E6D9] text-[#1A1A1A]">
+    <footer id="contact" className="relative pt-12 pb-12 overflow-hidden text-[#0A0A0A] border-t border-dashed border-gray-200">
       
-      {/* 1. LAYERED BACKGROUND GRADIENTS (Matching site theme) */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Soft orange warmth from the bottom-left */}
-        <div 
-          className="absolute bottom-[-10%] left-[-10%] w-[70vw] h-[70vw] opacity-40 blur-[120px] rounded-full"
-          style={{ background: 'radial-gradient(circle, #EF9144 0%, transparent 70%)' }}
-        />
-        {/* Ambient tan glow from the top-right */}
-        <div 
-          className="absolute top-[-5%] right-[-5%] w-[60vw] h-[60vw] opacity-30 blur-[100px] rounded-full"
-          style={{ background: 'radial-gradient(circle, #D4CDB3 0%, transparent 70%)' }}
-        />
-      </div>
+      {/* Shared global background applied */}
 
-      {/* 2. TEXTURE & WATERMARK OVERLAYS */}
-      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-        {/* Paper Grain Texture */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-[0.06] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
-        
-        {/* Background Accent Watermark */}
-        <div className="absolute right-[-2%] bottom-[5%] opacity-[0.06] text-[20vw] font-black pointer-events-none select-none tracking-tighter uppercase leading-none italic">
-          Connect
-        </div>
-
-        {/* --- FOUR-POINT LINE STARS WATERMARKS --- */}
-        <div className="absolute top-[20%] left-[5%] opacity-[0.05] text-[#EF9144]">
-          <svg width="200" height="200" viewBox="0 0 100 100" fill="none">
-             <path d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48L50 0Z" fill="currentColor" />
-          </svg>
-        </div>
-
-        <div className="absolute bottom-[10%] right-[15%] opacity-[0.03] text-[#EF9144] rotate-[45deg]">
-          <svg width="300" height="300" viewBox="0 0 100 100" fill="none">
-             <path d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48L50 0Z" fill="currentColor" />
-          </svg>
-        </div>
-      </div>
-
-      {/* EDITORIAL MARQUEE BANNER */}
-      <div className="absolute top-0 w-full overflow-hidden whitespace-nowrap border-b-2 border-[#1A1A1A] bg-[#1A1A1A] py-3 z-20">
-        <motion.div 
-          animate={{ x: [0, -1000] }} 
-          transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
-          className="inline-block"
+      {/* MARQUEE ANIMATION (Horizontal Scroll) */}
+      <div className="w-full overflow-hidden py-4 mb-20 bg-[#FF6B00] border-y border-[#FF6B00]/20 flex relative z-10 shadow-sm">
+        <motion.div
+           animate={{ x: [0, "-50%"] }}
+           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+           className="flex whitespace-nowrap w-fit shrink-0"
         >
-          {[...Array(12)].map((_, i) => (
-            <span key={i} className="mx-12 text-[10px] font-black uppercase tracking-[0.4em] text-[#E8E6D9] whitespace-nowrap">
-              ◆ Open For Opportunities ◆ Design Architect ◆ Building Logic ◆ 
-            </span>
+          {/* Duplicate set to allow seamless -50% loop */}
+          {[1, 2].map((id) => (
+             <div key={id} className="flex shrink-0">
+               {Array(4).fill(null).map((_, i) => (
+                 <React.Fragment key={`${id}-${i}`}>
+                    <span className="text-sm font-mono font-bold uppercase text-white tracking-[0.2em] mx-6">
+                      OPEN FOR OPPORTUNITIES
+                    </span>
+                    <span className="text-[#0A0A0A] mx-2">✦</span>
+                    <span className="text-sm font-mono font-bold uppercase text-white tracking-[0.2em] mx-6">
+                      DESIGNING ART
+                    </span>
+                    <span className="text-[#0A0A0A] mx-2">✦</span>
+                    <span className="text-sm font-mono font-bold uppercase text-white tracking-[0.2em] mx-6">
+                      BUILDING LOGIC
+                    </span>
+                    <span className="text-[#0A0A0A] mx-2">✦</span>
+                 </React.Fragment>
+               ))}
+             </div>
           ))}
         </motion.div>
       </div>
 
-      <div className="mx-auto max-w-8xl lg:px-35 px-6 lg:px-12 relative z-10 pt-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20">
-          
-          {/* LEFT COLUMN: EDITORIAL HEADLINE */}
-          <div className="lg:col-span-7 space-y-10 flex flex-col justify-center">
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                 <span className="h-[2px] w-12 bg-[#EF9144]" />
-                 <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-50 text-[#1A1A1A]">Thanks For Visitng, Now</span>
-              </div>
-              
-              <div>
-                <h2 className="text-7xl md:text-9xl lg:text-[14vh] font-black uppercase tracking-tighter leading-[0.8] mb-4 text-[#1A1A1A]">
-                  Let's
-                </h2>
-                <p className="text-5xl md:text-9xl lg:text-[12vh] font-black uppercase tracking-tighter leading-[0.8]">
-                  <span className="text-[#EF9144] italic font-serif font-light lowercase">
-                    <Typewriter
-                      words={['connect.', 'build.', 'collaborate.', 'create.']}
-                      loop={0} cursor cursorStyle='_' typeSpeed={70} deleteSpeed={40} delaySpeed={2000}
-                    />
-                  </span>
-                </p>
-              </div>
-            </div>
-            
-            <div className="max-w-xl border-l-4 border-[#EF9144] pl-8">
-              <p className="text-xl md:text-2xl font-medium leading-relaxed opacity-80 text-[#1A1A1A]">
-                Merging <span className="font-black underline decoration-2 underline-offset-4 decoration-[#EF9144]">technical precision</span> with creative innovation. Based in India • Designing for the global interface.
-              </p>
-            </div>
+      <div className="max-w-4xl mx-auto px-6 relative z-10 flex flex-col items-center text-center">
+        
+        <motion.div
+           initial={{ opacity: 0, y: 30 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+           className="flex flex-col items-center"
+        >
+          {/* Animated Status Indicator */}
+          <div className="inline-flex items-center gap-3 mb-12 px-6 py-2 border border-gray-200 rounded-full bg-white shadow-sm overflow-hidden h-[42px] min-w-[280px]">
+             <span className="relative flex h-2 w-2 shrink-0">
+               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+             </span>
+             <div className="relative flex-grow h-full flex items-center justify-start pointer-events-none">
+               <AnimatePresence mode="popLayout">
+                 <motion.span
+                   key={traitIndex}
+                   initial={{ y: 20, opacity: 0 }}
+                   animate={{ y: 0, opacity: 1 }}
+                   exit={{ y: -20, opacity: 0 }}
+                   transition={{ duration: 0.4, ease: "easeInOut" }}
+                   className="absolute text-xs font-mono font-medium text-gray-500 uppercase tracking-widest whitespace-nowrap"
+                 >
+                   {traits[traitIndex]}
+                 </motion.span>
+               </AnimatePresence>
+             </div>
           </div>
 
-          {/* RIGHT COLUMN: BRUTALIST CONTACT CARDS */}
-          <div className="lg:col-span-5 flex flex-col justify-center gap-6">
-            
-            {/* MAIN EMAIL CARD */}
-            <motion.div 
-              whileHover={{ x: -4, y: -4 }}
-              className="p-10 bg-white/40 backdrop-blur-md border-2 border-[#1A1A1A] shadow-[8px_8px_0px_0px_#1A1A1A] hover:shadow-[12px_12px_0px_0px_#EF9144] transition-all group relative overflow-hidden"
-            >
-                <div className="absolute -bottom-10 -right-10 opacity-[0.03] group-hover:opacity-10 transition-opacity">
-                    <Mail size={160} strokeWidth={3} />
-                </div>
-                <div className="relative z-10 space-y-4">
-                    <h3 className="text-[#EF9144] font-black text-xs uppercase tracking-widest">Inquiries</h3>
-                    <a href="mailto:pratulkumar21@gmail.com" className="block text-xl md:text-3xl hover:underline decoration-4 underline-offset-8 break-all leading-none text-[#1A1A1A]">
-                        pratulkumar21@gmail.com
-                    </a>
-                </div>
-            </motion.div>
+          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black font-heading tracking-tight leading-[1.1] text-[#0A0A0A] mb-16">
+            Let's build something <br className="hidden md:block"/>
+            <span style={{ fontFamily: 'var(--font-dotted)' }} className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF6B00] to-[#FF9E5E] tracking-[0.05em] drop-shadow-sm">meaningful.</span>
+          </h2>
 
-            {/* INFO GRID */}
-            <div className="grid grid-cols-2 gap-6">
-                <div className="p-8 bg-white/40 backdrop-blur-md border-2 border-[#1A1A1A] shadow-[8px_8px_0px_0px_#1A1A1A] flex flex-col justify-between h-40">
-                    <div className="bg-[#EF9144] w-fit p-2 border-2 border-[#1A1A1A] rounded-lg shadow-[3px_3px_0px_0px_#1A1A1A]">
-                      <Phone size={18} strokeWidth={3} />
-                    </div>
-                    <div>
-                        <div className="text-[9px] mt-1 font-black uppercase text-[#1A1A1A]/40 mb-1 tracking-widest">Phone</div>
-                        <a href="tel:+919534177010" className="lg:text-base text-sm font-black hover:text-[#EF9144] text-[#1A1A1A]">
-                          9534177010
-                        </a>
-                    </div>
-                </div>
+          <motion.a
+            href="mailto:pratulkumar21@gmail.com"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+            className="group relative inline-flex items-center justify-center bg-[#FF6B00] text-white px-8 py-4 md:px-12 md:py-6 rounded-2xl font-medium overflow-hidden transition-all shadow-[0_0_40px_-10px_rgba(255,107,0,0.5)] hover:shadow-[0_0_60px_-15px_rgba(255,107,0,0.7)]"
+          >
+            <span className="relative z-10 flex items-center gap-3 text-lg font-bold">
+              <Mail size={20} />
+              Contact Me
+            </span>
+            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+          </motion.a>
 
-                <div className="p-8 bg-white/40 backdrop-blur-md border-2 border-[#1A1A1A] shadow-[8px_8px_0px_0px_#1A1A1A] flex flex-col justify-between h-40">
-                    <div className="bg-[#1A1A1A] text-white w-fit p-2 border-2 border-[#1A1A1A] rounded-lg shadow-[3px_3px_0px_0px_#EF9144]">
-                      <MapPin size={18} strokeWidth={3} />
-                    </div>
-                    <div>
-                        <div className="text-[9px] font-black uppercase text-[#1A1A1A]/40 mb-1 tracking-widest">Location</div>
-                        <div className="text-base font-black text-[#1A1A1A]">Bhopal, India</div>
-                    </div>
-                </div>
-            </div>
-
-            {/* SOCIAL BAR */}
-            <div className="grid grid-cols-4 gap-4">
-                {[
-                  { icon: <Github size={20} strokeWidth={3}/>, url: 'https://github.com/Pratul-Kumar' },
-                  { icon: <Linkedin size={20} strokeWidth={3}/>, url: 'https://linkedin.com/in/pratul21/' },
-                  { icon: <Instagram size={20} strokeWidth={3}/>, url: 'https://instagram.com/pratul._.pandey/' },
-                ].map((item, i) => (
-                  <motion.a 
-                    key={i} 
-                    href={item.url} 
-                    target="_blank" 
-                    whileHover={{ scale: 1.1, backgroundColor: '#EF9144' }}
-                    className="h-14 bg-white/40 backdrop-blur-md border-2 border-[#1A1A1A] flex items-center justify-center transition-all shadow-[4px_4px_0px_0px_#1A1A1A] hover:shadow-none text-[#1A1A1A]"
-                  >
-                    {item.icon}
-                  </motion.a>
-                ))}
-            </div>
-
+          {/* Social Links Minimal */}
+          <div className="flex items-center gap-8 mt-20 mb-32">
+             <a href="https://github.com/Pratul-Kumar" target="_blank" rel="noreferrer" className="text-sm font-bold font-mono uppercase tracking-widest text-gray-500 hover:text-[#FF6B00] transition-colors relative group">
+               Github
+               <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#FF6B00] transition-all duration-300 group-hover:w-full" />
+             </a>
+             <a href="https://linkedin.com/in/pratul21/" target="_blank" rel="noreferrer" className="text-sm font-bold font-mono uppercase tracking-widest text-gray-500 hover:text-[#FF6B00] transition-colors relative group">
+               LinkedIn
+               <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#FF6B00] transition-all duration-300 group-hover:w-full" />
+             </a>
+             <a href="https://instagram.com/pratul._.pandey/" target="_blank" rel="noreferrer" className="text-sm font-bold font-mono uppercase tracking-widest text-gray-500 hover:text-[#FF6B00] transition-colors relative group">
+               Instagram
+               <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#FF6B00] transition-all duration-300 group-hover:w-full" />
+             </a>
           </div>
-        </div>
+        </motion.div>
 
         {/* FOOTER BOTTOM BAR */}
-        <div className="mt-24 pt-10 border-t-2 border-[#1A1A1A]/10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 text-[#1A1A1A]">
-                © {currentYear} Pratul Kumar • Designed & Built as a Visual Architect
-              </p>
+        <div className="w-full border-t border-dashed border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-xs font-mono font-medium text-gray-400 uppercase tracking-widest">
+              © {currentYear} Pratul Kumar • Engineered & Designed
+            </p>
 
-              <button 
-                onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
-                className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest hover:text-[#EF9144] transition-colors group text-[#1A1A1A]"
-              >
-                Back To Top <div className="bg-[#1A1A1A] text-white p-2 rounded-full group-hover:bg-[#EF9144] transition-colors"><ArrowUpRight size={12} /></div>
-              </button>
-          </div>
+            <button 
+              onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
+              className="group flex flex-col items-center gap-2"
+            >
+              <div className="w-10 h-10 border border-gray-200 rounded-full flex items-center justify-center text-gray-400 group-hover:border-[#FF6B00] group-hover:text-[#FF6B00] transition-all duration-300 group-hover:-translate-y-1 bg-white shadow-sm">
+                 <ArrowUpRight size={16} />
+              </div>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 group-hover:text-[#FF6B00] transition-colors">
+                Top
+              </span>
+            </button>
         </div>
+
       </div>
     </footer>
   );

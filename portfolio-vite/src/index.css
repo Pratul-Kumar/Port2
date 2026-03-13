@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+@theme {
+  --font-heading: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-dotted: "Raleway Dots", cursive;
+  --font-matrix: "DotGothic16", sans-serif;
+
+  --color-primary: #0A0A0A;
+  --color-secondary: #666666;
+  --color-bg: #FFFFFF;
+  --color-bg-alt: #F7F7F7;
+  --color-accent: #FF6B00;
+}
+
 /* Hide scrollbar while maintaining scroll functionality */
 html::-webkit-scrollbar {
   display: none;
@@ -8,30 +22,67 @@ html::-webkit-scrollbar {
 html {
   -ms-overflow-style: none;
   scrollbar-width: none;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: rgb(255, 241, 215);
-  color: #f1f5f9;
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  /* Apply antialiasing for thinner, crisp typography */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Unified Background Grid with subtle floating animation */
+  background-image: radial-gradient(#E5E5E5 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  animation: bg-move 60s linear infinite;
 }
 
-:root {
-  --color-bg: #030712;
-  --color-text-main: #fff;
-  --color-text-secondary: #f1f5f9;
-  --color-text-accent: #94a3b8;
-  --gradient-blue: rgba(59, 130, 246, 0.8);
-  --gradient-cyan: rgba(6, 182, 212, 0.8);
-  --gradient-purple: rgba(168, 85, 247, 0.8);
-  --gradient-pink: rgba(236, 72, 153, 0.8);
-  --gradient-orange: rgba(249, 115, 22, 0.8);
-  --gradient-red: rgba(239, 68, 68, 0.8);
-  --gradient-yellow: rgba(234, 179, 8, 0.8);
-  --gradient-green: rgba(34, 197, 94, 0.8);
-  --gradient-emerald: rgba(16, 185, 129, 0.8);
-  --gradient-teal: rgba(20, 184, 166, 0.8);
+@keyframes bg-move {
+  from { background-position: 0 0; }
+  to { background-position: 24px 24px; }
 }
 
+/* Base Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* 
+  Nothing.tech style dotted background utility 
+  Creates a subtle dot grid relative to the container size
+*/
+.bg-dotted {
+  background-image: radial-gradient(#E5E5E5 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+.bg-dotted-dark {
+  background-image: radial-gradient(#1A1A1A 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* Premium Matrix Text Effect */
+.text-matrix {
+  font-family: var(--font-matrix);
+  position: relative;
+  display: inline-block;
+}
+
+.text-matrix::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, transparent 0.5px, #fff 0.5px);
+  background-size: 2px 2px;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+body.terminal-mode .text-matrix::after {
+  background-image: radial-gradient(circle, transparent 0.5px, #050505 0.5px);
+}
+
+/* Abstract Scan Animation retained if needed */
 @keyframes scan {
   from { transform: translateY(-100%); }
   to { transform: translateY(200%); }
@@ -40,3 +91,80 @@ body {
 .animate-scan {
   animation: scan 2s linear infinite;
 }
+
+/* ==========================================================================
+   TRAINING MODE / TERMINAL MODE GLOBAL OVERRIDES
+   These rules override the inline Tailwind classes instantly when toggled 
+   ========================================================================== */
+
+html.terminal-mode {
+  background-color: #050505 !important;
+}
+
+body.terminal-mode {
+  background-color: #050505 !important;
+  color: #00FF41 !important; /* brutalist neon bright green */
+  background-image: radial-gradient(rgba(0, 255, 65, 0.4) 1.5px, transparent 1.5px) !important;
+  background-size: 24px 24px !important;
+}
+
+/* Surface Colors */
+body.terminal-mode .bg-white,
+body.terminal-mode .bg-white\/70,
+body.terminal-mode .bg-white\/50,
+body.terminal-mode .bg-white\/80 { background-color: #020202 !important; }
+body.terminal-mode .bg-\[\#F7F7F7\] { background-color: #080808 !important; }
+body.terminal-mode .bg-gray-50 { background-color: #0A0A0A !important; }
+body.terminal-mode .bg-\[\#1A1A1A\] { background-color: #000000 !important; border: 1px solid #00FF41 !important; }
+
+/* Text Mapping - Much brighter greens for contrast */
+body.terminal-mode .text-\[\#0A0A0A\] { color: #00FF41 !important; text-shadow: 0 0 5px rgba(0, 255, 65, 0.3); }
+body.terminal-mode .text-\[\#666666\] { color: #4ADE80 !important; }
+body.terminal-mode .text-gray-400 { color: #22C55E !important; }
+body.terminal-mode .text-gray-500 { color: #22C55E !important; }
+body.terminal-mode .text-gray-600 { color: #00FF41 !important; }
+body.terminal-mode .text-gray-700 { color: #00FF41 !important; }
+body.terminal-mode .text-gray-800 { color: #00FF41 !important; }
+body.terminal-mode .text-gray-900 { color: #00FF41 !important; }
+body.terminal-mode .text-black { color: #00FF41 !important; }
+
+/* Borders */
+body.terminal-mode .border-gray-200,
+body.terminal-mode .border-gray-100,
+body.terminal-mode .border-gray-300 { border-color: #00FF41 !important; opacity: 0.6 !important; }
+
+/* Dotted Backgrounds - update dot color to neon */
+body.terminal-mode .bg-dotted { background-image: radial-gradient(rgba(0, 255, 65, 0.4) 1.5px, transparent 1.5px) !important; }
+body.terminal-mode .bg-dotted-dark { background-image: radial-gradient(rgba(0, 255, 65, 0.6) 1.5px, transparent 1.5px) !important; }
+
+/* Cancel gradients, apply solid neon text with glow */
+body.terminal-mode .bg-clip-text { 
+  background: #00FF41 !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: #00FF41 !important; 
+  color: #00FF41 !important; 
+  text-shadow: 0 0 8px rgba(0, 255, 65, 0.4) !important;
+}
+
+/* Typography & Brutalist Geometry */
+body.terminal-mode .font-heading,
+body.terminal-mode h1, 
+body.terminal-mode h2, 
+body.terminal-mode h3, 
+body.terminal-mode p,
+body.terminal-mode span,
+body.terminal-mode div { 
+  border-radius: 0px !important; 
+}
+
+body.terminal-mode .font-heading,
+body.terminal-mode h1, 
+body.terminal-mode h2, 
+body.terminal-mode h3 { 
+  font-family: var(--font-mono) !important; 
+  letter-spacing: -0.05em !important;
+}
+
+/* Make SVG icons neon except orange accents */
+body.terminal-mode svg:not(.text-\[\#FF6B00\]) { color: #00FF41 !important; }

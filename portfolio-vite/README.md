@@ -1,16 +1,30 @@
-# React + Vite
+# Pratul Kumar — Multi-Disciplinary ML Engineer & UX Designer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> A highly interactive, premium developer portfolio bridging the gap between rigorous Machine Learning architecture and ultra-minimalist User Experience design.
 
-Currently, two official plugins are available:
+## Technical Architecture
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This portfolio operates on a **dual-theme engine**:
+1. **Inference Mode (Default):** A clean, premium, highly-polished Swiss-typography design. Focuses on whitespace, subtle micro-interactions, and Apple/Vercel-level visual polish.
+2. **Training Mode (Terminal):** A hardcore, brutalist, high-contrast neon green IDE terminal aesthetic. Focuses on raw data, monospace grid-locked typography, and performance metrics.
 
-## React Compiler
+## Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Interactive Orbital Knowledge Graph:** Custom Data Visualization for Skills to emulate an ML node network, entirely built from scratch using math (Sine/Cosine routing) and Framer Motion spring physics.
+- **System Deployments HUD:** Projects are visualized as a central data hub, orbitally surrounded by their tech stacks.
+- **Performant Lazy Loading:** Off-screen sections mount dynamically to preserve main-thread performance.
+- **Dynamic Command Layer:** Embedded hotkeys and command palette capabilities to emulate an IDE environment.
 
-## Expanding the ESLint configuration
+## Stack
+- **Framework:** React + Vite
+- **Styling:** Tailwind CSS + Vanilla CSS overrrides (`index.css`)
+- **Physics/Animations:** Framer Motion
+- **Icons:** Lucide React
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Development
+```bash
+npm install
+npm run dev
+```
+
+Designed and Developed by Pratul Kumar.

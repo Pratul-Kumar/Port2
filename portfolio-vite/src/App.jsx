@@ -6,6 +6,7 @@ import { useLenis } from './hooks/useLenis'
 import ScrollToTop from './components/ScrollToTop'
 import CommandHint from './components/CommandHint'
 import CommandPalette from './components/CommandPalette'
+import ScrollProgress from './components/ScrollProgress'
 
 const App = () => {
   useLenis()
@@ -14,6 +15,7 @@ const App = () => {
 
   return (
     <div>
+      <ScrollProgress />
       <Loader onFinish={handleLoaderFinish} />
       {/* <NeuralMeshBackground /> */}
       <CommandPalette />

@@ -10,8 +10,8 @@ export default function Loader({ onFinish }) {
     document.body.style.overflow = loading ? 'hidden' : '';
 
     // Precision Timer
-    const duration = 1000; 
-    const intervalTime = 10;
+    const duration = 1500; 
+    const intervalTime = 15;
     const increment = 100 / (duration / intervalTime);
 
     const timer = setInterval(() => {
@@ -21,7 +21,7 @@ export default function Loader({ onFinish }) {
           setTimeout(() => {
             setLoading(false);
             if (onFinish) onFinish();
-          }, 200);
+          }, 300);
           return 100;
         }
         return prev + increment;
@@ -40,65 +40,68 @@ export default function Loader({ onFinish }) {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ 
+            opacity: 0,
             y: "-100%", 
             transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } 
           }}
-          className="fixed inset-0 z-[99999] flex items-center justify-center bg-[#E8E6D9] font-mono overflow-hidden"
+          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-white font-mono overflow-hidden"
         >
-          {/* Subtle Paper Texture Overlay */}
-          <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+          {/* Subtle dotted background grid */}
+          <div className="absolute inset-0 bg-dotted pointer-events-none opacity-40" />
 
-          <div className="relative w-full max-w-xs px-6 flex flex-col items-center">
+          <div className="relative w-full max-w-sm px-8 flex flex-col items-center z-10">
             
             {/* Minimalist Identity Tag */}
             <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-8 text-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="flex flex-col items-center mb-12"
             >
-              <h1 className="text-xl font-black uppercase tracking-[0.3em] text-[#1A1A1A]">
-                Pratul Kumar
+              <div className="w-12 h-12 rounded-xl bg-[#0A0A0A] flex items-center justify-center text-white mb-6">
+                <motion.div 
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  className="w-5 h-5 border-2 border-dashed border-[#FF6B00] rounded-full"
+                />
+              </div>
+
+              <h1 className="text-xl font-heading font-black tracking-tight text-[#0A0A0A] mb-2">
+                System Initialization
               </h1>
-              <div className="flex items-center justify-center gap-2 mt-2">
-                <span className="h-[1px] w-4 bg-[#EF9144]" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#EF9144]">
-                  Portfolio 2026
-                </span>
-                <span className="h-[1px] w-4 bg-[#EF9144]" />
+              
+              <div className="flex items-center gap-3">
+                 <span className="relative flex h-2 w-2">
+                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF6B00] opacity-75"></span>
+                   <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF6B00]"></span>
+                 </span>
+                 <span className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                   {progress < 40 ? "Loading Core..." : progress < 80 ? "Booting ML Models..." : "Ready."}
+                 </span>
               </div>
             </motion.div>
 
             {/* Percentage Display */}
-            <div className="mb-2 text-[4rem] font-serif italic text-[#1A1A1A] leading-none">
-              {Math.round(progress)}%
+            <div className="mb-4 text-5xl font-heading font-black text-[#0A0A0A] tracking-tighter">
+              {Math.min(Math.round(progress), 100)}%
             </div>
 
             {/* Precision Progress Line */}
-            <div className="w-full h-[2px] bg-[#1A1A1A]/10 relative overflow-hidden">
+            <div className="w-full h-[1px] bg-gray-200 relative overflow-hidden rounded-full">
               <motion.div 
-                className="absolute inset-y-0 left-0 bg-[#EF9144]"
+                className="absolute inset-y-0 left-0 bg-[#FF6B00]"
                 style={{ width: `${progress}%` }}
               />
             </div>
 
-            {/* Technical Subtext */}
-            <div className="mt-6 flex flex-col items-center space-y-1">
-               <p className="text-[9px] font-black uppercase tracking-[0.4em] text-[#1A1A1A]/30">
-                 UI/UX DESIGNER
-               </p>
-               <motion.div 
-                animate={{ opacity: [0.2, 1, 0.2] }}
-                transition={{ duration: 1.6, repeat: Infinity }}
-                className="w-1 h-1 bg-[#EF9144] rounded-full"
-               />
-            </div>
-
           </div>
 
-          {/* Minimal Corner Decoration */}
-          <div className="absolute top-10 left-10 p-2 border-l border-t border-[#1A1A1A]/20 h-10 w-10" />
-          <div className="absolute bottom-10 right-10 p-2 border-r border-b border-[#1A1A1A]/20 h-10 w-10" />
+          {/* Abstract background elements */}
+          <motion.div 
+             animate={{ opacity: [0.3, 0.6, 0.3], scale: [0.9, 1.1, 0.9] }}
+             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+             className="absolute top-1/4 left-1/4 w-[40vw] h-[40vw] bg-[#FF6B00]/5 rounded-full blur-[100px] pointer-events-none -z-10"
+          />
         </motion.div>
       )}
     </AnimatePresence>

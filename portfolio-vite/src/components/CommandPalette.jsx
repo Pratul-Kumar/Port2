@@ -3,13 +3,14 @@ import { Command, Search, X } from 'lucide-react'
 import { scrollToId } from '../utils/scrollTo'
 
 const items = [
+  { label: 'Toggle Training Mode (IDE)', action: () => window.dispatchEvent(new Event('toggle-terminal-mode')) },
   { label: 'Go to Home', action: () => scrollToId('home', { offset: -80, duration: 1.0 }) },
   { label: 'Go to About', action: () => scrollToId('about', { offset: -80, duration: 1.0 }) },
   { label: 'Go to Skills', action: () => scrollToId('skills', { offset: -80, duration: 1.0 }) },
   { label: 'Go to Projects', action: () => scrollToId('projects', { offset: -80, duration: 1.0 }) },
   { label: 'Go to Achievements', action: () => scrollToId('achievements', { offset: -80, duration: 1.0 }) },
   { label: 'Go to Contact', action: () => scrollToId('contact', { offset: -80, duration: 1.0 }) },
-  { label: 'Open Resume', action: () => window.open('https://drive.google.com/file/d/1lpONqi9hVFXy_SDI6cD7DMeZU16G4U8n/view?usp=sharing', '_blank') },
+  { label: 'Open Classified Resume', action: () => window.open('https://drive.google.com/file/d/1lpONqi9hVFXy_SDI6cD7DMeZU16G4U8n/view?usp=sharing', '_blank') },
 ]
 
 const CommandPalette = () => {
@@ -56,58 +57,58 @@ const CommandPalette = () => {
 
   return (
     <div
-      className="fixed inset-0 z-[10000] bg-[#1A1A1A]/60 backdrop-blur-sm flex items-start justify-center pt-24"
+      className="fixed inset-0 z-[100000] bg-[#0A0A0A]/40 backdrop-blur-md flex items-start justify-center pt-24 md:pt-32 px-4 transition-all"
       aria-modal="true"
       role="dialog"
       onClick={() => setOpen(false)}
     >
       <div
-        className="w-full max-w-2xl rounded-2xl border-2 border-[#1A1A1A] bg-[#E8E6D9] text-[#1A1A1A] shadow-[12px_12px_0px_0px_#1A1A1A]"
+        className="w-full max-w-2xl rounded-2xl border border-gray-200/50 bg-[#F7F7F7] shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-[#1A1A1A]/10">
-          <Command size={16} className="text-[#EF9144]" />
+        <div className="flex items-center gap-3 px-5 py-5 border-b border-gray-200 bg-white">
+          <Command size={18} className="text-[#FF6B00]" />
           <div className="relative flex-1">
-            <Search size={16} className="absolute left-2 top-1/2 -translate-y-1/2 text-[#1A1A1A]/40" />
+            <Search size={16} className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               autoFocus
               aria-label="Command search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Type a command…"
-              className="w-full pl-8 pr-4 py-2 bg-transparent outline-none text-sm text-[#1A1A1A] placeholder:text-[#1A1A1A]/40"
+              placeholder="System prompt..."
+              className="w-full pl-9 pr-4 py-2 bg-transparent outline-none text-sm font-mono text-[#0A0A0A] placeholder:text-gray-400"
             />
           </div>
-          <button aria-label="Close palette" onClick={() => setOpen(false)} className="p-2 hover:text-[#EF9144]">
+          <button aria-label="Close palette" onClick={() => setOpen(false)} className="p-2 text-gray-400 hover:text-[#FF6B00] transition-colors bg-gray-50 rounded-lg border border-gray-100">
             <X size={16} />
           </button>
         </div>
-        <ul className="max-h-[50vh] overflow-y-auto">
+        <ul className="max-h-[50vh] overflow-y-auto bg-white p-2">
           {filtered.map((item, i) => (
             <li key={i}>
               <button
                 onClick={() => run(item.action)}
-                className="w-full flex items-center justify-between px-5 py-3 text-left hover:bg-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#EF9144]"
+                className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[#FF6B00]/5 rounded-xl transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B00]"
               >
-                <span className="text-sm font-black uppercase tracking-[0.2em]">{item.label}</span>
+                <span className="text-xs font-mono font-bold uppercase tracking-widest text-gray-600 group-hover:text-[#FF6B00] transition-colors">{item.label}</span>
+                <span className="text-[10px] text-gray-300 font-mono opacity-0 group-hover:opacity-100 transition-opacity">Execute</span>
               </button>
             </li>
           ))}
           {filtered.length === 0 && (
-            <li className="px-5 py-6 text-sm opacity-60">No results</li>
+            <li className="px-5 py-8 text-xs font-mono text-center text-gray-400 uppercase tracking-widest">Command not recognized.</li>
           )}
         </ul>
-        <div className="px-5 py-3 border-t border-[#1A1A1A]/10 flex items-center justify-between">
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60">
-            Press Ctrl + K to toggle
-          </span>
-          <button
-            onClick={() => setOpen(false)}
-            className="px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] border-2 border-[#1A1A1A] rounded-full bg-white/60 hover:bg-white"
-            aria-label="Close"
-          >
-            Close
-          </button>
+        <div className="px-5 py-4 border-t border-gray-200 bg-gray-50 flex items-center justify-between">
+           <div className="flex items-center gap-3">
+             <span className="px-2 py-1 bg-white border border-gray-200 rounded text-[9px] font-mono font-bold text-gray-400 shadow-sm">ESC</span>
+             <span className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+               to dismiss
+             </span>
+           </div>
+           <div className="flex items-center gap-3 hidden md:flex">
+              <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Powered by <span className="text-[#0A0A0A] font-black">Pratul.</span></span>
+           </div>
         </div>
       </div>
     </div>
