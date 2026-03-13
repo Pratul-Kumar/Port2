@@ -114,18 +114,18 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <motion.a
-                href="#projects"
+              <motion.button
+                onClick={() => window.lenis?.scrollTo('#projects')}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full sm:w-auto group relative inline-flex items-center justify-center bg-[#FF6B00] text-white px-8 py-4 rounded-xl font-medium overflow-hidden transition-all shadow-[0_0_40px_-10px_rgba(255,107,0,0.5)] hover:shadow-[0_0_60px_-15px_rgba(255,107,0,0.7)]"
+                className="w-full sm:w-auto group relative inline-flex items-center justify-center bg-[#FF6B00] text-white px-8 py-4 rounded-xl font-medium overflow-hidden transition-all shadow-[0_0_40px_-10px_rgba(255,107,0,0.5)] hover:shadow-[0_0_60px_-15px_rgba(255,107,0,0.7)] cursor-pointer"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Explore Work
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </span>
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-              </motion.a>
+              </motion.button>
 
               <motion.a
                 href="https://drive.google.com/file/d/1-V8mYmbUT_Ols0D08lAdZfUtH3dSqp1f/view?usp=sharing"

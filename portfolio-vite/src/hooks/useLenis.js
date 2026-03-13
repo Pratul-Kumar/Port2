@@ -10,7 +10,7 @@ export const useLenis = () => {
       gestureDirection: 'vertical',
       smooth: true,
       mouseMultiplier: 0.9,
-      smoothTouch: false,
+      smoothTouch: true,
       touchMultiplier: 1.6,
       infinite: false,
     })

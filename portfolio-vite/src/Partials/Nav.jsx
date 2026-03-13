@@ -74,10 +74,11 @@ const Nav = () => {
         const targetId = pendingScrollRef.current;
         pendingScrollRef.current = null;
         setTimeout(() => {
-          const el = document.getElementById(targetId);
-          if (!el) return;
-          const top = Math.max(0, el.getBoundingClientRect().top + window.scrollY - 80);
-          window.scrollTo({ top, behavior: "smooth" });
+          if (window.lenis) {
+            window.lenis.scrollTo(`#${targetId}`, { offset: -80, duration: 1.0 });
+          } else {
+            scrollToId(targetId, { offset: -80, duration: 1.0 });
+          }
         }, 50);
       }
     }
@@ -90,7 +91,11 @@ const Nav = () => {
       pendingScrollRef.current = to;
       setIsOpen(false);
     } else {
-      scrollToId(to, { offset: -80, duration: 1.0 });
+      if (window.lenis) {
+        window.lenis.scrollTo(`#${to}`, { offset: -80, duration: 1.0 });
+      } else {
+        scrollToId(to, { offset: -80, duration: 1.0 });
+      }
     }
   }, [isOpen]);
 

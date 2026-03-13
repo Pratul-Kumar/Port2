@@ -129,8 +129,8 @@ const Contact = () => {
             </p>
 
             <button 
-              onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
-              className="group flex flex-col items-center gap-2"
+              onClick={() => window.lenis?.scrollTo(0)}
+              className="group flex flex-col items-center gap-2 cursor-pointer"
             >
               <div className="w-10 h-10 border border-gray-200 rounded-full flex items-center justify-center text-gray-400 group-hover:border-[#FF6B00] group-hover:text-[#FF6B00] transition-all duration-300 group-hover:-translate-y-1 bg-white shadow-sm">
                  <ArrowUpRight size={16} />
