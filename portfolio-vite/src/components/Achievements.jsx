@@ -17,15 +17,6 @@ const achievementsData = [
     tags: ["Leadership", "Management"]
   },
   {
-    role: "Co-Founder & CMO",
-    organization: "Zintrix",
-    period: "Present",
-    icon: <Megaphone size={20} className="text-[#0A0A0A]" />,
-    description:
-      "Building scalable digital systems and growth-focused marketing infrastructures.",
-    tags: ["Growth", "Strategy"]
-  },
-  {
     role: "Open Source Mentor",
     organization: "GSSOC 2025",
     period: "2025",
@@ -35,7 +26,7 @@ const achievementsData = [
     tags: ["Open Source", "Mentorship"]
   },
   {
-    role: "Co-Founder",
+    role: "Help in growing",
     organization: "Raina News",
     period: "2020-2026",
     icon: <Megaphone size={20} className="text-[#0A0A0A]" />,
