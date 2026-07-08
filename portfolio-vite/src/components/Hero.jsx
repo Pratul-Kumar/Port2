@@ -92,7 +92,7 @@ const Hero = () => {
                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF6B00]"></span>
                </span>
                <span className="text-xs font-mono font-medium text-gray-800 uppercase tracking-widest">
-                 Primary Role: <span className="text-[#FF6B00] font-bold">ML Systems Engineer</span>
+                 Primary Role: <span className="text-[#FF6B00] font-bold">Product Analyst</span>
                </span>
             </div>
 
