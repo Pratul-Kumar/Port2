@@ -3,14 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Code2, BrainCircuit, Globe, Cloud, Figma, Users, GitBranch, Terminal, RefreshCw } from 'lucide-react';
 
 const skillsData = [
-  { id: 'lang', category: "Languages", icon: <Code2 size={16} />, skills: ["Python", "SQL", "JavaScript"], color: "#10B981" },
+  { id: 'lang', category: "Languages", icon: <Code2 size={16} />, skills: ["Python", "SQL"], color: "#10B981" },
   { id: 'ai', category: "AI & ML", icon: <BrainCircuit size={16} />, skills: ["PyTorch", "Scikit", "XGBoost"], color: "#FF6B00" },
-  { id: 'cloud', category: "Cloud Arch", icon: <Cloud size={16} />, skills: ["Azure", "AWS", "Docker"], color: "#3B82F6" },
+  { id: 'cloud', category: "Cloud Arch", icon: <Cloud size={16} />, skills: ["Azure"], color: "#3B82F6" },
   { id: 'ui', category: "UI/UX", icon: <Figma size={16} />, skills: ["Figma", "Framer", "Design"], color: "#EC4899" },
-  { id: 'dev', category: "Dev Env", icon: <Terminal size={16} />, skills: ["VS Code", "Jupyter", "Linux"], color: "#8B5CF6" },
+  { id: 'dev', category: "Dev Env", icon: <Terminal size={16} />, skills: ["VS Code", "Jupyter"], color: "#8B5CF6" },
   { id: 'version', category: "Version Ctrl", icon: <GitBranch size={16} />, skills: ["Git", "GitHub Actions"], color: "#EF4444" },
   { id: 'lead', category: "Leadership", icon: <Users size={16} />, skills: ["Mentorship", "Agile", "Strategy"], color: "#F59E0B" },
-  { id: 'backend', category: "Backend", icon: <Globe size={16} />, skills: ["Flask", "FastAPI", "RESTful APIs"], color: "#14B8A6" }
 ];
 
 const OrbitalGraph = () => {
